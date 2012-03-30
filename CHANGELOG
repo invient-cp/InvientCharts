@@ -1,0 +1,55 @@
+CHANGELOG
+
+//
+Copyright 2011 Invient (www.invient.com)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+
+You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+//
+Invient Charts 0.8.6 (released 2011-12-02)
+Fixed the following bugs:
+ * Set min/max values for chart's axis.
+ * Show/hide of a series after creation of the chart.
+ * removePoint() method to remove all points instead of only one point.
+
+Invient Charts 0.8.5 (released 2011-08-24)
+Fixed following bugs
+ * Set height of the chart.
+ * Disable tooltip.
+ * Hide series.
+  
+Invient Charts 0.8.4 (released 2011-06-30)
+  * Fixed bug related to color attribute. The SeriesConfig.color attribute is written to client for all subclasses of SeriesConfig.
+  * The min and max attributes of DateTimeAxis include time if the DateTimeSeries associated with this axis has isIncludeTime set to true.
+  * Added new API to iterate over all Series of a graph.
+  * The interfaces com.invient.vaadin.charts.Color and com.invient.vaadin.charts.Gradient have been modified to extend newly added interface com.invient.vaadin.charts.Paint. This is done to facilitate use of gradient in all types of charts.
+
+Invient Charts 0.8.3 (released 2011-04-21)
+  * Improvement in performance when the series has more than couple of thousands of points, say 30,000 points.
+  * The Point.setX() and Point.setY() methods have been removed. The x and y value of a point must be set when a point is created, if required.
+  * The DateTimeSeries.setIsIncludeTime(boolean) method has been removed. The same can be achieved by using appropriate constructor having isIncludeTime as one of its argument.
+
+Invient Charts 0.8.2 (released 2011-03-23)
+  * Enhancement: Printing.
+  * Enhancement: Asynchronous method to get SVG.
+  * Enhancement: Add or remove points on an existing series.
+  * Demo: Added "Click to add a point", and "Updating each second".
+  * Note: "Updating each second" will not work on GAE because GAE 
+    doesn't support threads.
+
+Invient Charts 0.8.1 (released 2011-03-15)
+  * Fixed: "undefined NumberFormatException" when using Internet Explorer.
+
+Invient Charts 0.8.0 (released 2011-03-10)
+  * Initial Release
+

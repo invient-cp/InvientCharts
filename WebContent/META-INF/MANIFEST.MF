@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Vaadin-License-Title: Apache License 2.0
+Implementation-Vendor: Invient (www.invient.com)
+Implementation-Title: Invient Charts
+Implementation-Version: 0.8.6
+Vaadin-Package-Version: 1
+Vaadin-Widgetsets: com.invient.vaadin.charts.widgetset.InvientChartsWi
+ dgetset
+Vaadin-Addon: invientcharts-0.8.6/invientcharts-0.8.6.jar
+

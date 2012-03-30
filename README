@@ -1,0 +1,69 @@
+README
+
+//
+Copyright 2011 Invient (www.invient.com)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+
+You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+//
+
+Invient Charts - Elegant interactive charts without browser plugins.
+
+Invient Charts is a Vaadin add-on component for creating charts in Vaadin
+applications. Supported chart types are:
+* Line
+* Spline
+* Scatter
+* Area - Line
+* Area - Spline
+* Bar
+* Column 
+* Pie
+* Compound -- i.e., a chart that combines multiple types into one.
+
+FEATURES
+* Native SVG-based rendering (VML on IE) on desktop and mobile device browsers.
+* Dynamically add or remove series, axes, or points at any time after creation.
+* Multiple y or x axes in a graph.
+* Inverted chart or reversed axis.
+* Customizable tooltip labels when mousing over a point or series.
+* Rotatable text labels for points and axis titles.
+* Click+drag or Touch+drag zooming. 
+* Server-side events upon user interaction.
+
+PREREQUISITES
+Invient Charts is a Vaadin wrapper for Highcharts, a JavaScript library. 
+Rendering of the charts on the browser is performed by Highcharts.
+Invient Charts exposes Highcharts' features to Vaadin programmers via 
+a server-side API.
+
+Note:
+* Compile the widgetset after adding Inveint Charts jar file into the 
+project's classpath.
+* Load Highcharts JavaScript libarary files by extending Vaadin's 
+ApplicationServlet. Check the source code under demo directory for details.
+* Highcharts uses jQuery. Load jQuery library (v 1.4.4 or above) before 
+loading Highcharts JavaScript files.
+
+If you are using eclipse based project structure, then you can store the 
+JavaScript files in WebContent directory.
+
+LICENSE
+Invient Charts is licensed under Apache License 2.0. However, it requires 
+Highcharts JavaScript library which is licensed under separate terms:
+http://www.highcharts.com/license. You must, therefore, adhere to both
+licenses to use Invient Charts in your application.
+
+DEMO DATA
+The Vaadin demo application of Invient Charts mimics the format and data of 
+Highcharts Demo Gallery at http://www.highcharts.com/demo/.
+
