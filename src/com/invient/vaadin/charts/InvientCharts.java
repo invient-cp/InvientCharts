@@ -305,7 +305,7 @@ public class InvientCharts extends AbstractComponent {
                 PointEventData pointEventData = getPointEventData(eventData);
                 fireLegendItemClick(getPointFromEventData(pointEventData));
             } else if (eventName.equalsIgnoreCase("pointClick")) {
-                MousePosition mousePosition = gestClickPosition(eventData);
+                MousePosition mousePosition = getClickPosition(eventData);
                 //
                 PointEventData pointEventData = getPointEventData(eventData);
                 firePointClick(pointEventData.getCategory(),
