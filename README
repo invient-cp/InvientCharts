@@ -55,7 +55,7 @@ ApplicationServlet. Check the source code under demo directory for details.
 loading Highcharts JavaScript files.
 
 If you are using eclipse based project structure, then you can store the 
-JavaScript files in WebContent directory.
+JavaScript files in webapp directory.
 
 LICENSE
 Invient Charts is licensed under Apache License 2.0. However, it requires 
