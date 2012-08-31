@@ -252,6 +252,10 @@ public class VInvientCharts extends GwtInvientCharts implements Paintable /*
                 .getChildUIDL(ChartOptionsUIDLIndex.CHART_CONFIG.ordinal()));
         int newWidth = chartOptions.getWidth();
         int newHeight = chartOptions.getHeight();
+        updateChartSize(newWidth, newHeight);
+    }
+
+    private void updateChartSize(int newWidth, int newHeight) {
         int existingWidth = chart.getOptions().getChartOptions().getWidth();
         int existingHeight = chart.getOptions().getChartOptions().getHeight();
 
@@ -261,6 +265,30 @@ public class VInvientCharts extends GwtInvientCharts implements Paintable /*
             chart.getOptions().getChartOptions().setWidth(newWidth);
             chart.getOptions().getChartOptions().setHeight(newHeight);
             chart.setSize(newWidth, newHeight);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setHeight(String height) {
+        super.setHeight(height);
+        updateChartSize();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setWidth(String width) {
+        super.setWidth(width);
+        updateChartSize();
+    }
+
+    private void updateChartSize() {
+        if (chart != null) {
+            updateChartSize(getElement().getOffsetWidth(), getElement().getOffsetHeight());
         }
     }
 
