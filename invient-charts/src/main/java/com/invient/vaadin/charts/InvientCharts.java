@@ -106,6 +106,9 @@ public class InvientCharts extends AbstractComponent {
         return this.chartConfig;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void paintContent(PaintTarget target) throws PaintException {
         super.paintContent(target);
@@ -820,7 +823,7 @@ public class InvientCharts extends AbstractComponent {
     }
 
     /**
-     * Poin unselect event. This event is thrown, when any point of this chart
+     * Point unselect event. This event is thrown, when any point of this chart
      * is unselected and the point marker is enabled. The point marker is
      * enabled by default.
      * 

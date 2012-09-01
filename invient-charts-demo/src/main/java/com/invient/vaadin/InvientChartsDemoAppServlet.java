@@ -28,6 +28,9 @@ import com.vaadin.ui.Window;
 @SuppressWarnings("serial")
 public class InvientChartsDemoAppServlet extends ApplicationServlet {
 
+	/**
+	 * {@inheritDoc}
+	 */
     @Override
     protected void writeAjaxPageHtmlVaadinScripts(Window window,
             String themeName, Application application, BufferedWriter page,
@@ -35,7 +38,7 @@ public class InvientChartsDemoAppServlet extends ApplicationServlet {
             HttpServletRequest request) throws ServletException, IOException {
     	page.write("<script type=\"text/javascript\">\n");
         page.write("//<![CDATA[\n");
-        page.write("document.write(\"<script language='javascript' src='" + request.getContextPath() + "/VAADIN/js/jquery/jquery-1.7.2.min.js'><\\/script>\");\n");
+        page.write("document.write(\"<script language='javascript' src='" + request.getContextPath() + "/VAADIN/js/jquery/jquery-1.4.4.min.js'><\\/script>\");\n");
         page.write("document.write(\"<script language='javascript' src='" + request.getContextPath() + "/VAADIN/js/highcharts/highcharts.js'><\\/script>\");\n");
         page.write("document.write(\"<script language='javascript' src='" + request.getContextPath() + "/VAADIN/js/highcharts/modules/exporting.js'><\\/script>\");\n");
         page.write("//]]>\n</script>\n");

@@ -65,6 +65,7 @@ class GwtInvientCharts extends Widget {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public void onUnload() {
         // Remove chart and purge memory (prevents memory leaks)
@@ -215,11 +216,13 @@ class GwtInvientCharts extends Widget {
 
     }
 
+//    /** {@inheritDoc} */
 //    @Override
 //    public void setHeight(String height) {
 //        getElement().setAttribute("height", height);
 //    }
 //
+//    /** {@inheritDoc} */
 //    @Override
 //    public void setWidth(String width) {
 //        getElement().setAttribute("width", width);

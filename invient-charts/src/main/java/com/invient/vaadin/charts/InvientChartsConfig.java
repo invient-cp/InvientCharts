@@ -31,7 +31,6 @@ import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.MinorGrid;
 import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.MinorTick;
 import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.Tick;
 import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.WeekDay;
-import com.invient.vaadin.charts.InvientChartsConfig.GeneralChartConfig.ZoomType;
 
 /**
  * This class encapsulates a number of configuration options for the
