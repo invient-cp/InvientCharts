@@ -1607,6 +1607,10 @@ class GwtInvientChartsConfig extends JavaScriptObject {
                                                                         return { };
                                                                         }-*/;
 
+            public native final void setMillisecond(String millisecond) /*-{
+                                                              this.millisecond = millisecond;
+                                                              }-*/;
+            
             public native final void setSecond(String second) /*-{
                                                               this.second = second;
                                                               }-*/;

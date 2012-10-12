@@ -4839,6 +4839,7 @@ public final class InvientChartsConfig implements Serializable {
         // private Date minorTickInterval;
 
         public static final class DateTimeLabelFormat {
+            private String millisecond = "%H:%M:%S.%L";
             private String second = "%H:%M:%S";
             private String minute = "%H:%M";
             private String hour = "%H:%M";
@@ -4846,6 +4847,14 @@ public final class InvientChartsConfig implements Serializable {
             private String week = "%e. %b";
             private String month = "%b '%y";
             private String year = "%Y";
+
+            public String getMillisecond() {
+                return millisecond;
+            }
+
+            public void setMillisecond(String millisecond) {
+                this.millisecond = millisecond;
+            }
 
             public String getSecond() {
                 return second;

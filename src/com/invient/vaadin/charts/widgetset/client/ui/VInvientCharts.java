@@ -1707,6 +1707,10 @@ public class VInvientCharts extends GwtInvientCharts implements Paintable /*
                     UIDL dateTimeLblFmtsUIDL = childUIDL;
                     GwtDateTimeLabelFormats formats = GwtDateTimeLabelFormats
                             .create();
+                    if (dateTimeLblFmtsUIDL.hasAttribute("millisecond")) {
+                        formats.setMillisecond(dateTimeLblFmtsUIDL
+                                .getStringAttribute("millisecond"));
+                    }
                     if (dateTimeLblFmtsUIDL.hasAttribute("second")) {
                         formats.setSecond(dateTimeLblFmtsUIDL
                                 .getStringAttribute("second"));
