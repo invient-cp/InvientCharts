@@ -864,7 +864,10 @@ class GwtInvientChartsConfig extends JavaScriptObject {
                                                                        this.slicedOffset = slicedOffset;
                                                                        }-*/;
 
-        }
+			public native final void setIgnoreHiddenPoint(boolean ignoreHiddenPoint) /*-{
+																					this.ignoreHiddenPoint = ignoreHiddenPoint;
+																					}-*/;
+		}
 
         static class GwtBaseBarOptions extends GwtSeriesGeneralOptions {
             protected GwtBaseBarOptions() {
@@ -1757,6 +1760,22 @@ class GwtInvientChartsConfig extends JavaScriptObject {
         public native final void setStyle(String style) /*-{
                                                         this.style = eval("(" + style + ")");
                                                         }-*/;
+
+		public native final void setUseHTML(boolean useHTML) /*-{
+															this.useHTML = useHTML;
+															}-*/;
+
+		public native final void setHeaderFormat(String headerFormat) /*-{
+																		this.headerFormat = headerFormat;
+																		}-*/;
+
+		public native final void setPointFormat(String pointFormat) /*-{
+																	this.pointFormat = pointFormat;
+																	}-*/;
+
+		public native final void setFooterFormat(String footerFormat) /*-{
+																	this.footerFormat = footerFormat;
+																	}-*/;
     }
 
     static final class GwtLegendOptions extends JavaScriptObject {
