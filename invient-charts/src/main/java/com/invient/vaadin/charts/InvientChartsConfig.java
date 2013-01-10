@@ -2006,7 +2006,7 @@ public final class InvientChartsConfig implements Serializable {
         private Integer centerX;
         private Integer centerY;
         private Paint borderColor;
-        private Integer borderWidth;
+        private Double borderWidth;
         private Integer innerSize;
         private Integer size;
         private Integer slicedOffset;
@@ -2075,7 +2075,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * @return Returns width of the border surrounding each slice.
          */
-        public Integer getBorderWidth() {
+        public Double getBorderWidth() {
             return borderWidth;
         }
 
@@ -2084,7 +2084,7 @@ public final class InvientChartsConfig implements Serializable {
          * 
          * @param borderWidth
          */
-        public void setBorderWidth(Integer borderWidth) {
+        public void setBorderWidth(Double borderWidth) {
             this.borderWidth = borderWidth;
         }
 

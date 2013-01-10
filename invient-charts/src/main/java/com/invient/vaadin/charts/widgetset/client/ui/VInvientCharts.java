@@ -2251,7 +2251,7 @@ public class VInvientCharts extends GwtInvientCharts implements Paintable /*
                     .setBorderColor(pieUIDL.getStringAttribute("borderColor"));
         }
         if (pieUIDL.hasAttribute("borderWidth")) {
-            pieOptions.setBorderWidth(pieUIDL.getIntAttribute("borderWidth"));
+            pieOptions.setBorderWidth(pieUIDL.getDoubleAttribute("borderWidth"));
         }
         if (pieUIDL.hasAttribute("innerSize")) {
             pieOptions.setInnerSize(pieUIDL.getIntAttribute("innerSize"));

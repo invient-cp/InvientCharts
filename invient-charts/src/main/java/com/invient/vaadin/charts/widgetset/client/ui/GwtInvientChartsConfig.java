@@ -848,7 +848,7 @@ class GwtInvientChartsConfig extends JavaScriptObject {
                                                                         this.borderColor = $wnd.getInvientChartsColor(borderColor);
                                                                         }-*/;
 
-            public native final void setBorderWidth(int borderWidth) /*-{
+            public native final void setBorderWidth(double borderWidth) /*-{
                                                                      this.borderWidth = borderWidth;
                                                                      }-*/;
 
