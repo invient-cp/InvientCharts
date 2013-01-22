@@ -1072,7 +1072,7 @@ public final class InvientChartsConfig implements Serializable {
         private Boolean showCheckbox;
         // private Boolean selected;
         private Boolean visible; // NA for pie
-        private Boolean shadow; // NA for pie and scatter
+        private Boolean shadow; // NA for scatter
         private SeriesState hoverState;
         private DataLabel dataLabel;
         private Paint color;
@@ -2006,10 +2006,19 @@ public final class InvientChartsConfig implements Serializable {
         private Integer centerX;
         private Integer centerY;
         private Paint borderColor;
-        private Integer borderWidth;
+        private Double borderWidth;
         private Integer innerSize;
         private Integer size;
         private Integer slicedOffset;
+		private Boolean ignoreHiddenPoint;
+
+		public Boolean getIgnoreHiddenPoint() {
+			return ignoreHiddenPoint;
+		}
+
+		public void setIgnoreHiddenPoint(Boolean ignoreHiddenPoint) {
+			this.ignoreHiddenPoint = ignoreHiddenPoint;
+		}
 
         /**
          * @return Returns x position (in pixel) of the center of the pie chart relative to
@@ -2066,7 +2075,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * @return Returns width of the border surrounding each slice.
          */
-        public Integer getBorderWidth() {
+        public Double getBorderWidth() {
             return borderWidth;
         }
 
@@ -2075,7 +2084,7 @@ public final class InvientChartsConfig implements Serializable {
          * 
          * @param borderWidth
          */
-        public void setBorderWidth(Integer borderWidth) {
+        public void setBorderWidth(Double borderWidth) {
             this.borderWidth = borderWidth;
         }
 
@@ -2143,30 +2152,10 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * @exception UnsupportedOperationException
-         *                Pie chart does not support shadow property so this
-         *                method throws an exception if invoked.
-         */
-        @Override
-        public void setShadow(Boolean shadow)
-                throws UnsupportedOperationException {
-            throw new UnsupportedOperationException(
-                    "Pie chart does not support shadow.");
-        }
-
-        /**
          * @return Returns null as pie does not support toggle (show/hide pie) feature.
          */
         @Override
         public Boolean getVisible() {
-            return null;
-        }
-
-        /**
-         * @return Returns null as pie series does not support shadow.
-         */
-        @Override
-        public Boolean getShadow() {
             return null;
         }
 
@@ -5355,8 +5344,44 @@ public final class InvientChartsConfig implements Serializable {
         private Boolean shared;
         private Integer snap; // NA for pie/bar/column
         private String style;
+		private Boolean useHTML;
+		private String headerFormat;
+		private String pointFormat;
+		private String footerFormat;
 
-        public Paint getBackgroundColor() {
+		public String getHeaderFormat() {
+			return headerFormat;
+		}
+
+		public void setHeaderFormat(String headerFormat) {
+			this.headerFormat = headerFormat;
+		}
+
+		public String getPointFormat() {
+			return pointFormat;
+		}
+
+		public void setPointFormat(String pointFormat) {
+			this.pointFormat = pointFormat;
+		}
+
+		public String getFooterFormat() {
+			return footerFormat;
+		}
+
+		public void setFooterFormat(String footerFormat) {
+			this.footerFormat = footerFormat;
+		}
+
+		public Boolean getUseHTML() {
+			return useHTML;
+		}
+
+		public void setUseHTML(Boolean useHTML) {
+			this.useHTML = useHTML;
+		}
+
+		public Paint getBackgroundColor() {
             return backgroundColor;
         }
 

@@ -1151,6 +1151,18 @@ public class VInvientCharts extends GwtInvientCharts implements Paintable /*
         if (uidl.hasAttribute("style")) {
             tooltipOptions.setStyle(uidl.getStringAttribute("style"));
         }
+		if (uidl.hasAttribute("useHTML")) {
+			tooltipOptions.setUseHTML(uidl.getBooleanAttribute("useHTML"));
+		}
+		if (uidl.hasAttribute("headerFormat")) {
+			tooltipOptions.setHeaderFormat(uidl.getStringAttribute("headerFormat"));
+		}
+		if (uidl.hasAttribute("pointFormat")) {
+			tooltipOptions.setPointFormat(uidl.getStringAttribute("pointFormat"));
+		}
+		if (uidl.hasAttribute("footerFormat")) {
+			tooltipOptions.setFooterFormat(uidl.getStringAttribute("footerFormat"));
+		}
 
         VConsole.log("Exit [getTooltipOptions]");
         return tooltipOptions;
@@ -2239,11 +2251,14 @@ public class VInvientCharts extends GwtInvientCharts implements Paintable /*
                     .setBorderColor(pieUIDL.getStringAttribute("borderColor"));
         }
         if (pieUIDL.hasAttribute("borderWidth")) {
-            pieOptions.setBorderWidth(pieUIDL.getIntAttribute("borderWidth"));
+            pieOptions.setBorderWidth(pieUIDL.getDoubleAttribute("borderWidth"));
         }
         if (pieUIDL.hasAttribute("innerSize")) {
             pieOptions.setInnerSize(pieUIDL.getIntAttribute("innerSize"));
         }
+		if (pieUIDL.hasAttribute("ignoreHiddenPoint")) {
+			pieOptions.setIgnoreHiddenPoint(pieUIDL.getBooleanAttribute("ignoreHiddenPoint"));
+		}
         if (pieUIDL.hasAttribute("size")) {
             pieOptions.setSize(pieUIDL.getIntAttribute("size"));
         }

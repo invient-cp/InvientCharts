@@ -374,6 +374,18 @@ final class InvientChartsUtil {
         if (tooltipOptions.getStyle() != null) {
             target.addAttribute("style", tooltipOptions.getStyle());
         }
+		if (tooltipOptions.getUseHTML() != null) {
+			target.addAttribute("useHTML", tooltipOptions.getUseHTML());
+		}
+		if (tooltipOptions.getHeaderFormat() != null) {
+			target.addAttribute("headerFormat", tooltipOptions.getHeaderFormat());
+		}
+		if (tooltipOptions.getPointFormat() != null) {
+			target.addAttribute("pointFormat", tooltipOptions.getPointFormat());
+		}
+		if (tooltipOptions.getFooterFormat() != null) {
+			target.addAttribute("footerFormat", tooltipOptions.getFooterFormat());
+		}
 
         target.endTag("tooltip");
     }
@@ -1062,6 +1074,9 @@ final class InvientChartsUtil {
         if (pieOptions.getSlicedOffset() != null) {
             target.addAttribute("slicedOffset", pieOptions.getSlicedOffset());
         }
+		if (pieOptions.getIgnoreHiddenPoint() != null) {
+			target.addAttribute("ignoreHiddenPoint", pieOptions.getIgnoreHiddenPoint());
+		}
     }
 
     /**
