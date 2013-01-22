@@ -26,8 +26,8 @@
  </modules>
 
  <scm>
-  <url>git://github.com/S73417H/InvientCharts.git</url>
-  <developerConnection>https://github.com/S73417H/InvientCharts.git</developerConnection>  
+  <url>scm:git:git://github.com/S73417H/InvientCharts.git</url>
+  <developerConnection>scm:git:https://github.com/S73417H/InvientCharts.git</developerConnection>  
  </scm>
 
  <build>
