@@ -1733,9 +1733,9 @@ class GwtInvientChartsConfig extends JavaScriptObject {
                                                                      }-*/;
 
         // FIXME all diff. values
-        public native final void setCrosshairs(boolean crosshairs) /*-{
-                                                                   this.crosshairs = crosshairs;
-                                                                   }-*/;
+        public native final void setCrosshairs(GwtTooltipCrosshairs crosshairs) /*-{
+																			   	this.crosshairs = crosshairs;
+																			   }-*/;
 
         public native final void setEnabled(boolean enabled) /*-{
                                                              this.enabled = enabled;
@@ -1777,6 +1777,30 @@ class GwtInvientChartsConfig extends JavaScriptObject {
 																	this.footerFormat = footerFormat;
 																	}-*/;
     }
+
+	static final class GwtTooltipCrosshairs extends JavaScriptObject {
+		protected GwtTooltipCrosshairs() {
+		}
+
+		public native final static GwtTooltipCrosshairs create() /*-{
+																return {};
+															}-*/;
+
+		public native final void setWidth(double width) /*-{
+															this.width = width;
+														}-*/;
+
+		public native final void setColor(String color) /*-{
+															this.color = $wnd.getInvientChartsColor(color);
+														}-*/;
+
+		public native final void setDashstyle(String dashStyle) /*-{
+																	this.dashStyle = dashStyle;
+																}-*/;
+		public native final void setZIndex(int zIndex) /*-{
+														this.zIndex = zIndex;
+														}-*/;
+	}
 
     static final class GwtLegendOptions extends JavaScriptObject {
         protected GwtLegendOptions() {

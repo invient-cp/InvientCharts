@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.invient.vaadin.charts</groupId>
 		<artifactId>invient-charts</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>1.0.1</version>
 	</parent>
 
 	<artifactId>invient-charts-addon</artifactId>
