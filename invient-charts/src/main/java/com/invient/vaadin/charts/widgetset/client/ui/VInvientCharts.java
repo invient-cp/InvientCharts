@@ -1114,12 +1114,10 @@ public class VInvientCharts extends GwtInvientCharts implements Paintable /*
         VConsole.log("Tag name -> " + uidl.getTag());
         GwtTooltipOptions tooltipOptions = GwtTooltipOptions.create();
 
-		VConsole.log("Crosshairs: " + uidl.getChildByTagName("crosshairs"));
 		if(uidl.getChildByTagName("crosshairs") != null) {
 		tooltipOptions
 				.setCrosshairs(getTooltipCrosshairs(uidl.getChildByTagName("crosshairs")));
 		}
-
         if (uidl.hasAttribute("backgroundColor")) {
             tooltipOptions.setBackgroundColor(uidl
                     .getStringAttribute("backgroundColor"));
