@@ -1859,7 +1859,7 @@ class GwtInvientChartsConfig extends JavaScriptObject {
                                                                           }-*/;
 
         public native final void setItemStyle(String itemStyle) /*-{
-                                                                this.itemStyle = itemStyle;
+                                                                this.itemStyle = eval("(" + itemStyle + ")");
                                                                 }-*/;
 
         public native final void setItemWidth(int itemWidth) /*-{
