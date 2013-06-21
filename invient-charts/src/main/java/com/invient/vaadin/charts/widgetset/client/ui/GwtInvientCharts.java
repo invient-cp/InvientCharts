@@ -15,6 +15,8 @@
  */
 package com.invient.vaadin.charts.widgetset.client.ui;
 
+import java.util.UUID;
+
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
@@ -44,8 +46,10 @@ import com.invient.vaadin.charts.widgetset.client.ui.GwtInvientChartsConfig.GwtE
  */
 class GwtInvientCharts extends Widget {
 
+	private static long chartId = System.currentTimeMillis();
+
     protected GwtChart chart;
-    protected String divId = "hchartdiv_" + System.currentTimeMillis();
+    protected String divId = "hchartdiv_" + chartId++;
  
     // Cached chart options so that we can re-load them if we are detached and re-attached.
     private GwtInvientChartsConfig options;
