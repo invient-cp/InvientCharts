@@ -970,6 +970,10 @@ final class InvientChartsUtil {
             target.addAttribute("pointInterval",
                     baseLineOptions.getPointInterval());
         }
+		if (baseLineOptions.getTurboThreshold() != null) {
+			target.addAttribute("turboThreshold",
+					baseLineOptions.getTurboThreshold());
+		}
         if (baseLineOptions.getPointStart() != null) {
             target.addAttribute("pointStart", baseLineOptions.getPointStart());
         }

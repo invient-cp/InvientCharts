@@ -2105,7 +2105,7 @@ public class InvientChartsDemoWin extends Window {
 
         //
         Tooltip tooltip = new Tooltip();
-        tooltip.setCrosshairs(true);
+        tooltip.setCrosshairs(new Tooltip.Crosshairs());
         tooltip.setShared(true);
         chartConfig.setTooltip(tooltip);
 

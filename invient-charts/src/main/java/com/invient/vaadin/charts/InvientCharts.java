@@ -29,6 +29,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
@@ -363,15 +364,11 @@ public class InvientCharts extends AbstractComponent {
         if (dt == null) {
             return null;
         }
-        Calendar cal = GregorianCalendar.getInstance();
-        cal.setTime(dt);
         if (!isIncludeTime) {
-            cal.set(Calendar.HOUR, 0);
-            cal.set(Calendar.MINUTE, 0);
-            cal.set(Calendar.SECOND, 0);
-            cal.set(Calendar.MILLISECOND, 0);
-        }
-        return cal.getTimeInMillis();
+			return dt.getTime() - dt.getTime() % TimeUnit.DAYS.toMillis(1);
+        } else {
+			return dt.getTime();
+		}
     }
 
     private Series getSeriesFromEventData(String seriesName) {
@@ -2878,6 +2875,7 @@ public class InvientCharts extends AbstractComponent {
             final int prime = 31;
             int result = 1;
             result = prime * result + ((y == null) ? 0 : y.hashCode());
+			result = prime * result + ((x == null) ? 0 : (int)x.getTime());
             return result;
         }
 

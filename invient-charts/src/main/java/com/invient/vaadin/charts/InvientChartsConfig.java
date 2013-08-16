@@ -1713,6 +1713,7 @@ public final class InvientChartsConfig implements Serializable {
         private Marker marker;
         private DashStyle dashStyle;
         private Integer lineWidth;
+		private Integer turboThreshold;
 
         /**
          * @return
@@ -1818,7 +1819,15 @@ public final class InvientChartsConfig implements Serializable {
         public void setLineWidth(Integer lineWidth) {
             this.lineWidth = lineWidth;
         }
-    }
+
+		public Integer getTurboThreshold() {
+			return turboThreshold;
+		}
+
+		public void setTurboThreshold(Integer turboThreshold) {
+			this.turboThreshold = turboThreshold;
+		}
+	}
 
     public static enum DashStyle {
         SOLID("Solid"), SHORT_DASH("ShortDash"), SHORT_DOT("ShortDot"), SHORT_DASH_DOT(

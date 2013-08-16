@@ -2171,6 +2171,10 @@ public class VInvientCharts extends GwtInvientCharts implements Paintable /*
             lineOptions.setPointInterval(lineUIDL
                     .getIntAttribute("pointInterval"));
         }
+		if (lineUIDL.hasAttribute("turboThreshold")) {
+			lineOptions.setTurboThreshold(lineUIDL
+					.getIntAttribute("turboThreshold"));
+		}
         if (lineUIDL.hasAttribute("stickyTracking")) {
             lineOptions.setStickyTracking(lineUIDL
                     .getBooleanAttribute("stickyTracking"));

@@ -764,6 +764,10 @@ class GwtInvientChartsConfig extends JavaScriptObject {
             public native final void setMarker(GwtMarker marker) /*-{
                                                                  this.marker = marker;
                                                                  }-*/;
+
+			public native final void setTurboThreshold(int turboThreshold) /*-{
+																			this.turboThreshold = turboThreshold;
+																		}-*/;
         }
 
         static class GwtLineOptions extends GwtBaseLineOptions {
