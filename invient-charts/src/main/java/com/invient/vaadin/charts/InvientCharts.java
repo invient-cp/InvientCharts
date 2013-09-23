@@ -17,47 +17,28 @@ package com.invient.vaadin.charts;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import com.invient.vaadin.charts.InvientCharts.SeriesCUR.SeriesCURType;
+import com.invient.vaadin.charts.InvientChartsConfig.*;
+import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.PlotBand;
+import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.PlotLine;
+import com.invient.vaadin.charts.widgetset.client.ui.VInvientCharts;
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.ClientWidget;
 import com.vaadin.ui.Component;
 
-import com.invient.vaadin.charts.InvientCharts.SeriesCUR.SeriesCURType;
-import com.invient.vaadin.charts.InvientChartsConfig.Axis;
-import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.PlotBand;
-import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.PlotLine;
-import com.invient.vaadin.charts.InvientChartsConfig.BaseLineConfig;
-import com.invient.vaadin.charts.InvientChartsConfig.PointConfig;
-import com.invient.vaadin.charts.InvientChartsConfig.SeriesConfig;
-import com.invient.vaadin.charts.InvientChartsConfig.SubTitle;
-import com.invient.vaadin.charts.InvientChartsConfig.Title;
-import com.invient.vaadin.charts.InvientChartsConfig.XAxis;
-import com.invient.vaadin.charts.InvientChartsConfig.YAxis;
-import com.invient.vaadin.charts.widgetset.client.ui.VInvientCharts;
-
 /**
  * A Vaddin component representing charts. It is a the main class of
  * InvientCharts library.
- * 
+ * <p/>
  * A chart typically contains one or more series of same or different types.
  * This class allows us to specify series of different types say line and pie
  * and hence it makes it easy to build a combination chart.
- * 
+ * <p/>
  * After a chart {@link InvientCharts} is created, the following changes to the
  * chart will be reflected rendered on the webkit.
  * <ul>
@@ -72,9 +53,8 @@ import com.invient.vaadin.charts.widgetset.client.ui.VInvientCharts;
  * <li>Add and remove one or more instances of {@link Point}</li>
  * <li>Register and unregister event listeners</li>
  * </ul>
- * 
+ *
  * @author Invient
- * 
  */
 @SuppressWarnings("serial")
 @ClientWidget(VInvientCharts.class)
@@ -86,8 +66,8 @@ public class InvientCharts extends AbstractComponent {
 
     /**
      * Creates this chart object with given chart configuration
-     * 
-     * @param chartConfig
+     *
+     * @param chartConfig The chart configuration.
      */
     public InvientCharts(InvientChartsConfig chartConfig) {
         if (chartConfig == null) {
@@ -100,7 +80,7 @@ public class InvientCharts extends AbstractComponent {
 
     /**
      * Returns chart configuration object
-     * 
+     *
      * @return Returns chart configuration object
      */
     public InvientChartsConfig getConfig() {
@@ -333,9 +313,11 @@ public class InvientCharts extends AbstractComponent {
     private Point getPointFromEventData(PointEventData eventData) {
         // First locate a series and then point
         Series series = getSeriesFromEventData(eventData.getSeriesName());
+        // TODO: [S73417H] There is something very wrong here with instanceof checks and equality.
         if (series != null) {
             if (series instanceof XYSeries) {
-                for (DecimalPoint point : ((XYSeries) series).getPoints()) {
+                XYSeries xySeries = (XYSeries)series;
+                for (DecimalPoint point : xySeries.getPoints()) {
                     if (point.getY() != null
                             && point.getY().compareTo(eventData.getPointY()) == 0
                             && point.getX() != null
@@ -344,14 +326,14 @@ public class InvientCharts extends AbstractComponent {
                     }
                 }
             } else {
-                for (DateTimePoint point : ((DateTimeSeries) series)
-                        .getPoints()) {
+                DateTimeSeries dateTimeSeries = (DateTimeSeries)series;
+                for (DateTimePoint point : dateTimeSeries.getPoints()) {
                     if (point.getY() != null
                             && point.getY().compareTo(eventData.getPointY()) == 0
                             && point.getX() != null
                             && getDateInMilliseconds(point.getX(),
-                                    ((DateTimeSeries) series).isIncludeTime()) == (long) eventData
-                                    .getPointX()) {
+                            ((DateTimeSeries) series).isIncludeTime()) == (long) eventData
+                            .getPointX()) {
                         return point;
                     }
                 }
@@ -365,10 +347,10 @@ public class InvientCharts extends AbstractComponent {
             return null;
         }
         if (!isIncludeTime) {
-			return dt.getTime() - dt.getTime() % TimeUnit.DAYS.toMillis(1);
+            return dt.getTime() - dt.getTime() % TimeUnit.DAYS.toMillis(1);
         } else {
-			return dt.getTime();
-		}
+            return dt.getTime();
+        }
     }
 
     private Series getSeriesFromEventData(String seriesName) {
@@ -403,7 +385,7 @@ public class InvientCharts extends AbstractComponent {
     }
 
     private void fireSeriesClick(Series series, Point point,
-            MousePosition mousePosition) {
+                                 MousePosition mousePosition) {
         fireEvent(new SeriesClickEvent(this, this, series, point, mousePosition));
     }
 
@@ -420,7 +402,7 @@ public class InvientCharts extends AbstractComponent {
     }
 
     private void firePointClick(String category, Point point,
-            MousePosition mousePosition) {
+                                MousePosition mousePosition) {
         fireEvent(new PointClickEvent(this, this, category, point,
                 mousePosition));
     }
@@ -467,11 +449,10 @@ public class InvientCharts extends AbstractComponent {
     /**
      * This class contain mouse coordinates when a click event occurs on a
      * chart, a series or a point.
-     * 
+     * <p/>
      * The mouse coordinates are in pixels.
-     * 
+     *
      * @author Invient
-     * 
      */
     public final class MousePosition implements Serializable {
         private int mouseX;
@@ -479,11 +460,9 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Creates this object with given arguments.
-         * 
-         * @param mouseX
-         *            x position of mouse when a click event occurred, in pixel
-         * @param mouseY
-         *            y position of mouse when a click event occurred, in pixel
+         *
+         * @param mouseX x position of mouse when a click event occurred, in pixel
+         * @param mouseY y position of mouse when a click event occurred, in pixel
          */
         public MousePosition(int mouseX, int mouseY) {
             this.mouseX = mouseX;
@@ -491,7 +470,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns x position of mouse when a click event occurred, in
          *         pixel
          */
@@ -500,7 +478,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns y position of mouse when a click event occurred, in
          *         pixel
          */
@@ -523,7 +500,7 @@ public class InvientCharts extends AbstractComponent {
         private double pointY;
 
         public PointEventData(String seriesName, String category,
-                double pointX, double pointY) {
+                              double pointX, double pointY) {
             super();
             this.seriesName = seriesName;
             this.category = category;
@@ -561,7 +538,7 @@ public class InvientCharts extends AbstractComponent {
      * Click event. This event is thrown, when any point of this chart is
      * clicked and the point marker is enabled. The point marker is enabled by
      * default.
-     * 
+     *
      * @author Invient
      */
     public class PointClickEvent extends Component.Event {
@@ -573,21 +550,16 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * New instance of the point click event.
-         * 
-         * @param source
-         *            the chart object itself
-         * @param chart
-         *            the chart object itself
-         * @param category
-         *            a category to which point is associated in case of
-         *            categorized axis,
-         * @param point
-         *            the point on which the click event occurred
-         * @param mousePosition
-         *            the position of a mouse when the click event occurred
+         *
+         * @param source        the chart object itself
+         * @param chart         the chart object itself
+         * @param category      a category to which point is associated in case of
+         *                      categorized axis,
+         * @param point         the point on which the click event occurred
+         * @param mousePosition the position of a mouse when the click event occurred
          */
         public PointClickEvent(Component source, InvientCharts chart,
-                String category, Point point, MousePosition mousePosition) {
+                               String category, Point point, MousePosition mousePosition) {
             super(source);
             this.chart = chart;
             this.category = category;
@@ -596,7 +568,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns a category to which point is associated in case of
          *         categorized axis only.
          */
@@ -605,7 +576,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns the chart object associated with the point
          */
         public InvientCharts getChart() {
@@ -613,7 +583,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns the point on which the click event occurred
          */
         public Point getPoint() {
@@ -621,7 +590,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns the position of a mouse when the click event occurred
          */
         public MousePosition getMousePosition() {
@@ -633,9 +601,8 @@ public class InvientCharts extends AbstractComponent {
     /**
      * Interface for listening for a {@link PointClickEvent} triggered by
      * {@link InvientCharts}
-     * 
+     *
      * @author Invient
-     * 
      */
     public interface PointClickListener extends Serializable {
         public void pointClick(PointClickEvent pointClickEvent);
@@ -647,14 +614,13 @@ public class InvientCharts extends AbstractComponent {
      * Adds the point click listener. If the argument seriesTypes is not
      * specified then the listener will be added for all series type otherwise
      * it will be added for a specific series type
-     * 
-     * @param listener
-     *            the Listener to be added.
+     *
+     * @param listener the Listener to be added.
      */
     public void addListener(PointClickListener listener,
-            SeriesType... seriesTypes) {
+                            SeriesType... seriesTypes) {
         if (seriesTypes.length == 0) {
-            seriesTypes = new SeriesType[] { SeriesType.COMMONSERIES };
+            seriesTypes = new SeriesType[]{SeriesType.COMMONSERIES};
         }
 
         for (SeriesType seriesType : seriesTypes) {
@@ -674,16 +640,14 @@ public class InvientCharts extends AbstractComponent {
      * specified then the listener will be removed only for a series type
      * SeriesType.COMMONSERIES otherwise the listener will be removed for all
      * specified series types.
-     * 
-     * @param listener
-     *            the listener to be removed
-     * @param seriesTypes
-     *            one or more series types as defined by (@link SeriesType}
+     *
+     * @param listener    the listener to be removed
+     * @param seriesTypes one or more series types as defined by (@link SeriesType}
      */
     public void removeListener(PointClickListener listener,
-            SeriesType... seriesTypes) {
+                               SeriesType... seriesTypes) {
         if (seriesTypes.length == 0) {
-            seriesTypes = new SeriesType[] { SeriesType.COMMONSERIES };
+            seriesTypes = new SeriesType[]{SeriesType.COMMONSERIES};
         }
 
         for (SeriesType seriesType : seriesTypes) {
@@ -697,9 +661,9 @@ public class InvientCharts extends AbstractComponent {
     /**
      * Point remove event. This event is thrown, when any point of this chart is
      * removed from its series.
-     * 
+     * <p/>
      * This event is EXPERIMENTAL ONLY.
-     * 
+     *
      * @author Invient
      */
     public class PointRemoveEvent extends Component.Event {
@@ -710,19 +674,15 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * New instance of the point remove event.
-         * 
-         * @param source
-         *            the chart object itself
-         * @param chart
-         *            the chart object itself
-         * @param category
-         *            a category to which point is associated in case of
-         *            categorized axis,
-         * @param point
-         *            the point removed
+         *
+         * @param source   the chart object itself
+         * @param chart    the chart object itself
+         * @param category a category to which point is associated in case of
+         *                 categorized axis,
+         * @param point    the point removed
          */
         public PointRemoveEvent(Component source, InvientCharts chart,
-                String category, Point point) {
+                                String category, Point point) {
             super(source);
             this.chart = chart;
             this.category = category;
@@ -730,7 +690,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns a category to which point is associated in case of
          *         categorized axis only.
          */
@@ -739,7 +698,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns the chart object associated with the point
          */
         public InvientCharts getChart() {
@@ -747,7 +705,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns the point which has been removed
          */
         public Point getPoint() {
@@ -759,9 +716,8 @@ public class InvientCharts extends AbstractComponent {
     /**
      * Interface for listening for a {@link PointRemoveEvent} triggered by
      * {@link InvientCharts}
-     * 
+     *
      * @author Invient
-     * 
      */
     public interface PointRemoveListener extends Serializable {
         public void pointRemove(PointRemoveEvent pointRemoveEvent);
@@ -773,14 +729,13 @@ public class InvientCharts extends AbstractComponent {
      * Adds the point remove listener. If the argument seriesTypes is not
      * specified then the listener will be added for all series type otherwise
      * it will be added for a specific series type
-     * 
-     * @param listener
-     *            the Listener to be added.
+     *
+     * @param listener the Listener to be added.
      */
     public void addListener(PointRemoveListener listener,
-            SeriesType... seriesTypes) {
+                            SeriesType... seriesTypes) {
         if (seriesTypes.length == 0) {
-            seriesTypes = new SeriesType[] { SeriesType.COMMONSERIES };
+            seriesTypes = new SeriesType[]{SeriesType.COMMONSERIES};
         }
         for (SeriesType seriesType : seriesTypes) {
             if (pointRemoveListeners.containsKey(seriesType)) {
@@ -799,16 +754,14 @@ public class InvientCharts extends AbstractComponent {
      * specified then the listener will be removed only for a series type
      * SeriesType.COMMONSERIES otherwise the listener will be removed for all
      * specified series types.
-     * 
-     * @param listener
-     *            the listener to be removed
-     * @param seriesTypes
-     *            one or more series types as defined by (@link SeriesType}
+     *
+     * @param listener    the listener to be removed
+     * @param seriesTypes one or more series types as defined by (@link SeriesType}
      */
     public void removeListener(PointRemoveListener listener,
-            SeriesType... seriesTypes) {
+                               SeriesType... seriesTypes) {
         if (seriesTypes.length == 0) {
-            seriesTypes = new SeriesType[] { SeriesType.COMMONSERIES };
+            seriesTypes = new SeriesType[]{SeriesType.COMMONSERIES};
         }
         for (SeriesType seriesType : seriesTypes) {
             if (pointRemoveListeners.containsKey(seriesType)) {
@@ -823,7 +776,7 @@ public class InvientCharts extends AbstractComponent {
      * Point unselect event. This event is thrown, when any point of this chart
      * is unselected and the point marker is enabled. The point marker is
      * enabled by default.
-     * 
+     *
      * @author Invient
      */
     public class PointUnselectEvent extends Component.Event {
@@ -834,19 +787,15 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * New instance of the point unselect event.
-         * 
-         * @param source
-         *            the chart object itself
-         * @param chart
-         *            the chart object itself
-         * @param category
-         *            a category to which point is associated in case of
-         *            categorized axis,
-         * @param point
-         *            the point unselected as a result of this event
+         *
+         * @param source   the chart object itself
+         * @param chart    the chart object itself
+         * @param category a category to which point is associated in case of
+         *                 categorized axis,
+         * @param point    the point unselected as a result of this event
          */
         public PointUnselectEvent(Component source, InvientCharts chart,
-                String category, Point point) {
+                                  String category, Point point) {
             super(source);
             this.chart = chart;
             this.category = category;
@@ -854,7 +803,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns a category to which point is associated in case of
          *         categorized axis only.
          */
@@ -863,7 +811,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns the chart object associated with the point
          */
         public InvientCharts getChart() {
@@ -871,7 +818,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns the unselected point
          */
         public Point getPoint() {
@@ -883,9 +829,8 @@ public class InvientCharts extends AbstractComponent {
     /**
      * Interface for listening for a {@link PointUnselectEvent} triggered by
      * {@link InvientCharts}
-     * 
+     *
      * @author Invient
-     * 
      */
     public interface PointUnselectListener extends Serializable {
         public void pointUnSelect(PointUnselectEvent pointUnSelectEvent);
@@ -897,14 +842,13 @@ public class InvientCharts extends AbstractComponent {
      * Adds the point unselect listener. If the argument seriesTypes is not
      * specified then the listener will be added for all series type otherwise
      * it will be added for a specific series type
-     * 
-     * @param listener
-     *            the Listener to be added.
+     *
+     * @param listener the Listener to be added.
      */
     public void addListener(PointUnselectListener listener,
-            SeriesType... seriesTypes) {
+                            SeriesType... seriesTypes) {
         if (seriesTypes.length == 0) {
-            seriesTypes = new SeriesType[] { SeriesType.COMMONSERIES };
+            seriesTypes = new SeriesType[]{SeriesType.COMMONSERIES};
         }
         for (SeriesType seriesType : seriesTypes) {
             if (pointUnselectListeners.containsKey(seriesType)) {
@@ -923,16 +867,14 @@ public class InvientCharts extends AbstractComponent {
      * specified then the listener will be removed only for a series type
      * SeriesType.COMMONSERIES otherwise the listener will be removed for all
      * specified series types.
-     * 
-     * @param listener
-     *            the listener to be removed
-     * @param seriesTypes
-     *            one or more series types as defined by (@link SeriesType}
+     *
+     * @param listener    the listener to be removed
+     * @param seriesTypes one or more series types as defined by (@link SeriesType}
      */
     public void removeListener(PointUnselectListener listener,
-            SeriesType... seriesTypes) {
+                               SeriesType... seriesTypes) {
         if (seriesTypes.length == 0) {
-            seriesTypes = new SeriesType[] { SeriesType.COMMONSERIES };
+            seriesTypes = new SeriesType[]{SeriesType.COMMONSERIES};
         }
         for (SeriesType seriesType : seriesTypes) {
             if (pointUnselectListeners.containsKey(seriesType)) {
@@ -947,7 +889,7 @@ public class InvientCharts extends AbstractComponent {
      * Point select event. This event is thrown, when any point of this chart is
      * selected and the point marker is enabled. The point marker is enabled by
      * default.
-     * 
+     *
      * @author Invient
      */
     public class PointSelectEvent extends Component.Event {
@@ -958,19 +900,15 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * New instance of the point select event.
-         * 
-         * @param source
-         *            the chart object itself
-         * @param chart
-         *            the chart object itself
-         * @param category
-         *            a category to which point is associated in case of
-         *            categorized axis,
-         * @param point
-         *            the point selected as a result of this event
+         *
+         * @param source   the chart object itself
+         * @param chart    the chart object itself
+         * @param category a category to which point is associated in case of
+         *                 categorized axis,
+         * @param point    the point selected as a result of this event
          */
         public PointSelectEvent(Component source, InvientCharts chart,
-                String category, Point point) {
+                                String category, Point point) {
             super(source);
             this.chart = chart;
             this.category = category;
@@ -978,7 +916,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns a category to which point is associated in case of
          *         categorized axis only.
          */
@@ -987,7 +924,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns the chart object associated with the point
          */
         public InvientCharts getChart() {
@@ -995,7 +931,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns the selected point
          */
         public Point getPoint() {
@@ -1007,9 +942,8 @@ public class InvientCharts extends AbstractComponent {
     /**
      * Interface for listening for a {@link PointSelectListener} triggered by
      * {@link InvientCharts}
-     * 
+     *
      * @author Invient
-     * 
      */
     public interface PointSelectListener extends Serializable {
         public void pointSelected(PointSelectEvent pointSelectEvent);
@@ -1021,14 +955,13 @@ public class InvientCharts extends AbstractComponent {
      * Adds the point select listener. If the argument seriesTypes is not
      * specified then the listener will be added for all series type otherwise
      * it will be added for a specific series type
-     * 
-     * @param listener
-     *            the Listener to be added.
+     *
+     * @param listener the Listener to be added.
      */
     public void addListener(PointSelectListener listener,
-            SeriesType... seriesTypes) {
+                            SeriesType... seriesTypes) {
         if (seriesTypes.length == 0) {
-            seriesTypes = new SeriesType[] { SeriesType.COMMONSERIES };
+            seriesTypes = new SeriesType[]{SeriesType.COMMONSERIES};
         }
 
         for (SeriesType seriesType : seriesTypes) {
@@ -1048,16 +981,14 @@ public class InvientCharts extends AbstractComponent {
      * specified then the listener will be removed only for a series type
      * SeriesType.COMMONSERIES otherwise the listener will be removed for all
      * specified series types.
-     * 
-     * @param listener
-     *            the listener to be removed
-     * @param seriesTypes
-     *            one or more series types as defined by (@link SeriesType}
+     *
+     * @param listener    the listener to be removed
+     * @param seriesTypes one or more series types as defined by (@link SeriesType}
      */
     public void removeListener(PointSelectListener listener,
-            SeriesType... seriesTypes) {
+                               SeriesType... seriesTypes) {
         if (seriesTypes.length == 0) {
-            seriesTypes = new SeriesType[] { SeriesType.COMMONSERIES };
+            seriesTypes = new SeriesType[]{SeriesType.COMMONSERIES};
         }
         for (SeriesType seriesType : seriesTypes) {
             if (pointSelectListeners.containsKey(seriesType)) {
@@ -1075,14 +1006,14 @@ public class InvientCharts extends AbstractComponent {
     static {
         try {
             POINT_CLICK_METHOD = PointClickListener.class.getDeclaredMethod(
-                    "pointClick", new Class[] { PointClickEvent.class });
+                    "pointClick", new Class[]{PointClickEvent.class});
             POINT_REMOVE_METHOD = PointRemoveListener.class.getDeclaredMethod(
-                    "pointRemove", new Class[] { PointRemoveEvent.class });
+                    "pointRemove", new Class[]{PointRemoveEvent.class});
             POINT_SELECT_METHOD = PointSelectListener.class.getDeclaredMethod(
-                    "pointSelected", new Class[] { PointSelectEvent.class });
+                    "pointSelected", new Class[]{PointSelectEvent.class});
             POINT_UNSELECT_METHOD = PointUnselectListener.class
                     .getDeclaredMethod("pointUnSelect",
-                            new Class[] { PointUnselectEvent.class });
+                            new Class[]{PointUnselectEvent.class});
         } catch (final java.lang.NoSuchMethodException e) {
             // This should not happen
             throw new java.lang.RuntimeException(
@@ -1095,7 +1026,7 @@ public class InvientCharts extends AbstractComponent {
     /**
      * Series click event. This event is thrown, when any series of this chart
      * is clicked.
-     * 
+     *
      * @author Invient
      */
     public class SeriesClickEvent extends Component.Event {
@@ -1106,20 +1037,15 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * New instance of the series click event.
-         * 
-         * @param source
-         *            the chart object itself
-         * @param chart
-         *            the chart object itself
-         * @param series
-         *            the series on which click event occurred
-         * @param point
-         *            the closest point of a series
-         * @param mousePosition
-         *            the position of a mouse when the click event occurred
+         *
+         * @param source        the chart object itself
+         * @param chart         the chart object itself
+         * @param series        the series on which click event occurred
+         * @param point         the closest point of a series
+         * @param mousePosition the position of a mouse when the click event occurred
          */
         public SeriesClickEvent(Component source, InvientCharts chart,
-                Series series, Point point, MousePosition mousePosition) {
+                                Series series, Point point, MousePosition mousePosition) {
             super(source);
             this.chart = chart;
             this.series = series;
@@ -1128,7 +1054,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns the chart object associated with the point
          */
         public InvientCharts getChart() {
@@ -1136,7 +1061,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns the series object on which the click event occurred
          */
         public Series getSeries() {
@@ -1144,7 +1068,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns the point of a series closest to the position where
          *         mouse click event occurred.
          */
@@ -1153,7 +1076,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns the position of a mouse when the click event occurred
          */
         public MousePosition getMousePosition() {
@@ -1165,9 +1087,8 @@ public class InvientCharts extends AbstractComponent {
     /**
      * Interface for listening for a {@link SeriesClickListerner} triggered by
      * {@link InvientCharts}
-     * 
+     *
      * @author Invient
-     * 
      */
     public interface SeriesClickListerner extends Serializable {
         public void seriesClick(SeriesClickEvent seriesClickEvent);
@@ -1179,14 +1100,13 @@ public class InvientCharts extends AbstractComponent {
      * Adds the series click listener. If the argument seriesTypes is not
      * specified then the listener will be added for all series type otherwise
      * it will be added for a specific series type
-     * 
-     * @param listener
-     *            the Listener to be added.
+     *
+     * @param listener the Listener to be added.
      */
     public void addListener(SeriesClickListerner listener,
-            SeriesType... seriesTypes) {
+                            SeriesType... seriesTypes) {
         if (seriesTypes.length == 0) {
-            seriesTypes = new SeriesType[] { SeriesType.COMMONSERIES };
+            seriesTypes = new SeriesType[]{SeriesType.COMMONSERIES};
         }
 
         for (SeriesType seriesType : seriesTypes) {
@@ -1206,16 +1126,14 @@ public class InvientCharts extends AbstractComponent {
      * specified then the listener will be removed only for a series type
      * SeriesType.COMMONSERIES otherwise the listener will be removed for all
      * specified series types.
-     * 
-     * @param listener
-     *            the listener to be removed
-     * @param seriesTypes
-     *            one or more series types as defined by (@link SeriesType}
+     *
+     * @param listener    the listener to be removed
+     * @param seriesTypes one or more series types as defined by (@link SeriesType}
      */
     public void removeListener(SeriesClickListerner listener,
-            SeriesType... seriesTypes) {
+                               SeriesType... seriesTypes) {
         if (seriesTypes.length == 0) {
-            seriesTypes = new SeriesType[] { SeriesType.COMMONSERIES };
+            seriesTypes = new SeriesType[]{SeriesType.COMMONSERIES};
         }
 
         for (SeriesType seriesType : seriesTypes) {
@@ -1229,7 +1147,7 @@ public class InvientCharts extends AbstractComponent {
     /**
      * Series Hide event. This event is thrown, when any series of this chart is
      * hidden.
-     * 
+     *
      * @author Invient
      */
     public class SeriesHideEvent extends Component.Event {
@@ -1237,23 +1155,18 @@ public class InvientCharts extends AbstractComponent {
         private InvientCharts chart;
 
         /**
-         * 
-         * @param source
-         *            the chart object itself
-         * @param chart
-         *            the chart object itself
-         * @param series
-         *            the series which got hidden
+         * @param source the chart object itself
+         * @param chart  the chart object itself
+         * @param series the series which got hidden
          */
         public SeriesHideEvent(Component source, InvientCharts chart,
-                Series series) {
+                               Series series) {
             super(source);
             this.chart = chart;
             this.series = series;
         }
 
         /**
-         * 
          * @return Returns the chart object associated with the point
          */
         public InvientCharts getChart() {
@@ -1261,7 +1174,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns the series which got hidden
          */
         public Series getSeries() {
@@ -1272,9 +1184,8 @@ public class InvientCharts extends AbstractComponent {
     /**
      * Interface for listening for a {@link SeriesHideEvent} triggered by
      * {@link InvientCharts}
-     * 
+     *
      * @author Invient
-     * 
      */
     public interface SeriesHideListerner extends Serializable {
         public void seriesHide(SeriesHideEvent seriesHideEvent);
@@ -1286,14 +1197,13 @@ public class InvientCharts extends AbstractComponent {
      * Adds the series hide listener. If the argument seriesTypes is not
      * specified then the listener will be added for all series type otherwise
      * it will be added for a specific series type
-     * 
-     * @param listener
-     *            the Listener to be added.
+     *
+     * @param listener the Listener to be added.
      */
     public void addListener(SeriesHideListerner listener,
-            SeriesType... seriesTypes) {
+                            SeriesType... seriesTypes) {
         if (seriesTypes.length == 0) {
-            seriesTypes = new SeriesType[] { SeriesType.COMMONSERIES };
+            seriesTypes = new SeriesType[]{SeriesType.COMMONSERIES};
         }
 
         for (SeriesType seriesType : seriesTypes) {
@@ -1313,16 +1223,14 @@ public class InvientCharts extends AbstractComponent {
      * specified then the listener will be removed only for a series type
      * SeriesType.COMMONSERIES otherwise the listener will be removed for all
      * specified series types.
-     * 
-     * @param listener
-     *            the listener to be removed
-     * @param seriesTypes
-     *            one or more series types as defined by (@link SeriesType}
+     *
+     * @param listener    the listener to be removed
+     * @param seriesTypes one or more series types as defined by (@link SeriesType}
      */
     public void removeListener(SeriesHideListerner listener,
-            SeriesType... seriesTypes) {
+                               SeriesType... seriesTypes) {
         if (seriesTypes.length == 0) {
-            seriesTypes = new SeriesType[] { SeriesType.COMMONSERIES };
+            seriesTypes = new SeriesType[]{SeriesType.COMMONSERIES};
         }
 
         for (SeriesType seriesType : seriesTypes) {
@@ -1336,7 +1244,7 @@ public class InvientCharts extends AbstractComponent {
     /**
      * Series show event. This event is thrown, when any series of this chart is
      * displayed after a chart is created.
-     * 
+     *
      * @author Invient
      */
     public class SeriesShowEvent extends Component.Event {
@@ -1345,23 +1253,19 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * New instance of the series show event.
-         * 
-         * @param source
-         *            the chart object itself
-         * @param chart
-         *            the chart object itself
-         * @param series
-         *            the series which got displayed
+         *
+         * @param source the chart object itself
+         * @param chart  the chart object itself
+         * @param series the series which got displayed
          */
         public SeriesShowEvent(Component source, InvientCharts chart,
-                Series series) {
+                               Series series) {
             super(source);
             this.chart = chart;
             this.series = series;
         }
 
         /**
-         * 
          * @return Returns the chart object associated with the series
          */
         public InvientCharts getChart() {
@@ -1369,7 +1273,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns the series which got displayed
          */
         public Series getSeries() {
@@ -1380,9 +1283,8 @@ public class InvientCharts extends AbstractComponent {
     /**
      * Interface for listening for a {@link SeriesShowEvent} triggered by
      * {@link InvientCharts}
-     * 
+     *
      * @author Invient
-     * 
      */
     public interface SeriesShowListerner extends Serializable {
         public void seriesShow(SeriesShowEvent seriesShowEvent);
@@ -1394,14 +1296,13 @@ public class InvientCharts extends AbstractComponent {
      * Adds the series show listener. If the argument seriesTypes is not
      * specified then the listener will be added for all series type otherwise
      * it will be added for a specific series type
-     * 
-     * @param listener
-     *            the Listener to be added.
+     *
+     * @param listener the Listener to be added.
      */
     public void addListener(SeriesShowListerner listener,
-            SeriesType... seriesTypes) {
+                            SeriesType... seriesTypes) {
         if (seriesTypes.length == 0) {
-            seriesTypes = new SeriesType[] { SeriesType.COMMONSERIES };
+            seriesTypes = new SeriesType[]{SeriesType.COMMONSERIES};
         }
 
         for (SeriesType seriesType : seriesTypes) {
@@ -1421,16 +1322,14 @@ public class InvientCharts extends AbstractComponent {
      * specified then the listener will be removed only for a series type
      * SeriesType.COMMONSERIES otherwise the listener will be removed for all
      * specified series types.
-     * 
-     * @param listener
-     *            the listener to be removed
-     * @param seriesTypes
-     *            one or more series types as defined by (@link SeriesType}
+     *
+     * @param listener    the listener to be removed
+     * @param seriesTypes one or more series types as defined by (@link SeriesType}
      */
     public void removeListener(SeriesShowListerner listener,
-            SeriesType... seriesTypes) {
+                               SeriesType... seriesTypes) {
         if (seriesTypes.length == 0) {
-            seriesTypes = new SeriesType[] { SeriesType.COMMONSERIES };
+            seriesTypes = new SeriesType[]{SeriesType.COMMONSERIES};
         }
 
         for (SeriesType seriesType : seriesTypes) {
@@ -1441,15 +1340,10 @@ public class InvientCharts extends AbstractComponent {
         removeListener(SeriesShowEvent.class, listener, SERIES_SHOW_METHOD);
     }
 
-    // LEGENDITEMCLICK
-    // This event occurs when a series is clicked in the legend.
-    // This event is not applicable for PieChart instead use
-    // LegendItemClickEvent/LegendItemClickListener
     /**
      * Series legend item click event. This event is thrown, when legend item is
-     * clicked. This event is not applicable for PieChart instead use
-     * {@link LegendItemClickEvent}
-     * 
+     * clicked. This event is not applicable for PieChart instead use {@link PieChartLegendItemClickEvent}.
+     *
      * @author Invient
      */
     public class SeriesLegendItemClickEvent extends Component.Event {
@@ -1458,23 +1352,19 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * New instance of the point click event.
-         * 
-         * @param source
-         *            the chart object itself
-         * @param chart
-         *            the chart object itself
-         * @param series
-         *            the series associated with the legend item
+         *
+         * @param source the chart object itself
+         * @param chart  the chart object itself
+         * @param series the series associated with the legend item
          */
         public SeriesLegendItemClickEvent(Component source,
-                InvientCharts chart, Series series) {
+                                          InvientCharts chart, Series series) {
             super(source);
             this.chart = chart;
             this.series = series;
         }
 
         /**
-         * 
          * @return Returns the chart object associated with the series
          */
         public InvientCharts getChart() {
@@ -1482,7 +1372,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns the series associated with the legend item
          */
         public Series getSeries() {
@@ -1493,9 +1382,8 @@ public class InvientCharts extends AbstractComponent {
     /**
      * Interface for listening for a {@link SeriesLegendItemClickEvent}
      * triggered by {@link InvientCharts}
-     * 
+     *
      * @author Invient
-     * 
      */
     public interface SeriesLegendItemClickListerner extends Serializable {
         public void seriesLegendItemClick(
@@ -1508,14 +1396,13 @@ public class InvientCharts extends AbstractComponent {
      * Adds the series legend item click listener. If the argument seriesTypes
      * is not specified then the listener will be added for all series type
      * otherwise it will be added for a specific series type
-     * 
-     * @param listener
-     *            the Listener to be added.
+     *
+     * @param listener the Listener to be added.
      */
     public void addListener(SeriesLegendItemClickListerner listener,
-            SeriesType... seriesTypes) {
+                            SeriesType... seriesTypes) {
         if (seriesTypes.length == 0) {
-            seriesTypes = new SeriesType[] { SeriesType.COMMONSERIES };
+            seriesTypes = new SeriesType[]{SeriesType.COMMONSERIES};
         }
 
         for (SeriesType seriesType : seriesTypes) {
@@ -1536,16 +1423,14 @@ public class InvientCharts extends AbstractComponent {
      * seriesTypes is not specified then the listener will be removed only for a
      * series type SeriesType.COMMONSERIES otherwise the listener will be
      * removed for all specified series types.
-     * 
-     * @param listener
-     *            the listener to be removed
-     * @param seriesTypes
-     *            one or more series types as defined by (@link SeriesType}
+     *
+     * @param listener    the listener to be removed
+     * @param seriesTypes one or more series types as defined by (@link SeriesType}
      */
     public void removeListener(SeriesLegendItemClickListerner listener,
-            SeriesType... seriesTypes) {
+                               SeriesType... seriesTypes) {
         if (seriesTypes.length == 0) {
-            seriesTypes = new SeriesType[] { SeriesType.COMMONSERIES };
+            seriesTypes = new SeriesType[]{SeriesType.COMMONSERIES};
         }
         for (SeriesType seriesType : seriesTypes) {
             if (seriesLegendItemClickListeners.containsKey(seriesType)) {
@@ -1565,17 +1450,17 @@ public class InvientCharts extends AbstractComponent {
     static {
         try {
             SERIES_CLICK_METHOD = SeriesClickListerner.class.getDeclaredMethod(
-                    "seriesClick", new Class[] { SeriesClickEvent.class });
+                    "seriesClick", new Class[]{SeriesClickEvent.class});
             // SERIES_CHECKBOX_CLICK_METHOD = SeriesCheckboxClickListerner.class
             // .getDeclaredMethod("seriesCheckboxClick",
             // new Class[] { SeriesCheckboxClickEvent.class });
             SERIES_HIDE_METHOD = SeriesHideListerner.class.getDeclaredMethod(
-                    "seriesHide", new Class[] { SeriesHideEvent.class });
+                    "seriesHide", new Class[]{SeriesHideEvent.class});
             SERIES_SHOW_METHOD = SeriesShowListerner.class.getDeclaredMethod(
-                    "seriesShow", new Class[] { SeriesShowEvent.class });
+                    "seriesShow", new Class[]{SeriesShowEvent.class});
             SERIES_LEGENDITEM_CLICK_METHOD = SeriesLegendItemClickListerner.class
                     .getDeclaredMethod("seriesLegendItemClick",
-                            new Class[] { SeriesLegendItemClickEvent.class });
+                            new Class[]{SeriesLegendItemClickEvent.class});
         } catch (final java.lang.NoSuchMethodException e) {
             // This should never happen
             throw new java.lang.RuntimeException(
@@ -1590,7 +1475,7 @@ public class InvientCharts extends AbstractComponent {
     /**
      * PieChart legend item click event. This event is thrown, when the legend
      * item belonging to the pie point (slice) is clicked.
-     * 
+     *
      * @author Invient
      */
     public class PieChartLegendItemClickEvent extends Component.Event {
@@ -1600,23 +1485,19 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * New instance of the piechart legend item click event
-         * 
-         * @param source
-         *            the chart object itself
-         * @param chart
-         *            the chart object itself
-         * @param point
-         *            the pie point (slice) associated with the legend item
+         *
+         * @param source the chart object itself
+         * @param chart  the chart object itself
+         * @param point  the pie point (slice) associated with the legend item
          */
         public PieChartLegendItemClickEvent(Component source,
-                InvientCharts chart, Point point) {
+                                            InvientCharts chart, Point point) {
             super(source);
             this.chart = chart;
             this.point = point;
         }
 
         /**
-         * 
          * @return Returns the chart object associated with the point
          */
         public InvientCharts getChart() {
@@ -1624,7 +1505,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns the pie point (slice) associated with the legend item
          */
         public Point getPoint() {
@@ -1635,9 +1515,8 @@ public class InvientCharts extends AbstractComponent {
     /**
      * Interface for listening for a {@link PieChartLegendItemClickEvent}
      * triggered by {@link InvientCharts}
-     * 
+     *
      * @author Invient
-     * 
      */
     public interface PieChartLegendItemClickListener extends Serializable {
         public void legendItemClick(
@@ -1648,9 +1527,8 @@ public class InvientCharts extends AbstractComponent {
 
     /**
      * Adds the piechart legend item click listener.
-     * 
-     * @param listener
-     *            the Listener to be added.
+     *
+     * @param listener the Listener to be added.
      */
     public void addListener(PieChartLegendItemClickListener listener) {
         pieChartLegendItemClickListener.add(listener);
@@ -1660,9 +1538,8 @@ public class InvientCharts extends AbstractComponent {
 
     /**
      * Removes the piechart legend item click listener.
-     * 
-     * @param listener
-     *            the listener to be removed
+     *
+     * @param listener the listener to be removed
      */
     public void removeListener(PieChartLegendItemClickListener listener) {
         pieChartLegendItemClickListener.remove(listener);
@@ -1676,7 +1553,7 @@ public class InvientCharts extends AbstractComponent {
         try {
             LEGENDITEM_CLICK_METHOD = PieChartLegendItemClickListener.class
                     .getDeclaredMethod("legendItemClick",
-                            new Class[] { PieChartLegendItemClickEvent.class });
+                            new Class[]{PieChartLegendItemClickEvent.class});
         } catch (final java.lang.NoSuchMethodException e) {
             // This should never happen
             throw new java.lang.RuntimeException(
@@ -1687,7 +1564,7 @@ public class InvientCharts extends AbstractComponent {
     /***************************** Chart Events *****************************/
     /**
      * Chart Click event. This event is thrown, when this chart is clicked.
-     * 
+     *
      * @author Invient
      */
     public class ChartClickEvent extends Component.Event {
@@ -1697,19 +1574,15 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * New instance of the chart click event.
-         * 
-         * @param source
-         *            the chart object itself
-         * @param chart
-         *            the chart object itself
-         * @param point
-         *            the position where the click event occurred in axes units
-         * @param mousePosition
-         *            the coordinate of mouse where the click event occurred in
-         *            pixels
+         *
+         * @param source        the chart object itself
+         * @param chart         the chart object itself
+         * @param point         the position where the click event occurred in axes units
+         * @param mousePosition the coordinate of mouse where the click event occurred in
+         *                      pixels
          */
         public ChartClickEvent(Component source, InvientCharts chart,
-                Point point, MousePosition mousePosition) {
+                               Point point, MousePosition mousePosition) {
             super(source);
             this.chart = chart;
             this.point = point;
@@ -1718,7 +1591,7 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Returns the chart object on which the click event occurred
-         * 
+         *
          * @return Returns the chart object on which the click event occurred
          * @see InvientCharts
          */
@@ -1729,7 +1602,7 @@ public class InvientCharts extends AbstractComponent {
         /**
          * Returns the point representing the position where the click event
          * occurred in axes units
-         * 
+         *
          * @return Returns the point representing the position where the click
          *         event occurred in axes units
          * @see Point
@@ -1740,7 +1613,7 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Returns the position of a mouse when the click event occurred
-         * 
+         *
          * @return Returns the position of a mouse when the click event occurred
          * @see MousePosition
          */
@@ -1759,9 +1632,8 @@ public class InvientCharts extends AbstractComponent {
     /**
      * Interface for listening for a {@link ChartClickEvent} triggered by
      * {@link InvientCharts}
-     * 
+     *
      * @author Invient
-     * 
      */
     public interface ChartClickListener extends Serializable {
         public void chartClick(ChartClickEvent chartClickEvent);
@@ -1771,9 +1643,8 @@ public class InvientCharts extends AbstractComponent {
 
     /**
      * Adds the chart click listener.
-     * 
-     * @param listener
-     *            the Listener to be added.
+     *
+     * @param listener the Listener to be added.
      */
     public void addListener(ChartClickListener listener) {
         chartClickListener.add(listener);
@@ -1782,9 +1653,8 @@ public class InvientCharts extends AbstractComponent {
 
     /**
      * Removes the chart click listener.
-     * 
-     * @param listener
-     *            the listener to be removed
+     *
+     * @param listener the listener to be removed
      */
     public void removeListener(ChartClickListener listener) {
         chartClickListener.remove(listener);
@@ -1794,7 +1664,7 @@ public class InvientCharts extends AbstractComponent {
     /**
      * Add series event. This event is thrown, when a series is added to the
      * chart.
-     * 
+     *
      * @author Invient
      */
     public class ChartAddSeriesEvent extends Component.Event {
@@ -1802,7 +1672,7 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * New instance of the chart add series event.
-         * 
+         *
          * @param source
          * @param chart
          */
@@ -1813,7 +1683,7 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Returns the chart object to which a series is added
-         * 
+         *
          * @return Returns the chart object to which a series has been added.
          * @see InvientCharts
          */
@@ -1825,9 +1695,8 @@ public class InvientCharts extends AbstractComponent {
     /**
      * Interface for listening for a {@link ChartAddSeriesEvent} triggered by
      * {@link InvientCharts}
-     * 
+     *
      * @author Invient
-     * 
      */
     public interface ChartAddSeriesListener extends Serializable {
         public void chartAddSeries(ChartAddSeriesEvent chartAddSeriesEvent);
@@ -1837,9 +1706,8 @@ public class InvientCharts extends AbstractComponent {
 
     /**
      * Adds the series add listener.
-     * 
-     * @param listener
-     *            the Listener to be added.
+     *
+     * @param listener the Listener to be added.
      */
     public void addListener(ChartAddSeriesListener listener) {
         chartAddSeriesListener.add(listener);
@@ -1849,9 +1717,8 @@ public class InvientCharts extends AbstractComponent {
 
     /**
      * Removes the series add listener.
-     * 
-     * @param listener
-     *            the listener to be removed
+     *
+     * @param listener the listener to be removed
      */
     public void removeListener(ChartAddSeriesListener listener) {
         chartAddSeriesListener.remove(listener);
@@ -1861,9 +1728,8 @@ public class InvientCharts extends AbstractComponent {
 
     /**
      * Defines information on the selected area.
-     * 
+     *
      * @author Invient
-     * 
      */
     public final class ChartArea implements Serializable {
         private double xAxisMin;
@@ -1872,7 +1738,7 @@ public class InvientCharts extends AbstractComponent {
         private double yAxisMax;
 
         public ChartArea(double xAxisMin, double xAxisMax, double yAxisMin,
-                double yAxisMax) {
+                         double yAxisMax) {
             this.xAxisMin = xAxisMin;
             this.xAxisMax = xAxisMax;
             this.yAxisMin = yAxisMin;
@@ -1907,7 +1773,7 @@ public class InvientCharts extends AbstractComponent {
     /**
      * Chart zoom event. This event is thrown, when an area of the chart has
      * been selected.
-     * 
+     *
      * @author Invient
      */
     public class ChartZoomEvent extends Component.Event {
@@ -1916,17 +1782,14 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * New instance of the chart zoom event.
-         * 
-         * @param source
-         *            the chart object itself
-         * @param chart
-         *            the chart object itself
-         * @param chartArea
-         *            the chartArea object containing dimensions of zoomed area
-         *            of the chart
+         *
+         * @param source    the chart object itself
+         * @param chart     the chart object itself
+         * @param chartArea the chartArea object containing dimensions of zoomed area
+         *                  of the chart
          */
         public ChartZoomEvent(Component source, InvientCharts chart,
-                ChartArea chartArea) {
+                              ChartArea chartArea) {
             super(source);
             this.chart = chart;
             this.chartArea = chartArea;
@@ -1934,7 +1797,7 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Returns the chart object for which the zoom event has occurred
-         * 
+         *
          * @return Returns the chart object for which the zoom event has
          *         occurred
          */
@@ -1945,7 +1808,7 @@ public class InvientCharts extends AbstractComponent {
         /**
          * Returns the chartArea object containing dimensions of zoomed area of
          * the chart
-         * 
+         *
          * @return Returns the chartArea object containing dimensions of zoomed
          *         area of the chart
          */
@@ -1957,9 +1820,8 @@ public class InvientCharts extends AbstractComponent {
     /**
      * Interface for listening for a {@link ChartZoomEvent} triggered by
      * {@link InvientCharts}
-     * 
+     *
      * @author Invient
-     * 
      */
     public interface ChartZoomListener extends Serializable {
         public void chartZoom(ChartZoomEvent chartZoomEvent);
@@ -1969,9 +1831,8 @@ public class InvientCharts extends AbstractComponent {
 
     /**
      * Adds the chart zoom listener.
-     * 
-     * @param listener
-     *            the Listener to be added.
+     *
+     * @param listener the Listener to be added.
      */
     public void addListener(ChartZoomListener listener) {
         chartZoomListener.add(listener);
@@ -1980,9 +1841,8 @@ public class InvientCharts extends AbstractComponent {
 
     /**
      * Removes the chart zoom listener.
-     * 
-     * @param listener
-     *            the listener to be removed
+     *
+     * @param listener the listener to be removed
      */
     public void removeListener(ChartZoomListener listener) {
         chartZoomListener.remove(listener);
@@ -1992,7 +1852,7 @@ public class InvientCharts extends AbstractComponent {
     /**
      * Chart reset zoom event. This event is thrown, when a chart is reset by
      * setting its zoom level to normal.
-     * 
+     *
      * @author Invient
      */
     public class ChartResetZoomEvent extends Component.Event {
@@ -2000,11 +1860,9 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * New instance of the chart reset zoom event
-         * 
-         * @param source
-         *            the chart object itself
-         * @param chart
-         *            the chart object itself
+         *
+         * @param source the chart object itself
+         * @param chart  the chart object itself
          */
         public ChartResetZoomEvent(Component source, InvientCharts chart) {
             super(source);
@@ -2013,7 +1871,7 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Returns the chart object for which zoom has been reset to normal
-         * 
+         *
          * @return Returns the chart object for which zoom has been reset to
          *         normal
          */
@@ -2025,9 +1883,8 @@ public class InvientCharts extends AbstractComponent {
     /**
      * Interface for listening for a {@link ChartResetZoomEvent} triggered by
      * {@link InvientCharts}
-     * 
+     *
      * @author Invient
-     * 
      */
     public interface ChartResetZoomListener extends Serializable {
         public void chartResetZoom(ChartResetZoomEvent chartResetZoomEvent);
@@ -2037,9 +1894,8 @@ public class InvientCharts extends AbstractComponent {
 
     /**
      * Adds the chart reset zoom listener.
-     * 
-     * @param listener
-     *            the Listener to be added.
+     *
+     * @param listener the Listener to be added.
      */
     public void addListener(ChartResetZoomListener listener) {
         chartResetZoomListener.add(listener);
@@ -2049,9 +1905,8 @@ public class InvientCharts extends AbstractComponent {
 
     /**
      * Removes the chart reset zoom listener.
-     * 
-     * @param listener
-     *            the listener to be removed
+     *
+     * @param listener the listener to be removed
      */
     public void removeListener(ChartResetZoomListener listener) {
         chartResetZoomListener.remove(listener);
@@ -2062,10 +1917,10 @@ public class InvientCharts extends AbstractComponent {
     /**
      * Chart SVG event. This event is thrown, when an SVG string representing
      * the chart is received or ready.
-     * 
+     * <p/>
      * Note that this event is thrown only once after a
      * {@link ChartSVGAvailableListener} is registered.
-     * 
+     *
      * @author Invient
      */
     public class ChartSVGAvailableEvent extends Component.Event {
@@ -2074,16 +1929,13 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * New instance of the chart svg available event.
-         * 
-         * @param source
-         *            the chart object itself
-         * @param chart
-         *            the chart object itself
-         * @param svg
-         *            an svg string representing the chart object
+         *
+         * @param source the chart object itself
+         * @param chart  the chart object itself
+         * @param svg    an svg string representing the chart object
          */
         public ChartSVGAvailableEvent(Component source, InvientCharts chart,
-                String svg) {
+                                      String svg) {
             super(source);
             this.chart = chart;
             this.svg = svg;
@@ -2092,7 +1944,7 @@ public class InvientCharts extends AbstractComponent {
         /**
          * Returns the chart object for which an svg string representation is
          * available
-         * 
+         *
          * @return Returns the chart object for which an svg string
          *         representation is available
          */
@@ -2101,7 +1953,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns an SVG string representing the chart
          */
         public String getSVG() {
@@ -2113,17 +1964,16 @@ public class InvientCharts extends AbstractComponent {
     /**
      * Interface for listening for a {@link ChartSVGAvailableEvent} triggered by
      * {@link InvientCharts}.
-     * 
+     * <p/>
      * The chart can have only one listener of this type registered at any time.
      * If a listener has already been registered and an attempt is made to
      * register another listener then the previously registered listener will be
      * unregistered and the new listener will be registered.
-     * 
+     * <p/>
      * A listener will be called only once after it has been registered though
      * it will be called again if the same listener is registered again.
-     * 
+     *
      * @author Invient
-     * 
      */
     public interface ChartSVGAvailableListener extends Serializable {
         public void svgAvailable(ChartSVGAvailableEvent chartSVGAvailableEvent);
@@ -2135,9 +1985,8 @@ public class InvientCharts extends AbstractComponent {
      * Adds the chart svg available listener for this chart. If the chart
      * already has a listener of this type then the existing listener will be
      * removed and the argument listener will be registered.
-     * 
-     * @param listener
-     *            the Listener to be added or registered.
+     *
+     * @param listener the Listener to be added or registered.
      */
     public void addListener(ChartSVGAvailableListener listener) {
         if (svgAvailableListener != null && svgAvailableListener != listener) {
@@ -2153,9 +2002,8 @@ public class InvientCharts extends AbstractComponent {
 
     /**
      * Removes the chart svg available listener for this chart.
-     * 
-     * @param listener
-     *            the listener to be removed or unregistered.
+     *
+     * @param listener the listener to be removed or unregistered.
      */
     public void removeListener(ChartSVGAvailableListener listener) {
         if (svgAvailableListener == listener) {
@@ -2175,18 +2023,18 @@ public class InvientCharts extends AbstractComponent {
     static {
         try {
             CHART_CLICK_METHOD = ChartClickListener.class.getDeclaredMethod(
-                    "chartClick", new Class[] { ChartClickEvent.class });
+                    "chartClick", new Class[]{ChartClickEvent.class});
             CHART_ADD_SERIES_METHOD = ChartAddSeriesListener.class
                     .getDeclaredMethod("chartAddSeries",
-                            new Class[] { ChartAddSeriesEvent.class });
+                            new Class[]{ChartAddSeriesEvent.class});
             CHART_ZOOM_METHOD = ChartZoomListener.class.getDeclaredMethod(
-                    "chartZoom", new Class[] { ChartZoomEvent.class });
+                    "chartZoom", new Class[]{ChartZoomEvent.class});
             CHART_RESET_ZOOM_METHOD = ChartResetZoomListener.class
                     .getDeclaredMethod("chartResetZoom",
-                            new Class[] { ChartResetZoomEvent.class });
+                            new Class[]{ChartResetZoomEvent.class});
             CHART_SVG_AVAILABLE_METHOD = ChartSVGAvailableListener.class
                     .getDeclaredMethod("svgAvailable",
-                            new Class[] { ChartSVGAvailableEvent.class });
+                            new Class[]{ChartSVGAvailableEvent.class});
         } catch (final java.lang.NoSuchMethodException e) {
             // This should never happen unless there is a typo!
             throw new java.lang.RuntimeException(
@@ -2205,9 +2053,8 @@ public class InvientCharts extends AbstractComponent {
      * The data of a chart is defined in terms of {@link Series}. This method
      * removes all previously set series of this chart and adds the argument
      * series. If the argument series is null then no actions are taken.
-     * 
-     * @param series
-     *            A collection of series to set as chart's data
+     *
+     * @param series A collection of series to set as chart's data
      */
     public void setSeries(LinkedHashSet<Series> series) {
         if (series != null) {
@@ -2222,9 +2069,8 @@ public class InvientCharts extends AbstractComponent {
 
     /**
      * Returns a series whose name matches the argument name.
-     * 
-     * @param name
-     *            the name of the series
+     *
+     * @param name the name of the series
      * @return Returns a series with the given name
      */
     public Series getSeries(String name) {
@@ -2238,6 +2084,7 @@ public class InvientCharts extends AbstractComponent {
 
     /**
      * Returns all series associated with this chart.
+     *
      * @return returns all series associated with this chart.
      */
     public LinkedHashSet<Series> getAllSeries() {
@@ -2246,9 +2093,8 @@ public class InvientCharts extends AbstractComponent {
 
     /**
      * Adds the argument series to this chart.
-     * 
-     * @param seriesData
-     *            the series to be added
+     *
+     * @param seriesData the series to be added
      */
     public void addSeries(Series seriesData) {
         if (this.chartSeries.add(seriesData)) {
@@ -2263,11 +2109,11 @@ public class InvientCharts extends AbstractComponent {
     // Before sending data to the client, this method sets 
     // axis in all series associated with the chart
     private void setAxisInAllSeriesIfNotSetAlready() {
-        for(Series series : this.chartSeries) {
+        for (Series series : this.chartSeries) {
             setAxisInSeriesIfNotSetAlready(series);
         }
     }
-    
+
     private void setAxisInSeriesIfNotSetAlready(Series series) {
         if (this.getConfig() != null) {
             if (series.getXAxis() == null
@@ -2285,13 +2131,12 @@ public class InvientCharts extends AbstractComponent {
 
     /**
      * Removes a series whose name matches the argument name.
-     * 
-     * @param name
-     *            the name of the series
+     *
+     * @param name the name of the series
      */
     public void removeSeries(String name) {
         for (Iterator<Series> seriesItr = this.chartSeries.iterator(); seriesItr
-                .hasNext();) {
+                .hasNext(); ) {
             Series series = seriesItr.next();
             if (series.getName().equals(name)) {
                 seriesItr.remove();
@@ -2305,9 +2150,8 @@ public class InvientCharts extends AbstractComponent {
 
     /**
      * Removes the argument seriesData from this chart.
-     * 
-     * @param seriesData
-     *            the series object to be removed
+     *
+     * @param seriesData the series object to be removed
      */
     public void removeSeries(Series seriesData) {
         if (this.chartSeries.remove(seriesData)) {
@@ -2323,24 +2167,22 @@ public class InvientCharts extends AbstractComponent {
      * one or more points. A point has (X, Y) coordinates. None of the
      * coordinates are mandatory. The name of a point can be displayed in a
      * tooltip.
-     * 
+     * <p/>
      * To represent no activity or missing points in the chart, create a point
      * with both X and Y as null or just Y as null.
-     * 
+     * <p/>
      * It is possible to specify custom configuration for each point. e.g. If a
      * highest point can be marked in a chart with a different color using this
      * configuration.
-     * 
+     * <p/>
      * A point cannot be created without a series. It must belong to a series.
      * However, the point must be added to a series by calling Series.addPoint()
      * or Series.setPoints() to permanently add point to the series.
-     * 
+     *
      * @author Invient
-     * 
      * @see DecimalPoint
      * @see DateTimePoint
      * @see PointConfig
-     * 
      */
     public static abstract class Point implements Serializable {
         private String id;
@@ -2352,12 +2194,9 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Creates a point with given arguments.
-         * 
-         * @param series
-         *            The series to which the point must be associated.
-         * @exception IllegalArgumentException
-         *                If the argument series is null
-         * 
+         *
+         * @param series The series to which the point must be associated.
+         * @throws IllegalArgumentException If the argument series is null
          */
         public Point(Series series) {
             if (series == null) {
@@ -2376,13 +2215,10 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Creates a point with given arguments.
-         * 
-         * @param series
-         *            The series to which the point must be associated.
-         * @param config
-         *            The configuration for this point, if any
-         * @exception IllegalArgumentException
-         *                If the argument series is null
+         *
+         * @param series The series to which the point must be associated.
+         * @param config The configuration for this point, if any
+         * @throws IllegalArgumentException If the argument series is null
          */
         public Point(Series series, PointConfig config) {
             this(series);
@@ -2391,13 +2227,10 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Creates a point with given arguments.
-         * 
-         * @param series
-         *            The series to which the point must be associated.
-         * @param name
-         *            name of this point
-         * @exception IllegalArgumentException
-         *                If the argument series is null
+         *
+         * @param series The series to which the point must be associated.
+         * @param name   name of this point
+         * @throws IllegalArgumentException If the argument series is null
          */
         public Point(Series series, String name) {
             this(series);
@@ -2406,15 +2239,11 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Creates a point with given arguments.
-         * 
-         * @param series
-         *            The series to which the point must be associated.
-         * @param name
-         *            name of this point
-         * @param config
-         *            The configuration for this point, if any
-         * @exception IllegalArgumentException
-         *                If the argument series is null
+         *
+         * @param series The series to which the point must be associated.
+         * @param name   name of this point
+         * @param config The configuration for this point, if any
+         * @throws IllegalArgumentException If the argument series is null
          */
         public Point(Series series, String name, PointConfig config) {
             this(series, name);
@@ -2426,7 +2255,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns name of this point
          */
         public String getName() {
@@ -2435,16 +2263,14 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Sets name of this point
-         * 
-         * @param name
-         *            name of this point
+         *
+         * @param name name of this point
          */
         public void setName(String name) {
             this.name = name;
         }
 
         /**
-         * 
          * @return Returns {@link Series} associated with this point
          */
         public Series getSeries() {
@@ -2452,7 +2278,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns {@link PointConfig} for this point
          */
         public PointConfig getConfig() {
@@ -2461,9 +2286,8 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Sets {@link PointConfig} for this point
-         * 
-         * @param config
-         *            configuration of this point
+         *
+         * @param config configuration of this point
          * @see PointConfig
          */
         public void setConfig(PointConfig config) {
@@ -2471,7 +2295,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns true if X value of this point is set programmatically
          */
         boolean isAutosetX() {
@@ -2481,7 +2304,7 @@ public class InvientCharts extends AbstractComponent {
         /**
          * If the argument is true it indicates that the X value of this point
          * is set programmatically and user has not specified it.
-         * 
+         *
          * @return
          */
         void setAutosetX(boolean isAutosetX) {
@@ -2489,7 +2312,6 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns true if a point at the start of the series should be
          *         shifted off when this point is appended otherwise false.
          */
@@ -2500,7 +2322,7 @@ public class InvientCharts extends AbstractComponent {
         /**
          * A value of true means one point is shifted off the start of the
          * series as one is appended to the end.
-         * 
+         *
          * @param shift
          */
         void setShift(boolean shift) {
@@ -2508,13 +2330,11 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * 
          * @return Returns X value of this point
          */
         public abstract Object getX();
 
         /**
-         * 
          * @return Returns Y value of this point
          */
         public abstract Object getY();
@@ -2530,27 +2350,23 @@ public class InvientCharts extends AbstractComponent {
     /**
      * This class represent a point with (X, Y) both as number. It should be
      * used to add points to {@link XYSeries}
-     * 
+     *
      * @author Invient
-     * 
      */
     public static final class DecimalPoint extends Point {
         private Double x;
         private Double y;
 
         /**
-         * @param series
-         *            the series to which this belongs to
+         * @param series the series to which this belongs to
          */
         public DecimalPoint(Series series) {
             super(series);
         }
 
         /**
-         * @param series
-         *            the series to which this point belongs to
-         * @param y
-         *            the y value of this point
+         * @param series the series to which this point belongs to
+         * @param y      the y value of this point
          */
         public DecimalPoint(Series series, double y) {
             super(series);
@@ -2558,12 +2374,9 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * @param series
-         *            the series to which this belongs to
-         * @param name
-         *            the name of this point
-         * @param y
-         *            the y value of this point
+         * @param series the series to which this belongs to
+         * @param name   the name of this point
+         * @param y      the y value of this point
          */
         public DecimalPoint(Series series, String name, double y) {
             super(series, name);
@@ -2572,11 +2385,9 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * To allow creation of a point within the InvientChart.
-         * 
-         * @param x
-         *            the x value of this point
-         * @param y
-         *            the y value of this point
+         *
+         * @param x the x value of this point
+         * @param y the y value of this point
          */
         private DecimalPoint(double x, double y) {
             // FIXME this is not a correct way of doing it.
@@ -2586,27 +2397,21 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * @param series
-         *            the series to which this belongs to
-         * @param name
-         *            the name for this point
-         * @param y
-         *            the y value of this point
+         * @param series the series to which this belongs to
+         * @param name   the name for this point
+         * @param y      the y value of this point
          * @param config
          */
         public DecimalPoint(Series series, String name, double y,
-                PointConfig config) {
+                            PointConfig config) {
             super(series, name, config);
             this.y = y;
         }
 
         /**
-         * @param series
-         *            the series to which this belongs to
-         * @param y
-         *            the y value of this point
-         * @param config
-         *            the configuration for this point
+         * @param series the series to which this belongs to
+         * @param y      the y value of this point
+         * @param config the configuration for this point
          */
         public DecimalPoint(Series series, double y, PointConfig config) {
             super(series, config);
@@ -2614,58 +2419,44 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * @param series
-         *            the series to which this belongs to
-         * @param x
-         *            the x value of this point
-         * @param y
-         *            the y value of this point
+         * @param series the series to which this belongs to
+         * @param x      the x value of this point
+         * @param y      the y value of this point
          */
         public DecimalPoint(Series series, double x, double y) {
             this(series, x, y, null);
         }
 
         /**
-         * @param series
-         *            the series to which this belongs to
-         * @param x
-         *            the x value of this point
-         * @param y
-         *            the y value of this point
+         * @param series the series to which this belongs to
+         * @param x      the x value of this point
+         * @param y      the y value of this point
          */
         public DecimalPoint(Series series, Double x, Double y) {
             this(series, x, y, null);
         }
 
         /**
-         * @param series
-         *            the series to which this belongs to
-         * @param x
-         *            the x value of this point
-         * @param y
-         *            the y value of this point
-         * @param config
-         *            the configuration of this point
+         * @param series the series to which this belongs to
+         * @param x      the x value of this point
+         * @param y      the y value of this point
+         * @param config the configuration of this point
          */
         public DecimalPoint(Series series, double x, double y,
-                PointConfig config) {
+                            PointConfig config) {
             super(series, config);
             this.x = x;
             this.y = y;
         }
 
         /**
-         * @param series
-         *            the series to which this belongs to
-         * @param x
-         *            the x value of this point
-         * @param y
-         *            the y value of this point
-         * @param config
-         *            the configuration of this point
+         * @param series the series to which this belongs to
+         * @param x      the x value of this point
+         * @param y      the y value of this point
+         * @param config the configuration of this point
          */
         public DecimalPoint(Series series, Double x, Double y,
-                PointConfig config) {
+                            PointConfig config) {
             super(series, config);
             this.x = x;
             this.y = y;
@@ -2683,7 +2474,7 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Sets the x value of this point
-         * 
+         *
          * @param x
          */
         private void setX(Double x) {
@@ -2702,7 +2493,7 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Sets the y value of this point
-         * 
+         *
          * @param y
          */
         private void setY(Double y) {
@@ -2755,39 +2546,32 @@ public class InvientCharts extends AbstractComponent {
     /**
      * This class represent a point with (X, Y) both as number. It should be
      * used to add points to {@link DateTimeSeries}
-     * 
+     *
      * @author Invient
-     * 
      */
     public static final class DateTimePoint extends Point {
         private Date x;
         private Double y;
 
         /**
-         * @param series
-         *            the series to which this belongs to
+         * @param series the series to which this belongs to
          */
         public DateTimePoint(Series series) {
             super(series);
         }
 
         /**
-         * @param series
-         *            the series to which this belongs to
-         * @param y
-         *            the y value of this point
+         * @param series the series to which this belongs to
+         * @param y      the y value of this point
          */
         public DateTimePoint(Series series, double y) {
             this(series, "", y);
         }
 
         /**
-         * @param series
-         *            the series to which this belongs to
-         * @param name
-         *            the name of this point
-         * @param y
-         *            the y value of this point
+         * @param series the series to which this belongs to
+         * @param name   the name of this point
+         * @param y      the y value of this point
          */
         public DateTimePoint(Series series, String name, double y) {
             super(series, name);
@@ -2795,27 +2579,21 @@ public class InvientCharts extends AbstractComponent {
         }
 
         /**
-         * @param series
-         *            the series to which this belongs to
-         * @param name
-         *            the name of this point
-         * @param y
-         *            the y value of this point
+         * @param series the series to which this belongs to
+         * @param name   the name of this point
+         * @param y      the y value of this point
          * @param config
          */
         public DateTimePoint(Series series, String name, double y,
-                PointConfig config) {
+                             PointConfig config) {
             super(series, name, config);
             this.y = y;
         }
 
         /**
-         * @param series
-         *            the series to which this belongs to
-         * @param x
-         *            the x value of this point
-         * @param y
-         *            the y value of this point
+         * @param series the series to which this belongs to
+         * @param x      the x value of this point
+         * @param y      the y value of this point
          */
         public DateTimePoint(Series series, Date x, double y) {
             this(series, y);
@@ -2833,7 +2611,7 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Sets the x value of this point
-         * 
+         *
          * @param x
          */
         private void setX(Date x) {
@@ -2851,7 +2629,7 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Sets the y value of this point
-         * 
+         *
          * @param y
          */
         private void setY(Double y) {
@@ -2862,9 +2640,9 @@ public class InvientCharts extends AbstractComponent {
         public String toString() {
             return "DateTimePoint [x="
                     + getDateInMilliseconds(
-                            x,
-                            (getSeries() != null ? ((DateTimeSeries) getSeries())
-                                    .isIncludeTime() : false)) + ", y=" + y
+                    x,
+                    (getSeries() != null ? ((DateTimeSeries) getSeries())
+                            .isIncludeTime() : false)) + ", y=" + y
                     + ", id=" + getId() + ", name=" + getName()
                     + ", seriesName="
                     + (getSeries() != null ? getSeries().getName() : "") + "]";
@@ -2875,7 +2653,7 @@ public class InvientCharts extends AbstractComponent {
             final int prime = 31;
             int result = 1;
             result = prime * result + ((y == null) ? 0 : y.hashCode());
-			result = prime * result + ((x == null) ? 0 : (int)x.getTime());
+            result = prime * result + ((x == null) ? 0 : (int) x.getTime());
             return result;
         }
 
@@ -2919,24 +2697,24 @@ public class InvientCharts extends AbstractComponent {
     /**
      * This class defines a series of the chart. A series contains a collection
      * of points. Series can be one of types defined by {@link SeriesType}.
-     * 
+     * <p/>
      * Each series must have unique name. If an attempt is made to add two
      * series with same then only the first added series will be in effect.
-     * 
+     * <p/>
      * If the series type is not specified, it defaults to chart type and the
      * default chart type is SeriesType.LINE. A series has unique xAxis and
      * yAxis object associated with it. There is no need to set xAxis and yAxis
      * unless the chart has more than one one axis of any type and the series
      * must belong to any of the secondary axis.
-     * 
+     * <p/>
      * It is also possible to specify configuration for individual series and
      * not just series type.
-     * 
+     *
      * @author Invient
-     * 
      */
-    public static abstract class Series implements Serializable {
-        private LinkedHashSet points = new LinkedHashSet();
+    public static abstract class Series<T extends Point> implements Serializable {
+
+        private LinkedHashSet<T> points = new LinkedHashSet<T>();
         private String name = "";
         private SeriesType type;
         private String stack;
@@ -2947,9 +2725,8 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Creates a series with given name
-         * 
-         * @param name
-         *            the name of this series
+         *
+         * @param name the name of this series
          */
         public Series(String name) {
             this.name = name;
@@ -2957,11 +2734,9 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Creates a series with given name and type
-         * 
-         * @param name
-         *            the name of this series
-         * @param seriesType
-         *            the type of this series
+         *
+         * @param name       the name of this series
+         * @param seriesType the type of this series
          */
         public Series(String name, SeriesType seriesType) {
             this(name);
@@ -2970,11 +2745,9 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Creates a series with given name and configuration
-         * 
-         * @param name
-         *            the name of this series
-         * @param config
-         *            the configuration for this series
+         *
+         * @param name   the name of this series
+         * @param config the configuration for this series
          */
         public Series(String name, SeriesConfig config) {
             this(name);
@@ -2983,13 +2756,10 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Creates a series with given name, type and configuration
-         * 
-         * @param name
-         *            the name of this series
-         * @param seriesType
-         *            the type of this series
-         * @param config
-         *            the configuration for this series
+         *
+         * @param name       the name of this series
+         * @param seriesType the type of this series
+         * @param config     the configuration for this series
          */
         public Series(String name, SeriesType seriesType, SeriesConfig config) {
             this(name, config);
@@ -3012,7 +2782,7 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Sets name of this series
-         * 
+         *
          * @param name
          */
         public void setName(String name) {
@@ -3028,7 +2798,7 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Sets type of this series
-         * 
+         *
          * @param type
          */
         public void setType(SeriesType type) {
@@ -3046,7 +2816,7 @@ public class InvientCharts extends AbstractComponent {
          * By using this stack property, it is possible to group series in a
          * stacked chart. Sets stack for this series. If two series belongs to
          * the same stack then the resultant chart will be stacked chart
-         * 
+         *
          * @param stack
          */
         public void setStack(String stack) {
@@ -3064,7 +2834,7 @@ public class InvientCharts extends AbstractComponent {
         /**
          * Sets x-axis of this series. A series can be associated with at most
          * one x-axis.
-         * 
+         *
          * @param xAxis
          */
         public void setXAxis(XAxis xAxis) {
@@ -3081,7 +2851,7 @@ public class InvientCharts extends AbstractComponent {
         /**
          * Sets y-axis of this series. A series can be associated with at most
          * one y-axis.
-         * 
+         *
          * @param yAxis
          */
         public void setYAxis(YAxis yAxis) {
@@ -3123,24 +2893,24 @@ public class InvientCharts extends AbstractComponent {
         /**
          * Adds one or more points into this series, specified as an argument to
          * this method
-         * 
+         *
          * @param points
          * @return Returns null if the argument is null otherwise returns a
          *         collection of points which are added in this series. If a
          *         point has same (x, y) value as any other point in the
          *         argument points then it will not be added.
          */
-        protected LinkedHashSet addPoint(boolean shift, Point... points) {
+        protected LinkedHashSet<T> addPoint(boolean shift, T... points) {
             if (shift) {
                 // Remove first point as other points gets appended at the end
-                Iterator pointsItr = this.points.iterator();
+                Iterator<T> pointsItr = this.points.iterator();
                 if (pointsItr.hasNext()) {
                     pointsItr.next();
                     pointsItr.remove();
                 }
             }
-            List<Point> pointsAddedList = new ArrayList<Point>();
-            for (Point point : points) {
+            List<T> pointsAddedList = new ArrayList<T>();
+            for (T point : points) {
                 if (this.points.add(point)) {
                     pointsAddedList.add(point);
                 }
@@ -3154,36 +2924,35 @@ public class InvientCharts extends AbstractComponent {
                     this.invientCharts.requestRepaint();
                 }
             }
-            return new LinkedHashSet(pointsAddedList);
+            return new LinkedHashSet<T>(pointsAddedList);
         }
 
-        private void addPointsInternal(LinkedHashSet<? extends Point> points) {
-            for (Point point : points) {
+        private void addPointsInternal(LinkedHashSet<T> points) {
+            for (T point : points) {
                 this.points.add(point);
             }
         }
 
         /**
-         * 
          * @return Returns all points of this series. Adding or removing any
          *         point to or from the returned collection will not impact the
          *         chart. To add a point or points, use addPoint() or
          *         removePoint() method.
          */
-        protected LinkedHashSet getPoints() {
-            return new LinkedHashSet(this.points);
+        protected LinkedHashSet<T> getPoints() {
+            return new LinkedHashSet<T>(this.points);
         }
 
         /**
          * Sets points into this series
-         * 
-         * @param points
-         * @return Returns null if the argument is null otherwise returns a
+         *
+         * @param points The points to set.
+         * @return Returns {@code null} if the argument is {@code null} otherwise returns a
          *         collection of points which are set in this series. If a point
          *         has same (x, y) value as any other point in the argument
          *         points then it will not be added.
          */
-        protected LinkedHashSet setPoints(LinkedHashSet<? extends Point> points) {
+        protected LinkedHashSet<T> setPoints(LinkedHashSet<T> points) {
             if (points != null) {
                 this.points.clear();
                 addPointsInternal(points);
@@ -3272,18 +3041,16 @@ public class InvientCharts extends AbstractComponent {
     /**
      * This class defines a number series. In this series both X and Y values
      * must be number. To use date values, use {@link DateTimeSeries}
-     * 
+     *
      * @author Invient
-     * 
      * @see DateTimeSeries
      */
-    public static class XYSeries extends Series {
+    public static class XYSeries extends Series<DecimalPoint> {
 
         /**
          * Creates a series with given name
-         * 
-         * @param name
-         *            the name of this series
+         *
+         * @param name the name of this series
          */
         public XYSeries(String name) {
             super(name);
@@ -3291,11 +3058,9 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Creates a series with given name and configuration
-         * 
-         * @param name
-         *            the name of this series
-         * @param config
-         *            the configuration for this series
+         *
+         * @param name   the name of this series
+         * @param config the configuration for this series
          */
         public XYSeries(String name, SeriesConfig config) {
             super(name, config);
@@ -3303,11 +3068,9 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Creates a series with given name and type
-         * 
-         * @param name
-         *            the name of this series
-         * @param seriesType
-         *            the type of this series
+         *
+         * @param name       the name of this series
+         * @param seriesType the type of this series
          */
         public XYSeries(String name, SeriesType seriesType) {
             super(name, seriesType);
@@ -3315,13 +3078,10 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Creates a series with given name, type and configuration
-         * 
-         * @param name
-         *            the name of this series
-         * @param seriesType
-         *            the type of this series
-         * @param config
-         *            the configuration for this series
+         *
+         * @param name       the name of this series
+         * @param seriesType the type of this series
+         * @param config     the configuration for this series
          */
         public XYSeries(String name, SeriesType seriesType, SeriesConfig config) {
             super(name, seriesType, config);
@@ -3329,8 +3089,8 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Removes the specified point from the series
-         * 
-         * @param points
+         *
+         * @param points Points to be removed.
          */
         public void removePoint(DecimalPoint... points) {
             super.removePoint(points);
@@ -3349,8 +3109,8 @@ public class InvientCharts extends AbstractComponent {
          * Appends the specified point into the series if they do not exists in
          * this series. The points which already exists will not be appended. A
          * collection of points appended to this series will be returned.
-         * 
-         * @param points
+         *
+         * @param points Points to be added.
          * @return Returns a collection of points which are added in this
          *         series. If a point has same (x, y) value as any other point
          *         in the input argument points then it will not be added in
@@ -3364,26 +3124,23 @@ public class InvientCharts extends AbstractComponent {
          * Append the specified point into this series. If the argument shift is
          * true then one point is shifted off the start of this series as one is
          * appended to the end.
-         * 
-         * @param points
-         * @param shift
-         *            If true then one point is shifted off the start of this
-         *            series as one is appended to the end.
+         *
+         * @param point Point to add.
+         * @param shift If true then one point is shifted off the start of this
+         *              series as one is appended to the end.
          * @return Returns a collection of points which are added in this
          *         series. If a point has same (x, y) value as any other point
          *         in the input argument points then it will not be added in
          *         this series.
          */
         public LinkedHashSet<DecimalPoint> addPoint(DecimalPoint point,
-                boolean shift) {
+                                                    boolean shift) {
             point.setShift(shift);
             return super.addPoint(shift, point);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see com.invient.vaadin.chart.InvientChart.Series#getPoints()
+        /**
+         * {@inheritDoc}
          */
         public LinkedHashSet<DecimalPoint> getPoints() {
             return super.getPoints();
@@ -3393,15 +3150,13 @@ public class InvientCharts extends AbstractComponent {
          * Sets points into this series. This method removes all of its points
          * and then add points specified in the method argument. If the argument
          * is null then no actions are taken.
-         * 
-         * @param points
-         *            the collection of points to set into this series.
+         *
+         * @param points the collection of points to set into this series.
          * @return Returns a collection of points which are set in this series.
          *         If a point has same (x, y) value as any other point in the
          *         argument points then it will not be added.
          */
-        public LinkedHashSet<DecimalPoint> setSeriesPoints(
-                LinkedHashSet<DecimalPoint> points) {
+        public LinkedHashSet<DecimalPoint> setSeriesPoints(LinkedHashSet<DecimalPoint> points) {
             return super.setPoints(points);
         }
 
@@ -3419,16 +3174,16 @@ public class InvientCharts extends AbstractComponent {
                 }
             }
             int count = 0;
-            for (DecimalPoint point : getPoints()) {
-                if ((point.getX() == null || (point.getX() != null && point
-                        .isAutosetX()))) {
+            for (Point point : getPoints()) {
+                if ((point.getX() == null || (point.getX() != null && point.isAutosetX()))) {
+                    DecimalPoint decimalPoint = (DecimalPoint) point;
                     point.setAutosetX(true);
                     if (count == 0) {
-                        point.setX(pointStart);
+                        decimalPoint.setX(pointStart);
                         count++;
                     } else {
                         pointStart = pointStart + pointInterval;
-                        point.setX(pointStart);
+                        decimalPoint.setX(pointStart);
                     }
                 }
             }
@@ -3440,25 +3195,23 @@ public class InvientCharts extends AbstractComponent {
      * This class defines a datetime series. In this series, the X value must be
      * date and Y values must be number. To use number values, use
      * {@link XYSeries}
-     * <p>
+     * <p/>
      * By default, the time of a day is not included in the X value. In order to
      * include time, use a constructor with argument isIncludeTime and pass true
      * value for the argument.
-     * 
+     *
      * @author Invient
-     * 
      * @see XYSeries
      */
-    public static class DateTimeSeries extends Series {
+    public static class DateTimeSeries extends Series<DateTimePoint> {
         private boolean includeTime;
 
         /**
          * Creates a series with given name. This series will not consider time
          * in the X property of {@link DateTimePoint}. To include time, use any
          * constructor having isIncludeTime as part of the arguments.
-         * 
-         * @param name
-         *            the name of this series
+         *
+         * @param name the name of this series
          */
         public DateTimeSeries(String name) {
             this(name, false);
@@ -3466,13 +3219,11 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Creates a series with given name and boolean value.
-         * 
-         * @param name
-         *            the name of this series
-         * @param isIncludeTime
-         *            If true then the time in the X property of
-         *            {@link DateTimePoint} will be considered when drawing the
-         *            chart. Defaults to false.
+         *
+         * @param name          the name of this series
+         * @param isIncludeTime If true then the time in the X property of
+         *                      {@link DateTimePoint} will be considered when drawing the
+         *                      chart. Defaults to false.
          */
         public DateTimeSeries(String name, boolean isIncludeTime) {
             super(name);
@@ -3481,11 +3232,9 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Creates a series with given name and configuration.
-         * 
-         * @param name
-         *            the name of this series
-         * @param config
-         *            the configuration for this series
+         *
+         * @param name   the name of this series
+         * @param config the configuration for this series
          */
         public DateTimeSeries(String name, SeriesConfig config) {
             this(name, config, false);
@@ -3493,29 +3242,24 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Creates a series with given name, configuration and boolean value.
-         * 
-         * @param name
-         *            the name of this series
-         * @param config
-         *            the configuration for this series
-         * @param isIncludeTime
-         *            If true then the time in the X property of
-         *            {@link DateTimePoint} will be considered when drawing the
-         *            chart. Defaults to false.
+         *
+         * @param name          the name of this series
+         * @param config        the configuration for this series
+         * @param isIncludeTime If true then the time in the X property of
+         *                      {@link DateTimePoint} will be considered when drawing the
+         *                      chart. Defaults to false.
          */
         public DateTimeSeries(String name, SeriesConfig config,
-                boolean isIncludeTime) {
+                              boolean isIncludeTime) {
             super(name, config);
             this.includeTime = isIncludeTime;
         }
 
         /**
          * Creates a series with given name and type.
-         * 
-         * @param name
-         *            the name of this series
-         * @param seriesType
-         *            the type of this series
+         *
+         * @param name       the name of this series
+         * @param seriesType the type of this series
          */
         public DateTimeSeries(String name, SeriesType seriesType) {
             this(name, seriesType, false);
@@ -3523,62 +3267,52 @@ public class InvientCharts extends AbstractComponent {
 
         /**
          * Creates a series with given name, type and boolean value.
-         * 
-         * @param name
-         *            the name of this series
-         * @param seriesType
-         *            the type of this series
-         * @param isIncludeTime
-         *            If true then the time in the X property of
-         *            {@link DateTimePoint} will be considered when drawing the
-         *            chart. Defaults to false.
+         *
+         * @param name          the name of this series
+         * @param seriesType    the type of this series
+         * @param isIncludeTime If true then the time in the X property of
+         *                      {@link DateTimePoint} will be considered when drawing the
+         *                      chart. Defaults to false.
          */
         public DateTimeSeries(String name, SeriesType seriesType,
-                boolean isIncludeTime) {
+                              boolean isIncludeTime) {
             super(name, seriesType);
             this.includeTime = isIncludeTime;
         }
 
         /**
          * Creates a series with given name, type and configuration.
-         * 
-         * @param name
-         *            the name of this series
-         * @param seriesType
-         *            the type of this series
-         * @param config
-         *            the configuration for this series
+         *
+         * @param name       the name of this series
+         * @param seriesType the type of this series
+         * @param config     the configuration for this series
          */
         public DateTimeSeries(String name, SeriesType seriesType,
-                SeriesConfig config) {
+                              SeriesConfig config) {
             this(name, seriesType, config, false);
         }
 
         /**
          * Creates a series with given name, type, configuration and boolean
          * value.
-         * 
-         * @param name
-         *            the name of this series
-         * @param seriesType
-         *            the type of this series
-         * @param config
-         *            the configuration for this series
-         * @param isIncludeTime
-         *            If true then the time in the X property of
-         *            {@link DateTimePoint} will be considered when drawing the
-         *            chart. Defaults to false.
+         *
+         * @param name          the name of this series
+         * @param seriesType    the type of this series
+         * @param config        the configuration for this series
+         * @param isIncludeTime If true then the time in the X property of
+         *                      {@link DateTimePoint} will be considered when drawing the
+         *                      chart. Defaults to false.
          */
         public DateTimeSeries(String name, SeriesType seriesType,
-                SeriesConfig config, boolean isIncludeTime) {
+                              SeriesConfig config, boolean isIncludeTime) {
             super(name, seriesType, config);
             this.includeTime = isIncludeTime;
         }
 
         /**
          * Removes all points specified as method argument into this series
-         * 
-         * @param points
+         *
+         * @param points The points to be removed.
          */
         public void removePoint(DateTimePoint... points) {
             super.removePoint(points);
@@ -3597,8 +3331,9 @@ public class InvientCharts extends AbstractComponent {
          * Appends the specified point into the series if they do not exists in
          * this series. The points which already exists will not be appended. A
          * collection of points appended to this series will be returned.
-         * 
-         * @param points
+         *
+         * @param points The points to be removed.
+         *
          * @return Returns a collection of points which are added in this
          *         series. If a point has same (x, y) value as any other point
          *         in the input argument points then it will not be added in
@@ -3612,25 +3347,22 @@ public class InvientCharts extends AbstractComponent {
          * Append the specified point into this series. If the argument shift is
          * true then one point is shifted off the start of this series as one is
          * appended to the end.
-         * 
-         * @param point
-         *            A point to be added at the end of this series
-         * @param shift
-         *            If true then one point is shifted off the start of this
-         *            series as one is appended to the end.
+         *
+         * @param point A point to be added at the end of this series
+         * @param shift If true then one point is shifted off the start of this
+         *              series as one is appended to the end.
          * @return Returns a collection of points which are added in this
          *         series. If a point has same (x, y) value as any other point
          *         in the input argument points then it will not be added in
          *         this series.
          */
         public LinkedHashSet<DateTimePoint> addPoint(DateTimePoint point,
-                boolean shift) {
+                                                     boolean shift) {
             point.setShift(shift);
             return super.addPoint(shift, point);
         }
 
         /**
-         * 
          * @return Returns true if the time in the X property of
          *         {@link DateTimePoint} will be considered when drawing the
          *         chart otherwise false.
@@ -3639,10 +3371,8 @@ public class InvientCharts extends AbstractComponent {
             return includeTime;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see com.invient.vaadin.chart.InvientChart.Series#getPoints()
+        /**
+         * {@inheritDoc}
          */
         public LinkedHashSet<DateTimePoint> getPoints() {
             return super.getPoints();
@@ -3652,16 +3382,14 @@ public class InvientCharts extends AbstractComponent {
          * Sets points into this series. This method removes all of its points
          * and then add points specified in the method argument. If the argument
          * is null then no actions are taken.
-         * 
-         * @param points
-         *            the collection of points to set into this series.
+         *
+         * @param points the collection of points to set into this series.
          * @return Returns a collection of points which are added in this
          *         series. If a point has same (x, y) value as any other point
          *         in the input argument points then it will not be added in
          *         this series.
          */
-        public LinkedHashSet<DateTimePoint> setSeriesPoints(
-                LinkedHashSet<DateTimePoint> points) {
+        public LinkedHashSet<DateTimePoint> setSeriesPoints(LinkedHashSet<DateTimePoint> points) {
             return super.setPoints(points);
         }
 
@@ -3680,17 +3408,18 @@ public class InvientCharts extends AbstractComponent {
             }
             Date prevDate = new Date((long) pointStart);
             int count = 0;
-            for (DateTimePoint point : getPoints()) {
+            for (Point point : getPoints()) {
+                DateTimePoint dateTimePoint = (DateTimePoint)point;
                 if ((point.getX() == null || (point.getX() != null && point
                         .isAutosetX()))) {
                     point.setAutosetX(true);
                     if (count == 0) {
-                        point.setX(prevDate);
+                        dateTimePoint.setX(prevDate);
                         count++;
                     } else {
-                        point.setX(getUpdatedDate(prevDate,
+                        dateTimePoint.setX(getUpdatedDate(prevDate,
                                 (long) pointInterval));
-                        prevDate = point.getX();
+                        prevDate = dateTimePoint.getX();
                     }
                 }
             }
@@ -3725,14 +3454,19 @@ public class InvientCharts extends AbstractComponent {
 
     }
 
-    // *******************************************************************//
-    // *************** Highcharts Configuration options ******************//
-    // *******************************************************************//
 
     public static enum SeriesType {
-        COMMONSERIES("series"), LINE("line"), SPLINE("spline"), SCATTER(
-                "scatter"), AREA("area"), AREASPLINE("areaspline"), BAR("bar"), COLUMN(
-                "column"), PIE("pie");
+
+        COMMONSERIES("series"),
+        LINE("line"),
+        SPLINE("spline"),
+        SCATTER("scatter"),
+        AREA("area"),
+        AREASPLINE("areaspline"),
+        BAR("bar"),
+        COLUMN("column"),
+        PIE("pie");
+
         private String type;
 
         private SeriesType(String type) {
@@ -3742,9 +3476,11 @@ public class InvientCharts extends AbstractComponent {
         public String getName() {
             return this.type;
         }
+
     }
 
     static class SeriesCUR implements Serializable {
+
         private SeriesCURType type;
         private String name;
         private boolean reloadPoints = false;
@@ -3775,7 +3511,7 @@ public class InvientCharts extends AbstractComponent {
         /**
          * Indicates whether the client/terminal should update series by setting
          * all data of a series instead of adding or removing individual points
-         * 
+         *
          * @return Returns true if the data of the series must be reloaded
          *         otherwise false.
          */
@@ -3909,7 +3645,7 @@ public class InvientCharts extends AbstractComponent {
                     if (seriesCUR.getName().equals(newSeriesCUR.getName())) {
                         if (SeriesCURType.REMOVE.equals(newSeriesCUR.getType())
                                 && SeriesCURType.ADD
-                                        .equals(seriesCUR.getType())) {
+                                .equals(seriesCUR.getType())) {
                             // Remove addition of a series as there is no reason
                             // to add
                             // a series and
@@ -3922,7 +3658,7 @@ public class InvientCharts extends AbstractComponent {
                         }
                         if (SeriesCURType.UPDATE.equals(newSeriesCUR.getType())
                                 && SeriesCURType.ADD
-                                        .equals(seriesCUR.getType())) {
+                                .equals(seriesCUR.getType())) {
                             // There is no need for update as adding a series
                             // will
                             // take care of applying any update to the series
@@ -3932,7 +3668,7 @@ public class InvientCharts extends AbstractComponent {
                         }
                         if (SeriesCURType.REMOVE.equals(newSeriesCUR.getType())
                                 && SeriesCURType.UPDATE.equals(seriesCUR
-                                        .getType())) {
+                                .getType())) {
                             // Remove update of a series as there is no reason
                             // to update
                             // a series
@@ -4037,7 +3773,6 @@ public class InvientCharts extends AbstractComponent {
      * as it is handled implicitly. This method will send updates to the client.
      * This method should be called after adding/removing plotbands and
      * plotlines. This inconsistency will be fixed in next revision.
-     * 
      */
     public void refresh() {
         super.requestRepaint();
@@ -4048,7 +3783,6 @@ public class InvientCharts extends AbstractComponent {
      * method causes the Webkit to hide other widgets on the screen and only
      * this chart widget will be visible. Also it prints this chart widget as it
      * is displayed.
-     * 
      */
     public void print() {
         isPrint = true;

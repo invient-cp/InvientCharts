@@ -15,106 +15,52 @@
  */
 package com.invient.vaadin.charts;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import com.invient.vaadin.charts.InvientCharts.*;
+import com.invient.vaadin.charts.InvientChartsConfig.*;
+import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.*;
+import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.DateTimePlotBand.DateTimeRange;
+import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.DateTimePlotLine.DateTimeValue;
+import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.NumberPlotBand.NumberRange;
+import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.NumberPlotLine.NumberValue;
+import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.PlotBand.Range;
+import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.PlotLine.Value;
+import com.invient.vaadin.charts.InvientChartsConfig.ChartLabel.ChartLabelItem;
+import com.invient.vaadin.charts.InvientChartsConfig.DateTimeAxis.DateTimeLabelFormat;
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 
-import com.invient.vaadin.charts.InvientCharts.DateTimeSeries;
-import com.invient.vaadin.charts.InvientCharts.DecimalPoint;
-import com.invient.vaadin.charts.InvientCharts.Point;
-import com.invient.vaadin.charts.InvientCharts.Series;
-import com.invient.vaadin.charts.InvientCharts.SeriesCUR;
-import com.invient.vaadin.charts.InvientCharts.SeriesType;
-import com.invient.vaadin.charts.InvientChartsConfig.AreaConfig;
-import com.invient.vaadin.charts.InvientChartsConfig.AreaSplineConfig;
-import com.invient.vaadin.charts.InvientChartsConfig.Axis;
-import com.invient.vaadin.charts.InvientChartsConfig.AxisBase;
-import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.AxisTitle;
-import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.DateTimePlotBand.DateTimeRange;
-import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.DateTimePlotLine.DateTimeValue;
-import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.Grid;
-import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.MinorGrid;
-import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.MinorTick;
-import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.NumberPlotBand.NumberRange;
-import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.NumberPlotLine.NumberValue;
-import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.PlotBand;
-import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.PlotBand.Range;
-import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.PlotLabel;
-import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.PlotLine;
-import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.PlotLine.Value;
-import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.Tick;
-import com.invient.vaadin.charts.InvientChartsConfig.AxisDataLabel;
-import com.invient.vaadin.charts.InvientChartsConfig.BarConfig;
-import com.invient.vaadin.charts.InvientChartsConfig.BaseBarConfig;
-import com.invient.vaadin.charts.InvientChartsConfig.BaseLineConfig;
-import com.invient.vaadin.charts.InvientChartsConfig.CategoryAxis;
-import com.invient.vaadin.charts.InvientChartsConfig.ChartLabel;
-import com.invient.vaadin.charts.InvientChartsConfig.ChartLabel.ChartLabelItem;
-import com.invient.vaadin.charts.InvientChartsConfig.ColumnConfig;
-import com.invient.vaadin.charts.InvientChartsConfig.Credit;
-import com.invient.vaadin.charts.InvientChartsConfig.DataLabel;
-import com.invient.vaadin.charts.InvientChartsConfig.DateTimeAxis;
-import com.invient.vaadin.charts.InvientChartsConfig.DateTimeAxis.DateTimeLabelFormat;
-import com.invient.vaadin.charts.InvientChartsConfig.GeneralChartConfig;
-import com.invient.vaadin.charts.InvientChartsConfig.ImageMarker;
-import com.invient.vaadin.charts.InvientChartsConfig.Legend;
-import com.invient.vaadin.charts.InvientChartsConfig.LineConfig;
-import com.invient.vaadin.charts.InvientChartsConfig.Marker;
-import com.invient.vaadin.charts.InvientChartsConfig.MarkerState;
-import com.invient.vaadin.charts.InvientChartsConfig.NonLinearSeriesState;
-import com.invient.vaadin.charts.InvientChartsConfig.NumberAxis;
-import com.invient.vaadin.charts.InvientChartsConfig.NumberXAxis;
-import com.invient.vaadin.charts.InvientChartsConfig.NumberYAxis;
-import com.invient.vaadin.charts.InvientChartsConfig.PieConfig;
-import com.invient.vaadin.charts.InvientChartsConfig.PieDataLabel;
-import com.invient.vaadin.charts.InvientChartsConfig.ScatterConfig;
-import com.invient.vaadin.charts.InvientChartsConfig.SeriesConfig;
-import com.invient.vaadin.charts.InvientChartsConfig.SeriesState;
-import com.invient.vaadin.charts.InvientChartsConfig.SplineConfig;
-import com.invient.vaadin.charts.InvientChartsConfig.SubTitle;
-import com.invient.vaadin.charts.InvientChartsConfig.SymbolMarker;
-import com.invient.vaadin.charts.InvientChartsConfig.Title;
-import com.invient.vaadin.charts.InvientChartsConfig.TitleBase;
-import com.invient.vaadin.charts.InvientChartsConfig.Tooltip;
-import com.invient.vaadin.charts.InvientChartsConfig.XAxis;
-import com.invient.vaadin.charts.InvientChartsConfig.XAxisDataLabel;
-import com.invient.vaadin.charts.InvientChartsConfig.YAxis;
-import com.invient.vaadin.charts.InvientChartsConfig.YAxisDataLabel;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * A utility class used by {@link InvientCharts} to write its state to the UIDL
  * stream. The state includes properties of {@link InvientCharts} such as
  * {@link InvientChartsConfig}, {@link Series}, {@link Point} and various chart
  * events.
- * 
+ * <p/>
  * In general, only non-null properties/attributes of a chart are written to the
  * UIDL stream.
- * 
+ *
  * @author Invient
- * 
  */
 final class InvientChartsUtil {
 
+    /**
+     * Private constructor to prevent instantiation.
+     */
     private InvientChartsUtil() {
-        throw new RuntimeException("This class cannot be instantiated.");
+
     }
 
     /**
      * Writes configuration attributes common to chart title and subtitle.
-     * 
-     * @param target
-     * @param titleBaseOptions
+     *
+     * @param target           The paint target.
+     * @param titleBaseOptions The title base options.
      * @throws PaintException
      */
     private static void writeTitleBaseOptions(PaintTarget target,
-            TitleBase titleBaseOptions) throws PaintException {
+                                              TitleBase titleBaseOptions) throws PaintException {
         if (titleBaseOptions.getText() != null) {
             target.addAttribute("text", titleBaseOptions.getText());
         }
@@ -135,16 +81,16 @@ final class InvientChartsUtil {
             target.addAttribute("verticalAlign", titleBaseOptions
                     .getVertAlign().getName());
         }
-        if(titleBaseOptions.getStyle() != null) {
+        if (titleBaseOptions.getStyle() != null) {
             target.addAttribute("style", titleBaseOptions.getStyle());
         }
     }
 
     /**
      * Writes configuration attributes of the chart title.
-     * 
-     * @param target
-     * @param titleOptions
+     *
+     * @param target       The paint target.
+     * @param titleOptions The title options.
      * @throws PaintException
      */
     public static void writeTitleConfig(PaintTarget target, Title titleOptions)
@@ -160,13 +106,13 @@ final class InvientChartsUtil {
     /**
      * Writes configuration attributes of the chart subtitle. Only those
      * attributes are written who have got non-null values.
-     * 
-     * @param target
-     * @param subtitleOptions
+     *
+     * @param target          The paint target.
+     * @param subtitleOptions The subtitle options.
      * @throws PaintException
      */
     public static void writeSubtitleConfig(PaintTarget target,
-            SubTitle subtitleOptions) throws PaintException {
+                                           SubTitle subtitleOptions) throws PaintException {
         target.startTag("subtitle");
         writeTitleBaseOptions(target, subtitleOptions);
         target.endTag("subtitle");
@@ -174,13 +120,13 @@ final class InvientChartsUtil {
 
     /**
      * Writes configuration attributes of the chart subtitle.
-     * 
-     * @param target
-     * @param creditOptions
+     *
+     * @param target        The paint target.
+     * @param creditOptions The credit options.
      * @throws PaintException
      */
     public static void writeCreditConfig(PaintTarget target,
-            Credit creditOptions) throws PaintException {
+                                         Credit creditOptions) throws PaintException {
         target.startTag("credit");
 
         if (creditOptions.getEnabled() != null) {
@@ -219,13 +165,13 @@ final class InvientChartsUtil {
 
     /**
      * Writes configuration attributes of the chart legend.
-     * 
-     * @param target
-     * @param legendOptions
+     *
+     * @param target        The paint target.
+     * @param legendOptions The ledgend options.
      * @throws PaintException
      */
     public static void writeLegendConfig(PaintTarget target,
-            Legend legendOptions) throws PaintException {
+                                         Legend legendOptions) throws PaintException {
         target.startTag("legend");
 
         if (legendOptions.getBackgroundColor() != null) {
@@ -328,13 +274,13 @@ final class InvientChartsUtil {
 
     /**
      * Writes configuration attributes of the chart tooltip.
-     * 
-     * @param target
-     * @param tooltipOptions
+     *
+     * @param target         The paint target.
+     * @param tooltipOptions The tooltip options.
      * @throws PaintException
      */
     public static void writeTooltipConfig(PaintTarget target,
-            Tooltip tooltipOptions) throws PaintException {
+                                          Tooltip tooltipOptions) throws PaintException {
         target.startTag("tooltip");
 
         if (tooltipOptions.getBackgroundColor() != null) {
@@ -353,9 +299,9 @@ final class InvientChartsUtil {
             target.addAttribute("borderWidth", tooltipOptions.getBorderWidth());
         }
         if (tooltipOptions.getCrosshairs() != null) {
-			target.startTag("crosshairs");
-			writeTooltipCrosshairsConfig(target, tooltipOptions.getCrosshairs());
-			target.endTag("crosshairs");
+            target.startTag("crosshairs");
+            writeTooltipCrosshairsConfig(target, tooltipOptions.getCrosshairs());
+            target.endTag("crosshairs");
         }
         if (tooltipOptions.getEnabled() != null) {
             target.addAttribute("enabled", tooltipOptions.getEnabled());
@@ -376,47 +322,55 @@ final class InvientChartsUtil {
         if (tooltipOptions.getStyle() != null) {
             target.addAttribute("style", tooltipOptions.getStyle());
         }
-		if (tooltipOptions.getUseHTML() != null) {
-			target.addAttribute("useHTML", tooltipOptions.getUseHTML());
-		}
-		if (tooltipOptions.getHeaderFormat() != null) {
-			target.addAttribute("headerFormat", tooltipOptions.getHeaderFormat());
-		}
-		if (tooltipOptions.getPointFormat() != null) {
-			target.addAttribute("pointFormat", tooltipOptions.getPointFormat());
-		}
-		if (tooltipOptions.getFooterFormat() != null) {
-			target.addAttribute("footerFormat", tooltipOptions.getFooterFormat());
-		}
+        if (tooltipOptions.getUseHTML() != null) {
+            target.addAttribute("useHTML", tooltipOptions.getUseHTML());
+        }
+        if (tooltipOptions.getHeaderFormat() != null) {
+            target.addAttribute("headerFormat", tooltipOptions.getHeaderFormat());
+        }
+        if (tooltipOptions.getPointFormat() != null) {
+            target.addAttribute("pointFormat", tooltipOptions.getPointFormat());
+        }
+        if (tooltipOptions.getFooterFormat() != null) {
+            target.addAttribute("footerFormat", tooltipOptions.getFooterFormat());
+        }
 
         target.endTag("tooltip");
     }
 
-	public static void writeTooltipCrosshairsConfig(PaintTarget target,
-		Tooltip.Crosshairs crosshairs) throws PaintException {
-		if(crosshairs.getWidth() != null) {
-			target.addAttribute("width", crosshairs.getWidth());
-		}
-		if(crosshairs.getColor() != null) {
-			target.addAttribute("color", crosshairs.getColor().getString());
-		}
-		if(crosshairs.getDashStyle() != null) {
-			target.addAttribute("dashStyle", crosshairs.getDashStyle().getName());
-		}
-		if(crosshairs.getzIndex() != null) {
-			target.addAttribute("zIndex", crosshairs.getzIndex());
-		}
-	}
+    /**
+     * Writes configuration attributes of the charts tooltip crosshairsOptions.
+     *
+     * @param target            The paint target.
+     * @param crosshairsOptions The crosshairs options.
+     * @throws PaintException
+     */
+    public static void writeTooltipCrosshairsConfig(PaintTarget target,
+                                                    Tooltip.Crosshairs crosshairsOptions) throws PaintException {
+        if (crosshairsOptions.getWidth() != null) {
+            target.addAttribute("width", crosshairsOptions.getWidth());
+        }
+        if (crosshairsOptions.getColor() != null) {
+            target.addAttribute("color", crosshairsOptions.getColor().getString());
+        }
+        if (crosshairsOptions.getDashStyle() != null) {
+            target.addAttribute("dashStyle", crosshairsOptions.getDashStyle().getName());
+        }
+        if (crosshairsOptions.getzIndex() != null) {
+            target.addAttribute("zIndex", crosshairsOptions.getzIndex());
+        }
+
+    }
 
     /**
      * Writes configuration attributes of the chart itself.
-     * 
-     * @param target
-     * @param chartOptions
+     *
+     * @param target       The paint target.
+     * @param chartOptions The chart options.
      * @throws PaintException
      */
     public static void writeGeneralChartConfig(PaintTarget target,
-            GeneralChartConfig chartOptions) throws PaintException {
+                                               GeneralChartConfig chartOptions) throws PaintException {
         target.startTag("chart");
 
         if (chartOptions.getType() != null) {
@@ -551,13 +505,13 @@ final class InvientChartsUtil {
      * Writes configuration attributes of every series type. The series type can
      * be one of the line, spline, scatter, area, areaspline, bar, column and
      * pie.
-     * 
-     * @param target
-     * @param seriesOptions
+     *
+     * @param target        The paint target.
+     * @param seriesOptions The series options.
      * @throws PaintException
      */
     public static void writeSeriesConfigPerSeriesType(PaintTarget target,
-            Map<SeriesType, SeriesConfig> seriesOptions) throws PaintException {
+                                                      Map<SeriesType, SeriesConfig> seriesOptions) throws PaintException {
         target.startTag("seriesOptionsPerSeriesType");
         // For each SeriesType have separate tag
         for (Entry<SeriesType, SeriesConfig> seriesEntryOptions : seriesOptions
@@ -575,44 +529,46 @@ final class InvientChartsUtil {
 
     /**
      * Writes configuration attributes of a single series.
-     * 
-     * @param target
-     * @param series
+     *
+     * @param target The paint target.
+     * @param series The series options.
      * @throws PaintException
      */
-    private static void writeSeriesConfig(PaintTarget target,
-            SeriesConfig series) throws PaintException {
+    private static void writeSeriesConfig(PaintTarget target, SeriesConfig series) throws PaintException {
         // Write options for appropriate series type
+
         if (series instanceof LineConfig) {
             writeLineOptions(target, (LineConfig) series);
         } else if (series instanceof ScatterConfig) {
             writeScatterOptions(target, (ScatterConfig) series);
+        } else if (series instanceof AreaSplineConfig) {
+            writeAreaSplineOptions(target, (AreaSplineConfig) series);
         } else if (series instanceof SplineConfig) {
             writeSplineOptions(target, (SplineConfig) series);
         } else if (series instanceof AreaConfig) {
             writeAreaOptions(target, (AreaConfig) series);
-        } else if (series instanceof AreaSplineConfig) {
-            writeAreaSplineOptions(target, (AreaSplineConfig) series);
         } else if (series instanceof ColumnConfig) {
             writeColumnOptions(target, (ColumnConfig) series);
         } else if (series instanceof BarConfig) {
             writeBarOptions(target, (BarConfig) series);
         } else if (series instanceof PieConfig) {
             writePieOptions(target, (PieConfig) series);
-        } else { // Common series attributes
+        } else {
+            // Common series attributes
             writeCommonSeriesOptions(target, series);
         }
+
     }
 
     /**
      * Writes configuration attributes common to all types of series.
-     * 
-     * @param target
-     * @param seriesOptions
+     *
+     * @param target        The paint target.
+     * @param seriesOptions The series options.
      * @throws PaintException
      */
     private static void writeCommonSeriesOptions(PaintTarget target,
-            SeriesConfig seriesOptions) throws PaintException {
+                                                 SeriesConfig seriesOptions) throws PaintException {
         if (seriesOptions.getAllowPointSelect() != null) {
             target.addAttribute("allowPointSelect",
                     seriesOptions.getAllowPointSelect());
@@ -623,7 +579,7 @@ final class InvientChartsUtil {
         if (seriesOptions.getCursor() != null) {
             target.addAttribute("cursor", seriesOptions.getCursor());
         }
-        //
+
         if (seriesOptions.getColor() != null) {
             target.addAttribute("color", seriesOptions.getColor().getString());
         }
@@ -631,9 +587,11 @@ final class InvientChartsUtil {
             target.addAttribute("enableMouseTracking",
                     seriesOptions.getEnableMouseTracking());
         }
+
         // if (seriesOptions.getSelected() != null) {
         // target.addAttribute("selected", seriesOptions.getSelected());
         // }
+
         if (seriesOptions.getShowCheckbox() != null) {
             target.addAttribute("showCheckbox", seriesOptions.getShowCheckbox());
         }
@@ -650,21 +608,20 @@ final class InvientChartsUtil {
         if (seriesOptions.getVisible() != null) {
             target.addAttribute("visible", seriesOptions.getVisible());
         }
-        // Data Label
+
         writeSeriesDataLabel(target, seriesOptions.getDataLabel());
-        // State
         writeSeriesState(target, seriesOptions.getHoverState());
     }
 
     /**
      * Writes configuration attributes of a series hover state.
-     * 
-     * @param target
-     * @param seriesState
+     *
+     * @param target      The paint target.
+     * @param seriesState The series state.
      * @throws PaintException
      */
     private static void writeSeriesState(PaintTarget target,
-            SeriesState seriesState) throws PaintException {
+                                         SeriesState seriesState) throws PaintException {
         target.startTag("state");
         if (seriesState != null) {
             target.startTag("hover");
@@ -687,13 +644,13 @@ final class InvientChartsUtil {
     /**
      * Writes configuration attributes common to all types of series. It takes
      * care of specific data labels in case of pie.
-     * 
-     * @param target
-     * @param dataLabel
+     *
+     * @param target    The paint target.
+     * @param dataLabel The data label.
      * @throws PaintException
      */
     private static void writeSeriesDataLabel(PaintTarget target,
-            DataLabel dataLabel) throws PaintException {
+                                             DataLabel dataLabel) throws PaintException {
         target.startTag("dataLabel");
         if (dataLabel != null) {
             if (dataLabel instanceof PieDataLabel) {
@@ -707,9 +664,9 @@ final class InvientChartsUtil {
 
     /**
      * Writes configuration attributes of a series data labels.
-     * 
-     * @param target
-     * @param dataLabel
+     *
+     * @param target    The paint target.
+     * @param dataLabel The data label.
      * @throws PaintException
      */
     private static void writeDataLabel(PaintTarget target, DataLabel dataLabel)
@@ -742,13 +699,13 @@ final class InvientChartsUtil {
 
     /**
      * Writes configuration attributes of a pie chart's data label.
-     * 
-     * @param target
-     * @param dataLabel
+     *
+     * @param target    The paint target.
+     * @param dataLabel The data label.
      * @throws PaintException
      */
     private static void writePieDataLabel(PaintTarget target,
-            PieDataLabel dataLabel) throws PaintException {
+                                          PieDataLabel dataLabel) throws PaintException {
 
         writeDataLabel(target, dataLabel);
 
@@ -766,34 +723,36 @@ final class InvientChartsUtil {
         if (dataLabel.getDistance() != null) {
             target.addAttribute("distance", dataLabel.getDistance());
         }
+
     }
 
     /**
      * Writes configuration attributes of an axis data labels.
-     * 
-     * @param target
-     * @param dataLabel
+     *
+     * @param target    The paint target.
+     * @param dataLabel The data label.
      * @throws PaintException
      */
     private static void writeAxisDataLabel(PaintTarget target,
-            AxisDataLabel dataLabel) throws PaintException {
+                                           AxisDataLabel dataLabel) throws PaintException {
 
         writeDataLabel(target, dataLabel);
 
         if (dataLabel.getStep() != null) {
             target.addAttribute("step", dataLabel.getStep());
         }
+
     }
 
     /**
      * Writes configuration attributes of an x-axis data labels.
-     * 
-     * @param target
-     * @param dataLabel
+     *
+     * @param target    The paint target.
+     * @param dataLabel The data label.
      * @throws PaintException
      */
     private static void writeXAxisDataLabel(PaintTarget target,
-            XAxisDataLabel dataLabel) throws PaintException {
+                                            XAxisDataLabel dataLabel) throws PaintException {
         target.startTag("label");
         if (dataLabel != null) {
             writeAxisDataLabel(target, dataLabel);
@@ -808,13 +767,13 @@ final class InvientChartsUtil {
 
     /**
      * Writes configuration attributes of y-axis data labels.
-     * 
-     * @param target
-     * @param dataLabel
+     *
+     * @param target    The paint target.
+     * @param dataLabel The data label.
      * @throws PaintException
      */
     private static void writeYAxisDataLabel(PaintTarget target,
-            YAxisDataLabel dataLabel) throws PaintException {
+                                            YAxisDataLabel dataLabel) throws PaintException {
         target.startTag("label");
 
         if (dataLabel != null) {
@@ -826,13 +785,13 @@ final class InvientChartsUtil {
     /**
      * Writes configuration attributes of a marker. It takes care of handling
      * image or symbol marker.
-     * 
-     * @param target
-     * @param markerOptions
+     *
+     * @param target        The paint target.
+     * @param markerOptions The marker options.
      * @throws PaintException
      */
     private static void writeMarkerOptions(PaintTarget target,
-            Marker markerOptions) throws PaintException {
+                                           Marker markerOptions) throws PaintException {
         target.startTag("marker");
         if (markerOptions != null) {
             if (markerOptions.getEnabled() != null) {
@@ -852,14 +811,13 @@ final class InvientChartsUtil {
 
     /**
      * Writes configuration attributes of a marker states hover and select
-     * 
-     * 
-     * @param target
-     * @param marker
+     *
+     * @param target The paint target.
+     * @param marker The marker.
      * @throws PaintException
      */
     private static void writeMarkerStates(PaintTarget target,
-            SymbolMarker marker) throws PaintException {
+                                          SymbolMarker marker) throws PaintException {
         target.startTag("states");
         //
         target.startTag("hover");
@@ -880,13 +838,13 @@ final class InvientChartsUtil {
 
     /**
      * Writes configuration attributes of an image marker
-     * 
-     * @param target
-     * @param imgMarker
+     *
+     * @param target    The paint target.
+     * @param imgMarker The image marker.
      * @throws PaintException
      */
     private static void writeImageMarkerOptions(PaintTarget target,
-            ImageMarker imgMarker) throws PaintException {
+                                                ImageMarker imgMarker) throws PaintException {
         if (imgMarker.getImageURL() != null) {
             target.addAttribute("symbol", imgMarker.getImageURL());
         }
@@ -894,13 +852,13 @@ final class InvientChartsUtil {
 
     /**
      * Writes configuration attributes of a symbol marker
-     * 
-     * @param target
-     * @param symbolMarker
+     *
+     * @param target       The paint target.
+     * @param symbolMarker The symbol marker.
      * @throws PaintException
      */
     private static void writeSymbolMarkerOptions(PaintTarget target,
-            SymbolMarker symbolMarker) throws PaintException {
+                                                 SymbolMarker symbolMarker) throws PaintException {
         if (symbolMarker.getFillColor() != null) {
             target.addAttribute("fillColor", symbolMarker.getFillColor()
                     .getString());
@@ -922,13 +880,13 @@ final class InvientChartsUtil {
 
     /**
      * Writes configuration attributes of a marker
-     * 
-     * @param target
-     * @param markerState
+     *
+     * @param target      The paint target.
+     * @param markerState The marker state.
      * @throws PaintException
      */
     private static void writeMarkerState(PaintTarget target,
-            MarkerState markerState) throws PaintException {
+                                         MarkerState markerState) throws PaintException {
         if (markerState.getEnabled() != null) {
             target.addAttribute("enabled", markerState.getEnabled());
         }
@@ -951,13 +909,13 @@ final class InvientChartsUtil {
     /**
      * Writes configuration attributes common to all lines series such as line,
      * spline and area.
-     * 
-     * @param target
-     * @param baseLineOptions
+     *
+     * @param target          The paint target.
+     * @param baseLineOptions The base line options.
      * @throws PaintException
      */
     private static void writeBaseLineOptions(PaintTarget target,
-            BaseLineConfig baseLineOptions) throws PaintException {
+                                             BaseLineConfig baseLineOptions) throws PaintException {
         writeCommonSeriesOptions(target, baseLineOptions);
         if (baseLineOptions.getDashStyle() != null) {
             target.addAttribute("dashStyle", baseLineOptions.getDashStyle()
@@ -970,10 +928,10 @@ final class InvientChartsUtil {
             target.addAttribute("pointInterval",
                     baseLineOptions.getPointInterval());
         }
-		if (baseLineOptions.getTurboThreshold() != null) {
-			target.addAttribute("turboThreshold",
-					baseLineOptions.getTurboThreshold());
-		}
+        if (baseLineOptions.getTurboThreshold() != null) {
+            target.addAttribute("turboThreshold",
+                    baseLineOptions.getTurboThreshold());
+        }
         if (baseLineOptions.getPointStart() != null) {
             target.addAttribute("pointStart", baseLineOptions.getPointStart());
         }
@@ -986,37 +944,37 @@ final class InvientChartsUtil {
 
     /**
      * Writes configuration attributes of a spline series
-     * 
-     * @param target
-     * @param splineOptions
+     *
+     * @param target        The paint target.
+     * @param splineOptions The spline options.
      * @throws PaintException
      */
     private static void writeSplineOptions(PaintTarget target,
-            SplineConfig splineOptions) throws PaintException {
+                                           SplineConfig splineOptions) throws PaintException {
         writeBaseLineOptions(target, splineOptions);
     }
 
     /**
      * Writes configuration attributes of s scatter series
-     * 
-     * @param target
-     * @param scatterOptions
+     *
+     * @param target         The paint target.
+     * @param scatterOptions The scatter options.
      * @throws PaintException
      */
     private static void writeScatterOptions(PaintTarget target,
-            ScatterConfig scatterOptions) throws PaintException {
+                                            ScatterConfig scatterOptions) throws PaintException {
         writeBaseLineOptions(target, scatterOptions);
     }
 
     /**
      * Writes configuration attributes of a line series
-     * 
-     * @param target
-     * @param lineOptions
+     *
+     * @param target      The paint target.
+     * @param lineOptions The line options.
      * @throws PaintException
      */
     private static void writeLineOptions(PaintTarget target,
-            LineConfig lineOptions) throws PaintException {
+                                         LineConfig lineOptions) throws PaintException {
         writeBaseLineOptions(target, lineOptions);
         //
         if (lineOptions.getStep() != null) {
@@ -1026,13 +984,13 @@ final class InvientChartsUtil {
 
     /**
      * Writes configuration attributes of an area series
-     * 
-     * @param target
-     * @param areaOptions
+     *
+     * @param target      The paint target.
+     * @param areaOptions The area options.
      * @throws PaintException
      */
     private static void writeAreaOptions(PaintTarget target,
-            AreaConfig areaOptions) throws PaintException {
+                                         AreaConfig areaOptions) throws PaintException {
         writeBaseLineOptions(target, areaOptions);
         //
         if (areaOptions.getFillColor() != null) {
@@ -1049,25 +1007,26 @@ final class InvientChartsUtil {
         if (areaOptions.getThreshold() != null) {
             target.addAttribute("threshold", areaOptions.getThreshold());
         }
+
     }
 
     /**
      * Writes configuration attributes of an area-spline
-     * 
-     * @param target
-     * @param areaSplineOptions
+     *
+     * @param target            The paint target.
+     * @param areaSplineOptions The area spline options.
      * @throws PaintException
      */
     private static void writeAreaSplineOptions(PaintTarget target,
-            AreaSplineConfig areaSplineOptions) throws PaintException {
+                                               AreaSplineConfig areaSplineOptions) throws PaintException {
         writeAreaOptions(target, areaSplineOptions);
     }
 
     /**
      * Writes configuration attributes of a pie series
-     * 
-     * @param target
-     * @param pieOptions
+     *
+     * @param target     The paint target.
+     * @param pieOptions The pie options.
      * @throws PaintException
      */
     private static void writePieOptions(PaintTarget target, PieConfig pieOptions)
@@ -1096,21 +1055,21 @@ final class InvientChartsUtil {
         if (pieOptions.getSlicedOffset() != null) {
             target.addAttribute("slicedOffset", pieOptions.getSlicedOffset());
         }
-		if (pieOptions.getIgnoreHiddenPoint() != null) {
-			target.addAttribute("ignoreHiddenPoint", pieOptions.getIgnoreHiddenPoint());
-		}
+        if (pieOptions.getIgnoreHiddenPoint() != null) {
+            target.addAttribute("ignoreHiddenPoint", pieOptions.getIgnoreHiddenPoint());
+        }
     }
 
     /**
      * Writes configuration attributes common to columnar series such as bar and
      * column
-     * 
-     * @param target
-     * @param baseBarOptions
+     *
+     * @param target         The paint target.
+     * @param baseBarOptions The base bar options.
      * @throws PaintException
      */
     private static void writeBaseBarOptions(PaintTarget target,
-            BaseBarConfig baseBarOptions) throws PaintException {
+                                            BaseBarConfig baseBarOptions) throws PaintException {
         writeCommonSeriesOptions(target, baseBarOptions);
 
         if (baseBarOptions.getBorderColor() != null) {
@@ -1147,9 +1106,9 @@ final class InvientChartsUtil {
 
     /**
      * Writes configuration attributes of a bar series
-     * 
-     * @param target
-     * @param barOptions
+     *
+     * @param target     The paint target.
+     * @param barOptions The bar options.
      * @throws PaintException
      */
     private static void writeBarOptions(PaintTarget target, BarConfig barOptions)
@@ -1159,13 +1118,13 @@ final class InvientChartsUtil {
 
     /**
      * Writes configuration attributes of a column series
-     * 
-     * @param target
-     * @param columnOptions
+     *
+     * @param target        The paint target.
+     * @param columnOptions The column options.
      * @throws PaintException
      */
     private static void writeColumnOptions(PaintTarget target,
-            ColumnConfig columnOptions) throws PaintException {
+                                           ColumnConfig columnOptions) throws PaintException {
         writeBaseBarOptions(target, columnOptions);
     }
 
@@ -1173,17 +1132,18 @@ final class InvientChartsUtil {
      * Writes data of each series of the chart. It transforms data into a form
      * which is usable by the Vaadin terminal class. It also writes
      * configuration attributes specific to each series, if any.
-     * 
-     * @param target
-     * @param chartSeriesType
-     * @param data
-     * @param xAxes
-     * @param yAxes
+     *
+     * @param target          The paint target.
+     * @param chartSeriesType The chart series type.
+     * @param data            The data.
+     * @param xAxis           The x-axis.
+     * @param yAxis           The y-axis.
+     *
      * @throws PaintException
      */
     public static void writeSeries(PaintTarget target,
-            SeriesType chartSeriesType, LinkedHashSet<Series> data,
-            LinkedHashSet<XAxis> xAxes, LinkedHashSet<YAxis> yAxes)
+                                   SeriesType chartSeriesType, LinkedHashSet<Series> data,
+                                   LinkedHashSet<XAxis> xAxis, LinkedHashSet<YAxis> yAxis)
             throws PaintException {
         if (data == null) {
             return;
@@ -1202,9 +1162,9 @@ final class InvientChartsUtil {
             }
 
             target.addAttribute("xAxis",
-                    getXAxisIndex(series.getXAxis(), xAxes));
+                    getXAxisIndex(series.getXAxis(), xAxis));
             target.addAttribute("yAxis",
-                    getYAxisIndex(series.getYAxis(), yAxes));
+                    getYAxisIndex(series.getYAxis(), yAxis));
 
             String seriesOptionsTagName = chartSeriesType.getName();
             if (series.getType() != null) {
@@ -1232,13 +1192,13 @@ final class InvientChartsUtil {
      * Writes point data (x, y) and its configuration attributes, if any. If a
      * point does not have x and y values then the point is skipped. However,
      * for such points empty tags is created without any attributes or children.
-     * 
+     *
      * @param target
      * @param points
      * @throws PaintException
      */
     private static void writePoints(PaintTarget target,
-            LinkedHashSet<? extends Point> points) throws PaintException {
+                                    LinkedHashSet<? extends Point> points) throws PaintException {
         if (points == null) {
             return;
         }
@@ -1292,14 +1252,14 @@ final class InvientChartsUtil {
 
     /**
      * Writes configuration attributes common to all types of axis.
-     * 
+     *
      * @param target
      * @param axis
      * @param axes
      * @throws PaintException
      */
     private static void writeBaseAxis(PaintTarget target, AxisBase axis,
-            LinkedHashSet<? extends Axis> axes) throws PaintException {
+                                      LinkedHashSet<? extends Axis> axes) throws PaintException {
 
         if (axis.getAlternateGridColor() != null) {
             target.addAttribute("alternateGridColor", axis
@@ -1403,42 +1363,42 @@ final class InvientChartsUtil {
     /**
      * Returns an index of an x-axis in a list of x-axis only if the x-axis
      * exists otherwise null
-     * 
+     *
      * @param indexOfXAxis
      * @param xAxes
      * @return Retrieves Retrieves an index of an x-axis in a list of x-axis
      *         only if the x-axis exists otherwise null
      */
     private static Integer getXAxisIndex(XAxis indexOfXAxis,
-            LinkedHashSet<XAxis> xAxes) {
+                                         LinkedHashSet<XAxis> xAxes) {
         return getAxisIndex(indexOfXAxis, xAxes);
     }
 
     /**
      * Returns an index of a y-axis in a list of y-axis only if the y-axis
      * exists otherwise null
-     * 
+     *
      * @param indexOfYAxis
      * @param yAxes
      * @return Returns index of a y-axis in a list of y-axis only if the y-axis
      *         exists otherwise null
      */
     private static Integer getYAxisIndex(YAxis indexOfYAxis,
-            LinkedHashSet<YAxis> yAxes) {
+                                         LinkedHashSet<YAxis> yAxes) {
         return getAxisIndex(indexOfYAxis, yAxes);
     }
 
     /**
      * Returns an index of an axis in a list of axis only if the axis exists
      * otherwise null
-     * 
+     *
      * @param indexOfAxis
      * @param axes
      * @return Returns an index of an axis in a list of axis only if the axis
      *         exists otherwise null
      */
     private static Integer getAxisIndex(Axis indexOfAxis,
-            LinkedHashSet<? extends Axis> axes) {
+                                        LinkedHashSet<? extends Axis> axes) {
         if (indexOfAxis == null || axes == null || axes.size() == 0) {
             return 0;
         }
@@ -1455,13 +1415,13 @@ final class InvientChartsUtil {
 
     /**
      * Writes configuration attributes of the plotbands associated with an axis.
-     * 
+     *
      * @param target
      * @param plotBands
      * @throws PaintException
      */
     private static void writePlotBands(PaintTarget target,
-            LinkedHashSet<? extends PlotBand> plotBands) throws PaintException {
+                                       LinkedHashSet<? extends PlotBand> plotBands) throws PaintException {
         target.startTag("plotBands");
         if (plotBands != null) {
             for (PlotBand plotBand : plotBands) {
@@ -1488,7 +1448,7 @@ final class InvientChartsUtil {
 
     /**
      * Writes configuration attributes of a plotlabel.
-     * 
+     *
      * @param target
      * @param plotLabel
      * @throws PaintException
@@ -1533,13 +1493,13 @@ final class InvientChartsUtil {
     /**
      * Writes from/to value for a plotband. It considers date and number values
      * separately.
-     * 
+     *
      * @param target
      * @param plotBandRange
      * @throws PaintException
      */
     private static void writePlotBandRange(PaintTarget target,
-            Range plotBandRange) throws PaintException {
+                                           Range plotBandRange) throws PaintException {
         target.startTag("rangeValue");
         if (plotBandRange != null) {
             if (plotBandRange instanceof NumberRange) {
@@ -1581,13 +1541,13 @@ final class InvientChartsUtil {
 
     /**
      * Writes configuration attributes of the plotlines
-     * 
+     *
      * @param target
      * @param plotLines
      * @throws PaintException
      */
     private static void writePlotLines(PaintTarget target,
-            LinkedHashSet<? extends PlotLine> plotLines) throws PaintException {
+                                       LinkedHashSet<? extends PlotLine> plotLines) throws PaintException {
         target.startTag("plotLines");
         if (plotLines != null) {
             for (PlotLine plotLine : plotLines) {
@@ -1621,13 +1581,13 @@ final class InvientChartsUtil {
     /**
      * Writes value of a plotline. It considers date and number value
      * separately.
-     * 
+     *
      * @param target
      * @param plotLineValue
      * @throws PaintException
      */
     private static void writePlotLineValue(PaintTarget target,
-            Value plotLineValue) throws PaintException {
+                                           Value plotLineValue) throws PaintException {
 
         target.startTag("lineValue");
         if (plotLineValue != null) {
@@ -1669,7 +1629,7 @@ final class InvientChartsUtil {
      * Writes configuration attributes of an axis. Depending on type of the
      * argument tick, it either writes attributes for {@link MinorTick} or
      * {@link Tick}
-     * 
+     *
      * @param target
      * @param tick
      * @throws PaintException
@@ -1720,7 +1680,7 @@ final class InvientChartsUtil {
      * Writes configuration attributes of an axis. Depending on type of the
      * argument tick, it either writes attributes for {@link MinorGrid} or
      * {@link Grid}
-     * 
+     *
      * @param target
      * @param grid
      * @throws PaintException
@@ -1751,7 +1711,6 @@ final class InvientChartsUtil {
     }
 
     /**
-     * 
      * @param target
      * @param title
      * @throws PaintException
@@ -1783,13 +1742,13 @@ final class InvientChartsUtil {
      * Iteratively processes each x-axis and writes configuration attributes of
      * each axis based on type of the axis e.g. {@link NumberAxis},
      * {@link DateTimeAxis} and {@link CategoryAxis}
-     * 
+     *
      * @param target
      * @param axes
      * @throws PaintException
      */
     public static void writeXAxes(PaintTarget target,
-            LinkedHashSet<XAxis> axes, InvientChartsConfig config)
+                                  LinkedHashSet<XAxis> axes, InvientChartsConfig config)
             throws PaintException {
         target.startTag("xAxes");
 
@@ -1819,7 +1778,7 @@ final class InvientChartsUtil {
     }
 
     private static boolean isIncludeTime(DateTimeAxis axis,
-            LinkedHashSet<Series> chartSeries) {
+                                         LinkedHashSet<Series> chartSeries) {
         for (Series series : chartSeries) {
             if (series instanceof DateTimeSeries && series.getXAxis() == axis) {
                 return ((DateTimeSeries) series).isIncludeTime();
@@ -1834,7 +1793,7 @@ final class InvientChartsUtil {
      * @throws PaintException
      */
     private static void writeNumberAxis(PaintTarget target,
-            NumberAxis numberAxis) throws PaintException {
+                                        NumberAxis numberAxis) throws PaintException {
         if (numberAxis.getAllowDecimals() != null) {
             target.addAttribute("allowDecimals", numberAxis.getAllowDecimals());
         }
@@ -1848,7 +1807,7 @@ final class InvientChartsUtil {
 
     /**
      * Returns milliseconds of the date argument dt excluding time.
-     * 
+     *
      * @param dt
      * @return
      */
@@ -1860,7 +1819,7 @@ final class InvientChartsUtil {
      * Returns milliseconds of the date argument dt. If the argument
      * isIncludeTime is false then the returned milliseconds does not include
      * time.
-     * 
+     *
      * @param dt
      * @param isIncludeTime
      * @return
@@ -1883,7 +1842,7 @@ final class InvientChartsUtil {
      * @throws PaintException
      */
     private static void writeDateTimeAxis(PaintTarget target,
-            DateTimeAxis dateTimeAxis, boolean isIncludeTime)
+                                          DateTimeAxis dateTimeAxis, boolean isIncludeTime)
             throws PaintException {
         if (dateTimeAxis.getMax() != null) {
             target.addAttribute("max",
@@ -1939,7 +1898,7 @@ final class InvientChartsUtil {
      * @throws PaintException
      */
     private static void writeCategoryAxis(PaintTarget target,
-            CategoryAxis categoryAxis) throws PaintException {
+                                          CategoryAxis categoryAxis) throws PaintException {
         target.startTag("categories");
         if (categoryAxis.getCategories() != null
                 && categoryAxis.getCategories().size() > 0) {
@@ -1958,7 +1917,7 @@ final class InvientChartsUtil {
      * @throws PaintException
      */
     public static void writeYAxes(PaintTarget target,
-            LinkedHashSet<YAxis> axes, InvientChartsConfig config)
+                                  LinkedHashSet<YAxis> axes, InvientChartsConfig config)
             throws PaintException {
         target.startTag("yAxes");
 
@@ -1978,13 +1937,13 @@ final class InvientChartsUtil {
 
     /**
      * Writes configuration attributes of the chart labels.
-     * 
+     *
      * @param target
      * @param chartLabel
      * @throws PaintException
      */
     public static void writeChartLabelConfig(PaintTarget target,
-            ChartLabel chartLabel) throws PaintException {
+                                             ChartLabel chartLabel) throws PaintException {
         target.startTag("labels");
 
         if (chartLabel != null && chartLabel.getLabels() != null
@@ -2057,14 +2016,14 @@ final class InvientChartsUtil {
      * add a new series or remove/delete an existing series. Basically, this
      * information helps client to update only a portion of the chart instead of
      * full chart.
-     * 
+     *
      * @param target
      * @param seriesCURMap
      * @throws PaintException
      */
 
     public static void writeChartDataUpdates(PaintTarget target,
-            LinkedHashMap<String, LinkedHashSet<SeriesCUR>> seriesCURMap)
+                                             LinkedHashMap<String, LinkedHashSet<SeriesCUR>> seriesCURMap)
             throws PaintException {
         for (String seriesName : seriesCURMap.keySet()) {
             LinkedHashSet<SeriesCUR> seriesCURSet = seriesCURMap

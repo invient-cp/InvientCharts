@@ -15,11 +15,12 @@
  */
 package com.invient.vaadin.charts;
 
+import java.io.Serializable;
+import java.util.*;
+
 import com.invient.vaadin.charts.InvientCharts.SeriesType;
 import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.*;
 
-import java.io.Serializable;
-import java.util.*;
 
 /**
  * This class encapsulates a number of configuration options for the
@@ -994,14 +995,16 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * The value {@link ZoomType.X} represents horizontal zoom. The value
-         * {@link ZoomType.Y} represents vertical zoom. The value
-         * {@link ZoomType.XY} represents horizontal as well as vertical zoom.
+         * The value {@link ZoomType#X} represents horizontal zoom. The value
+         * {@link ZoomType#Y} represents vertical zoom. The value
+         * {@link ZoomType#XY} represents horizontal as well as vertical zoom.
          *
          * @author Invient
          */
         public static enum ZoomType {
+
             X("x"), Y("y"), XY("xy"), NONE("");
+
             private String type;
 
             private ZoomType(String type) {
@@ -4527,6 +4530,7 @@ public final class InvientChartsConfig implements Serializable {
     }
 
     public static interface Axis extends Serializable {
+
         public String getId();
 
         public void setId(String id);
