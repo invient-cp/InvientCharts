@@ -1897,6 +1897,10 @@ final class InvientChartsUtil {
             target.startTag("dateTimeLabelFormats");
             DateTimeLabelFormat dateTimeLabelFormat = dateTimeAxis
                     .getDateTimeLabelFormat();
+            if (dateTimeLabelFormat.getMillisecond() != null) {
+                target.addAttribute("millisecond", dateTimeAxis
+                        .getDateTimeLabelFormat().getMillisecond());
+            }
             if (dateTimeLabelFormat.getSecond() != null) {
                 target.addAttribute("second", dateTimeAxis
                         .getDateTimeLabelFormat().getSecond());
