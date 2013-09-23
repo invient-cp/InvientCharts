@@ -1,0 +1,20 @@
+<assembly>
+  <id>extractManifest</id>
+  <formats>
+    <format>dir</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <!-- Extract the whole contents of the add-on JAR to get the manifest -->
+  <moduleSets>
+    <moduleSet>
+      <includes>
+        <include>com.invient.vaadin.charts:invient-charts-addon</include>
+      </includes>
+      <binaries>
+        <outputDirectory>/</outputDirectory>
+        <includeDependencies>false</includeDependencies>
+        <unpack>true</unpack>
+      </binaries>
+    </moduleSet>
+  </moduleSets>
+</assembly>
