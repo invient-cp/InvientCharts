@@ -15,40 +15,28 @@
  */
 package com.invient.vaadin.charts;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-
 import com.invient.vaadin.charts.InvientCharts.SeriesType;
-import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.AxisTitle;
-import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.AxisType;
-import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.Grid;
-import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.MinorGrid;
-import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.MinorTick;
-import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.Tick;
-import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.WeekDay;
+import com.invient.vaadin.charts.InvientChartsConfig.AxisBase.*;
+
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * This class encapsulates a number of configuration options for the
  * InvientChars. These configuration options are {@link Title}, {@link SubTitle}
  * , {@link GeneralChartConfig}, {@link Credit}, {@link Legend}, {@link Tooltip}
- * , {@link ChartLabel}, {@link SeriesConfig}, {@link XAxis} and {@link YAxis}
- * 
+ * , {@link ChartLabel}, {@link SeriesConfig}, {@link XAxis} and {@link YAxis}.
+ * <p/>
  * All configuration properties which are of object type are initialized with an
  * object instance.
- * 
+ * <p/>
  * These configuration options are static and generally set once. After a chart
  * ({@link InvientCharts}) created, any changes made to the configuration options
  * will not reflect in the chart. You would have to create a new chart
- * {@link InvientCharts}
- * 
- * For some APIs, the description has been taken from
- * http://www.highcharts.com/ref/
- * 
+ * {@link InvientCharts} instance.
+ * <p/>
+ * For some APIs, the description has been taken from "http://www.highcharts.com/ref/".
+ *
  * @author Invient
  */
 @SuppressWarnings("serial")
@@ -61,23 +49,20 @@ public final class InvientChartsConfig implements Serializable {
     private Legend legend = new Legend();
     private Tooltip tooltip = new Tooltip();
     private ChartLabel chartLabel = new ChartLabel();
-
     private LinkedHashMap<SeriesType, SeriesConfig> seriesTypeConfig = new LinkedHashMap<SeriesType, SeriesConfig>();
     private LinkedHashSet<XAxis> xAxes = new LinkedHashSet<XAxis>();
     private LinkedHashSet<YAxis> yAxes = new LinkedHashSet<YAxis>();
-
     private InvientCharts invientCharts;
-    
+
     InvientCharts getInvientCharts() {
         return this.invientCharts;
     }
-    
+
     void setInvientCharts(InvientCharts invientCharts) {
         this.invientCharts = invientCharts;
     }
-    
+
     /**
-     * 
      * @return The {@link ChartLabel} object representing labels at arbitrary
      *         position in the chart.
      */
@@ -86,9 +71,9 @@ public final class InvientChartsConfig implements Serializable {
     }
 
     /**
-     * Sets the argument {@link ChartLabel} object only if it is non-null
-     * 
-     * @param chartLabel
+     * Sets the argument {@link ChartLabel} object only if it is non-null.
+     *
+     * @param chartLabel The chart label.
      */
     public void setChartLabel(ChartLabel chartLabel) {
         if (chartLabel != null) {
@@ -99,9 +84,8 @@ public final class InvientChartsConfig implements Serializable {
     /**
      * The {@link ChartLabel} class represents a set of labels which an be
      * placed at arbitrary position in the chart.
-     * 
+     *
      * @author Invient
-     * 
      */
     public static class ChartLabel implements Serializable {
 
@@ -109,7 +93,6 @@ public final class InvientChartsConfig implements Serializable {
         private List<ChartLabelItem> labels = new ArrayList<ChartLabelItem>();
 
         /**
-         * 
          * @return Returns css style.
          */
         public String getStyle() {
@@ -118,9 +101,8 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets css style for all labels in this class
-         * 
-         * @param style
-         *            css style string
+         *
+         * @param style css style string
          */
         public void setStyle(String style) {
             this.style = style;
@@ -135,7 +117,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets a list of {@link ChartLabelItem} objects
-         * 
+         *
          * @param labels
          */
         public void setLabels(List<ChartLabelItem> labels) {
@@ -147,9 +129,8 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Appends the specified element at the end of {@link ChartLabelItem}
          * list
-         * 
-         * @param label
-         *            element to be appended
+         *
+         * @param label element to be appended
          */
         public void addLabel(ChartLabelItem label) {
             this.labels.add(label);
@@ -157,7 +138,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Removes the specified element from the list of {@link ChartLabelItem}
-         * 
+         *
          * @param label
          */
         public void removeLabel(ChartLabelItem label) {
@@ -168,9 +149,8 @@ public final class InvientChartsConfig implements Serializable {
          * This class represents a label placed at arbitrary location in the
          * chart. The label can have html text and it can be styled using
          * css-style.
-         * 
+         *
          * @author Invient
-         * 
          */
         public static class ChartLabelItem implements Serializable {
             private String html;
@@ -178,7 +158,7 @@ public final class InvientChartsConfig implements Serializable {
 
             /**
              * Creates a new instance with specified html and style arguments.
-             * 
+             *
              * @param html
              * @param style
              */
@@ -189,7 +169,6 @@ public final class InvientChartsConfig implements Serializable {
             }
 
             /**
-             * 
              * @return Returns html of this label
              */
             public String getHtml() {
@@ -198,16 +177,14 @@ public final class InvientChartsConfig implements Serializable {
 
             /**
              * Sets html for this label
-             * 
-             * @param html
-             *            It can be plain or html string.
+             *
+             * @param html It can be plain or html string.
              */
             public void setHtml(String html) {
                 this.html = html;
             }
 
             /**
-             * 
              * @return Returns css-style of this label
              */
             public String getStyle() {
@@ -216,7 +193,7 @@ public final class InvientChartsConfig implements Serializable {
 
             /**
              * Sets css style for this label
-             * 
+             *
              * @param style
              */
             public void setStyle(String style) {
@@ -227,7 +204,6 @@ public final class InvientChartsConfig implements Serializable {
     }
 
     /**
-     * 
      * @return Returns a collection of x-axis.
      */
     public LinkedHashSet<XAxis> getXAxes() {
@@ -237,7 +213,7 @@ public final class InvientChartsConfig implements Serializable {
     /**
      * Sets a collection of x-axis for the chart. The collection of x-axis is
      * set only if argument xAxes is non-null.
-     * 
+     *
      * @param xAxes
      */
     public void setXAxes(LinkedHashSet<XAxis> xAxes) {
@@ -248,7 +224,7 @@ public final class InvientChartsConfig implements Serializable {
 
     /**
      * Adds specified x-axis to the collection of x-axis
-     * 
+     *
      * @param xAxis
      * @return Returns true if the x-axis is added successfully otherwise false
      */
@@ -266,7 +242,7 @@ public final class InvientChartsConfig implements Serializable {
     /**
      * Sets a collection of y-axis for the chart. The collection of y-axis is
      * set only if argument yAxes is non-null
-     * 
+     *
      * @param yAxes
      */
     public void setYAxes(LinkedHashSet<YAxis> yAxes) {
@@ -277,7 +253,7 @@ public final class InvientChartsConfig implements Serializable {
 
     /**
      * Adds specified y-axis to the collection of y-axis
-     * 
+     *
      * @param yAxis
      * @return Returns true if the y-axis is added successfully otherwise false
      */
@@ -294,7 +270,7 @@ public final class InvientChartsConfig implements Serializable {
 
     /**
      * Sets the argument title only if the argument title is non-null
-     * 
+     *
      * @param title
      */
     public void setTitle(Title title) {
@@ -304,7 +280,6 @@ public final class InvientChartsConfig implements Serializable {
     }
 
     /**
-     * 
      * @return Returns subtitle
      */
     public SubTitle getSubtitle() {
@@ -313,7 +288,7 @@ public final class InvientChartsConfig implements Serializable {
 
     /**
      * Sets the argument subtitle only if the argument is non-null
-     * 
+     *
      * @param subtitle
      */
     public void setSubtitle(SubTitle subtitle) {
@@ -323,7 +298,6 @@ public final class InvientChartsConfig implements Serializable {
     }
 
     /**
-     * 
      * @return Returns tooltip object associated with this class
      */
     public Tooltip getTooltip() {
@@ -332,7 +306,7 @@ public final class InvientChartsConfig implements Serializable {
 
     /**
      * Sets {@link Tooltip} object only if the argument tooltip is non-null
-     * 
+     *
      * @param tooltip
      */
     public void setTooltip(Tooltip tooltip) {
@@ -342,7 +316,6 @@ public final class InvientChartsConfig implements Serializable {
     }
 
     /**
-     * 
      * @return Returns legend object of the chart
      */
     public Legend getLegend() {
@@ -351,7 +324,7 @@ public final class InvientChartsConfig implements Serializable {
 
     /**
      * Sets {@link Legend} object only if the argument legend is non-null
-     * 
+     *
      * @param legend
      */
     public void setLegend(Legend legend) {
@@ -361,7 +334,6 @@ public final class InvientChartsConfig implements Serializable {
     }
 
     /**
-     * 
      * @return Returns credit object of the chart
      */
     public Credit getCredit() {
@@ -370,7 +342,7 @@ public final class InvientChartsConfig implements Serializable {
 
     /**
      * Sets the {@link Credit} object only if the argument credit is non-null
-     * 
+     *
      * @param credit
      */
     public void setCredit(Credit credit) {
@@ -380,7 +352,6 @@ public final class InvientChartsConfig implements Serializable {
     }
 
     /**
-     * 
      * @return Returns {@link GeneralChartConfig} object
      */
     public GeneralChartConfig getGeneralChartConfig() {
@@ -389,7 +360,7 @@ public final class InvientChartsConfig implements Serializable {
 
     /**
      * Sets {@link GeneralChartConfig} object only if the argument is non-null
-     * 
+     *
      * @param generalChartConfig
      */
     public void setGeneralChartConfig(GeneralChartConfig generalChartConfig) {
@@ -405,7 +376,7 @@ public final class InvientChartsConfig implements Serializable {
     /**
      * Sets a set of {@link SeriesConfig} objects only if the argument is
      * non-null
-     * 
+     *
      * @param seriesConfigs
      */
     public void setSeriesConfig(LinkedHashSet<SeriesConfig> seriesConfigs) {
@@ -419,10 +390,9 @@ public final class InvientChartsConfig implements Serializable {
 
     /**
      * Adds the specified argument only if it is non-null.
-     * 
+     *
      * @param seriesConfig
-     * @throws IllegalArgumentException
-     *             if the argument is null
+     * @throws IllegalArgumentException if the argument is null
      */
     public void addSeriesConfig(SeriesConfig seriesConfig) {
         if (seriesConfig == null) {
@@ -460,9 +430,8 @@ public final class InvientChartsConfig implements Serializable {
 
     /**
      * This class contains configuration properties at a chart level.
-     * 
+     *
      * @author Invient
-     * 
      */
     public static class GeneralChartConfig implements Serializable {
         private Paint backgroundColor;
@@ -490,9 +459,8 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * This class represents drawing area of the chart and contains methods
          * specific to it.
-         * 
+         *
          * @author chirag
-         * 
          */
         public static class Plot implements Serializable {
             private Paint backgroundColor;
@@ -554,9 +522,8 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * This class represents space around the chart. The boundary of the
          * chart includes axis, axis labels, legend, chart title and subtitle.
-         * 
+         *
          * @author Invient
-         * 
          */
         public static class Spacing implements Serializable {
             private Integer left;
@@ -605,12 +572,10 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
          * This class represents margin between the outer edge of the chart and
          * the plot area.
-         * 
+         *
          * @author Invient
-         * 
          */
         public static class Margin implements Serializable {
             private Integer left;
@@ -618,16 +583,16 @@ public final class InvientChartsConfig implements Serializable {
             private Integer right;
             private Integer bottom;
 
-            public Margin() {                
+            public Margin() {
             }
-            
+
             public Margin(Integer top, Integer right, Integer bottom, Integer left) {
                 this.top = top;
                 this.right = right;
                 this.bottom = bottom;
                 this.left = left;
             }
-            
+
             public Integer getLeft() {
                 return left;
             }
@@ -679,7 +644,7 @@ public final class InvientChartsConfig implements Serializable {
          * When using multiple axis, the ticks of two or more opposite axes will
          * automatically be aligned by adding ticks to the axis or axes with the
          * least ticks. This can be prevented by setting alignTicks to false.
-         * 
+         *
          * @param alignTicks
          */
         public void setAlignTicks(Boolean alignTicks) {
@@ -695,7 +660,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Set the overall animation for all chart updating.
-         * 
+         *
          * @param animation
          */
         public void setAnimation(Boolean animation) {
@@ -711,7 +676,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * A CSS class name to apply to the charts container
-         * 
+         *
          * @param className
          */
         public void setClassName(String className) {
@@ -719,7 +684,6 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
          * @return Returns plot object representing chart's drawing area
          */
         public Plot getPlot() {
@@ -728,7 +692,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets plot object
-         * 
+         *
          * @param plot
          */
         public void setPlot(Plot plot) {
@@ -736,7 +700,6 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
          * @return
          */
         public Boolean getReflow() {
@@ -746,7 +709,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * A value of true indicates that the chart will fit the width of the
          * charts container otherwise not.
-         * 
+         *
          * @param reflow
          */
         public void setReflow(Boolean reflow) {
@@ -763,7 +726,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * A value of true indicates that the drop shadow will apply to the
          * outer chart area otherwise not.
-         * 
+         *
          * @param shadow
          */
         public void setShadow(Boolean shadow) {
@@ -779,7 +742,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * A CSS string to apply to the charts container
-         * 
+         *
          * @param style
          */
         public void setStyle(String style) {
@@ -795,7 +758,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets the background color for the outer chart area
-         * 
+         *
          * @param backgroundColor
          */
         public void setBackgroundColor(Paint backgroundColor) {
@@ -811,7 +774,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets the border color for the outer chart border
-         * 
+         *
          * @param borderColor
          */
         public void setBorderColor(Paint borderColor) {
@@ -827,7 +790,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets radius for the outer chart border
-         * 
+         *
          * @param borderRadius
          */
         public void setBorderRadius(Integer borderRadius) {
@@ -843,7 +806,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets pixel width of the outer chart border
-         * 
+         *
          * @param borderWidth
          */
         public void setBorderWidth(Integer borderWidth) {
@@ -859,7 +822,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets height for the chart
-         * 
+         *
          * @param height
          */
         public void setHeight(Integer height) {
@@ -875,7 +838,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets width for the chart
-         * 
+         *
          * @param width
          */
         public void setWidth(Integer width) {
@@ -883,7 +846,6 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
          * @return
          */
         public Boolean getIgnoreHiddenSeries() {
@@ -894,7 +856,7 @@ public final class InvientChartsConfig implements Serializable {
          * If the argument is true, the axes will scale to the remaining visible
          * series once one series is hidden. If the argument is false, hiding
          * and showing a series will not affect the axes or the other series.
-         * 
+         *
          * @param ignoreHiddenSeries
          */
         public void setIgnoreHiddenSeries(Boolean ignoreHiddenSeries) {
@@ -911,7 +873,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * If the argument is true then the x-axis is reversed. If a bar plot is
          * present, it will be inverted automatically.
-         * 
+         *
          * @param inverted
          */
         public void setInverted(Boolean inverted) {
@@ -919,7 +881,6 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
          * @return
          */
         public Margin getMargin() {
@@ -943,7 +904,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * If the argument is true then the axes will be shown initially. This
          * is useful when the chart is empty and axes must be shown.
-         * 
+         *
          * @param showAxes
          */
         public void setShowAxes(Boolean showAxes) {
@@ -974,7 +935,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets series type to one of line, spline, scatter, area, areaspline,
          * pie, bar and column.
-         * 
+         *
          * @param type
          */
         public void setType(SeriesType type) {
@@ -991,7 +952,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets zoom type. It decides how a chart can be zoomed by dragging the
          * mouse.
-         * 
+         *
          * @param zoomType
          */
         public void setZoomType(ZoomType zoomType) {
@@ -1009,7 +970,7 @@ public final class InvientChartsConfig implements Serializable {
          * If the argument is true then the scaling will happen on client. If
          * the argument is false then the chart will not scale. In any case, the
          * server will receive event notification if registered.
-         * 
+         *
          * @param clientZoom
          */
         public void setClientZoom(boolean clientZoom) {
@@ -1036,9 +997,8 @@ public final class InvientChartsConfig implements Serializable {
          * The value {@link ZoomType.X} represents horizontal zoom. The value
          * {@link ZoomType.Y} represents vertical zoom. The value
          * {@link ZoomType.XY} represents horizontal as well as vertical zoom.
-         * 
+         *
          * @author Invient
-         * 
          */
         public static enum ZoomType {
             X("x"), Y("y"), XY("xy"), NONE("");
@@ -1057,9 +1017,8 @@ public final class InvientChartsConfig implements Serializable {
     /**
      * This class contains general configuration options for all series types
      * such as line, area and pie.
-     * 
+     *
      * @author Invient
-     * 
      */
     public static class SeriesConfig implements Serializable {
         private Boolean allowPointSelect;
@@ -1092,7 +1051,7 @@ public final class InvientChartsConfig implements Serializable {
          * otherwise not. Defaults to false, The point on a chart will toggle.
          * Also, whenever a point is selected or deselected, the registered
          * event listeners will be triggered.
-         * 
+         *
          * @param allowPointSelect
          */
         public void setAllowPointSelect(Boolean allowPointSelect) {
@@ -1106,7 +1065,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * If the argument is true then animation will be enabled when a series
          * will be displayed otherwise not. Defaults to false.
-         * 
+         *
          * @param animation
          */
         public void setAnimation(Boolean animation) {
@@ -1123,7 +1082,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * If the argument is true then the mouse tracking will be enabled for a
          * series otherwise not. Defaults to true.
-         * 
+         *
          * @param enableMouseTracking
          */
         public void setEnableMouseTracking(Boolean enableMouseTracking) {
@@ -1140,7 +1099,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * If the argument is true then a series will be displayed in the legend
          * otherwise not. Defaults to true.
-         * 
+         *
          * @param showInLegend
          */
         public void setShowInLegend(Boolean showInLegend) {
@@ -1157,7 +1116,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets the cursor style. E.g. cursor can be set to css cursor style
          * 'pointer', 'hand' or any other. Defaults to null.
-         * 
+         *
          * @param cursor
          */
         public void setCursor(String cursor) {
@@ -1175,7 +1134,7 @@ public final class InvientChartsConfig implements Serializable {
          * Specifies whether the values of each series should be stacked on top
          * of each other or not. Defaults to null. If the argument is null then
          * the values of each series are not stacked.
-         * 
+         *
          * @param stacking
          */
         public void setStacking(Stacking stacking) {
@@ -1192,7 +1151,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * If the argument is true then a checkbox is displayed next to the
          * legend item in the legend area. Defaults to false
-         * 
+         *
          * @param showCheckbox
          */
         public void setShowCheckbox(Boolean showCheckbox) {
@@ -1215,14 +1174,14 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         // Only in case of Pie chart exception is thrown
+
         /**
          * If the argument is true then the series is visible otherwise not when
          * a chart is rendered initially. Defaults to true However, this is not
          * applicable for series related to Pie chart.
-         * 
+         *
          * @param visible
-         * @throws UnsupportedOperationException
-         *             If this method is invoked on {@link PieConfig}
+         * @throws UnsupportedOperationException If this method is invoked on {@link PieConfig}
          */
         public void setVisible(Boolean visible)
                 throws UnsupportedOperationException {
@@ -1237,13 +1196,13 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         // Only in case of Pie and Scatter chart exception is thrown
+
         /**
          * If the argument is true then a shadow will be shown to the graph line
          * otherwise not. Defaults to true.
-         * 
+         *
          * @param shadow
-         * @throws UnsupportedOperationException
-         *             If this method is invoked on {@link PieConfig}
+         * @throws UnsupportedOperationException If this method is invoked on {@link PieConfig}
          */
         public void setShadow(Boolean shadow)
                 throws UnsupportedOperationException {
@@ -1251,7 +1210,6 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
          * @return
          */
         public SeriesState getHoverState() {
@@ -1261,7 +1219,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets attributes which should be applied to a series when series is
          * hovered.
-         * 
+         *
          * @param state
          */
         public void setHoverState(SeriesState state) {
@@ -1278,7 +1236,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets how point value should be formatted and displayed for each
          * point.
-         * 
+         *
          * @param dataLabel
          */
         public void setDataLabel(DataLabel dataLabel) {
@@ -1294,7 +1252,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets color for the series.
-         * 
+         *
          * @param color
          */
         public void setColor(Paint color) {
@@ -1306,9 +1264,8 @@ public final class InvientChartsConfig implements Serializable {
     /**
      * This class contains various attributes to format data labels. The data
      * labels are displayed along with points and axis.
-     * 
+     *
      * @author Invient
-     * 
      */
     public static class DataLabel implements Serializable {
         private HorzAlign align; // NA for pie
@@ -1327,7 +1284,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * If the argument is true then the datalabels will be displayed
          * otherwise not.
-         * 
+         *
          * @param enabled
          */
         public DataLabel(boolean enabled) {
@@ -1358,7 +1315,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * If the argument is true then the datalabels will be displayed
          * otherwise not.
-         * 
+         *
          * @param enabled
          */
         public void setEnabled(Boolean enabled) {
@@ -1377,7 +1334,7 @@ public final class InvientChartsConfig implements Serializable {
          * called to format the data label. Refer to highchart documentation for
          * more details on this
          * http://www.highcharts.com/ref/#plotOptions-series-dataLabels
-         * 
+         *
          * @param formatterJsFunc
          */
         public void setFormatterJsFunc(String formatterJsFunc) {
@@ -1393,7 +1350,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets text rotation in degrees
-         * 
+         *
          * @param rotation
          */
         public void setRotation(Integer rotation) {
@@ -1409,7 +1366,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets css style for the data label
-         * 
+         *
          * @param style
          */
         public void setStyle(String style) {
@@ -1426,7 +1383,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets the x position offset of the label relative to the point.
          * Defaults to 0.
-         * 
+         *
          * @param x
          */
         public void setX(Integer x) {
@@ -1443,7 +1400,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets the y position offset of the label relative to the point.
          * Defaults to -6.
-         * 
+         *
          * @param y
          */
         public void setY(Integer y) {
@@ -1461,7 +1418,7 @@ public final class InvientChartsConfig implements Serializable {
          * Sets color for the data labels. e.g. if the color is blue then in
          * case of line series, for each point, the data label will be displayed
          * in blue color.
-         * 
+         *
          * @param color
          */
         public void setColor(Color color) {
@@ -1481,9 +1438,8 @@ public final class InvientChartsConfig implements Serializable {
     /**
      * This class contains configuration attributes of data labels specific to
      * Pie series.
-     * 
+     *
      * @author Invient
-     * 
      */
     public final static class PieDataLabel extends DataLabel {
         private Integer connectorWidth;
@@ -1492,7 +1448,7 @@ public final class InvientChartsConfig implements Serializable {
         private Integer distance;
 
         /**
-         * 
+         *
          */
         public PieDataLabel() {
 
@@ -1501,7 +1457,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * If the argument is true then the datalabels will be displayed
          * otherwise not.
-         * 
+         *
          * @param enabled
          */
         public PieDataLabel(boolean enabled) {
@@ -1518,7 +1474,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets width (in pixel) of the line connecting the data label to the
          * pie slice. Defaults to 1.
-         * 
+         *
          * @param connectorWidth
          */
         public void setConnectorWidth(Integer connectorWidth) {
@@ -1535,7 +1491,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets the color of the line connecting the data label to the pie
          * slice.
-         * 
+         *
          * @param connectorColor
          */
         public void setConnectorColor(Paint connectorColor) {
@@ -1543,7 +1499,6 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
          * @return
          */
         public Integer getConnectorPadding() {
@@ -1553,7 +1508,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets the distance (in pixel) from the data label to the connector.
          * Defaults to 5.
-         * 
+         *
          * @param connectorPadding
          */
         public void setConnectorPadding(Integer connectorPadding) {
@@ -1569,7 +1524,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets the distance (in pixel) of the data label from the pie's edge.
-         * 
+         *
          * @param distance
          */
         public void setDistance(Integer distance) {
@@ -1595,9 +1550,8 @@ public final class InvientChartsConfig implements Serializable {
     /**
      * This class contains configuration properties for axis labels. The axis
      * labels are the one which are displayed for each tick.
-     * 
+     *
      * @author Invient
-     * 
      */
     public static abstract class AxisDataLabel extends DataLabel {
         private Integer step;
@@ -1609,7 +1563,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * If the argument is true then the data labels will be displayed
          * otherwise not.
-         * 
+         *
          * @param enabled
          */
         public AxisDataLabel(boolean enabled) {
@@ -1626,7 +1580,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets at what interval the labels on the axis should be displayed.
          * Setting the step to 2 shows every other label. Defaults to null
-         * 
+         *
          * @param step
          */
         public void setStep(Integer step) {
@@ -1637,9 +1591,8 @@ public final class InvientChartsConfig implements Serializable {
     /**
      * This class contains configuration properties specifically for x-axis
      * labels.
-     * 
+     *
      * @author Invient
-     * 
      */
     public static final class XAxisDataLabel extends AxisDataLabel {
         private Integer staggerLines;
@@ -1647,7 +1600,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * If the argument is true then the data labels will be displayed
          * otherwise not.
-         * 
+         *
          * @param enabled
          */
         public XAxisDataLabel(boolean enabled) {
@@ -1668,7 +1621,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets number of lines to spread the labels over to make room or
          * tighter labels.
-         * 
+         *
          * @param staggerLines
          */
         public void setStaggerLines(Integer staggerLines) {
@@ -1679,9 +1632,8 @@ public final class InvientChartsConfig implements Serializable {
     /**
      * This class contains configuration properties specifically for x-axis
      * labels.
-     * 
+     *
      * @author Invient
-     * 
      */
     public static final class YAxisDataLabel extends AxisDataLabel {
         public YAxisDataLabel() {
@@ -1691,7 +1643,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * If the argument is true then the data labels will be displayed
          * otherwise not.
-         * 
+         *
          * @param enabled
          */
         public YAxisDataLabel(boolean enabled) {
@@ -1702,9 +1654,8 @@ public final class InvientChartsConfig implements Serializable {
     /**
      * This class contains configuration options for line series such as line
      * and area but not column series.
-     * 
+     *
      * @author Invient
-     * 
      */
     public abstract static class BaseLineConfig extends SeriesConfig {
         private Double pointStart;
@@ -1713,7 +1664,7 @@ public final class InvientChartsConfig implements Serializable {
         private Marker marker;
         private DashStyle dashStyle;
         private Integer lineWidth;
-		private Integer turboThreshold;
+        private Integer turboThreshold;
 
         /**
          * @return
@@ -1727,7 +1678,7 @@ public final class InvientChartsConfig implements Serializable {
          * pointStart defines on what value to start. Defaults to 0. e.g. if a
          * series contains values higher than 2 m $ then sets pointStart to
          * 2,000,000
-         * 
+         *
          * @param pointStart
          */
         public void setPointStart(Double pointStart) {
@@ -1746,7 +1697,7 @@ public final class InvientChartsConfig implements Serializable {
          * pointInterval defines the interval of the x values. For example, if a
          * series contains one value every day then set pointInterval to 24 *
          * 3600 * 1000
-         * 
+         *
          * @param pointInterval
          */
         public void setPointInterval(Double pointInterval) {
@@ -1765,7 +1716,7 @@ public final class InvientChartsConfig implements Serializable {
          * triggered until mouse moves over another series or comes out of the
          * plot area. If the argument is true then the mouseout event occurs as
          * soon as mouse leaves area near to the point or marker
-         * 
+         *
          * @param stickyTracking
          */
         public void setStickyTracking(Boolean stickyTracking) {
@@ -1781,7 +1732,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets marker for points of a series
-         * 
+         *
          * @param marker
          */
         public void setMarker(Marker marker) {
@@ -1797,7 +1748,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets dash style to use when drawing a series.
-         * 
+         *
          * @param dashStyle
          */
         public void setDashStyle(DashStyle dashStyle) {
@@ -1813,21 +1764,21 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets width of a line
-         * 
+         *
          * @param lineWidth
          */
         public void setLineWidth(Integer lineWidth) {
             this.lineWidth = lineWidth;
         }
 
-		public Integer getTurboThreshold() {
-			return turboThreshold;
-		}
+        public Integer getTurboThreshold() {
+            return turboThreshold;
+        }
 
-		public void setTurboThreshold(Integer turboThreshold) {
-			this.turboThreshold = turboThreshold;
-		}
-	}
+        public void setTurboThreshold(Integer turboThreshold) {
+            this.turboThreshold = turboThreshold;
+        }
+    }
 
     public static enum DashStyle {
         SOLID("Solid"), SHORT_DASH("ShortDash"), SHORT_DOT("ShortDot"), SHORT_DASH_DOT(
@@ -1846,12 +1797,10 @@ public final class InvientChartsConfig implements Serializable {
     }
 
     /**
-     * 
      * This class contains configuration options for area series, area and
      * areaspline.
-     * 
+     *
      * @author Invient
-     * 
      */
     public static class AreaConfig extends BaseLineConfig {
         private Paint fillColor;
@@ -1860,7 +1809,7 @@ public final class InvientChartsConfig implements Serializable {
         private Integer threshold;
 
         /**
-         * @return Returns fill color of the area. 
+         * @return Returns fill color of the area.
          */
         public Paint getFillColor() {
             return fillColor;
@@ -1868,7 +1817,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets fill gradient for the area
-         * 
+         *
          * @param fillColor
          */
         public void setFillColor(Paint fillColor) {
@@ -1884,7 +1833,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets line color for the line of an area.
-         * 
+         *
          * @param lineColor
          */
         public void setLineColor(Paint lineColor) {
@@ -1892,7 +1841,7 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * @return Returns opacity (transparency) which will be used when the area is filled with the fill color  
+         * @return Returns opacity (transparency) which will be used when the area is filled with the fill color
          */
         public Double getFillOpacity() {
             return fillOpacity;
@@ -1900,7 +1849,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets opacity for the area
-         * 
+         *
          * @param fillOpacity
          */
         public void setFillOpacity(Double fillOpacity) {
@@ -1918,7 +1867,7 @@ public final class InvientChartsConfig implements Serializable {
          * Sets threshold value which servers as the base for the area, for
          * distinguishing between values above and below a threshold. Defaults
          * to 0.
-         * 
+         *
          * @param threshold
          */
         public void setThreshold(Integer threshold) {
@@ -1929,9 +1878,8 @@ public final class InvientChartsConfig implements Serializable {
 
     /**
      * This class contains configuration options for areaspline series
-     * 
+     *
      * @author Invient
-     * 
      */
     public static class AreaSplineConfig extends AreaConfig {
 
@@ -1939,9 +1887,8 @@ public final class InvientChartsConfig implements Serializable {
 
     /**
      * This class contains configuration options for line series
-     * 
+     *
      * @author Invient
-     * 
      */
     public static class LineConfig extends BaseLineConfig {
         private Boolean step;
@@ -1956,7 +1903,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * If the argument is true then line will be drawn using steps otherwise
          * not. Defaults to false.
-         * 
+         *
          * @param step
          */
         public void setStep(Boolean step) {
@@ -1966,18 +1913,15 @@ public final class InvientChartsConfig implements Serializable {
 
     /**
      * This class contains configuration options for scatter series
-     * 
+     *
      * @author Invient
-     * 
      */
     public static class ScatterConfig extends BaseLineConfig {
 
         /**
-         * 
          * @param shadow
-         * @exception UnsupportedOperationException
-         *                Scatter series does not support shadow so this method
-         *                throws an exception if invoked.
+         * @throws UnsupportedOperationException Scatter series does not support shadow so this method
+         *                                       throws an exception if invoked.
          */
         @Override
         public void setShadow(Boolean shadow)
@@ -1997,9 +1941,8 @@ public final class InvientChartsConfig implements Serializable {
 
     /**
      * This class contains configuration options for spline series
-     * 
+     *
      * @author Invient
-     * 
      */
     public static class SplineConfig extends BaseLineConfig {
 
@@ -2007,9 +1950,8 @@ public final class InvientChartsConfig implements Serializable {
 
     /**
      * This class contains configuration options for pie series.
-     * 
+     *
      * @author Invient
-     * 
      */
     public static class PieConfig extends SeriesConfig {
         private Integer centerX;
@@ -2019,19 +1961,19 @@ public final class InvientChartsConfig implements Serializable {
         private Integer innerSize;
         private Integer size;
         private Integer slicedOffset;
-		private Boolean ignoreHiddenPoint;
+        private Boolean ignoreHiddenPoint;
 
-		public Boolean getIgnoreHiddenPoint() {
-			return ignoreHiddenPoint;
-		}
+        public Boolean getIgnoreHiddenPoint() {
+            return ignoreHiddenPoint;
+        }
 
-		public void setIgnoreHiddenPoint(Boolean ignoreHiddenPoint) {
-			this.ignoreHiddenPoint = ignoreHiddenPoint;
-		}
+        public void setIgnoreHiddenPoint(Boolean ignoreHiddenPoint) {
+            this.ignoreHiddenPoint = ignoreHiddenPoint;
+        }
 
         /**
          * @return Returns x position (in pixel) of the center of the pie chart relative to
-         * the plot area.
+         *         the plot area.
          */
         public Integer getCenterX() {
             return centerX;
@@ -2040,7 +1982,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets x position (in pixel) of the center of the pie chart relative to
          * the plot area.
-         * 
+         *
          * @param centerX
          */
         public void setCenterX(Integer centerX) {
@@ -2049,7 +1991,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * @return Returns y position (in pixel) of the center of the pie chart relative to
-         * the plot area.
+         *         the plot area.
          */
         public Integer getCenterY() {
             return centerY;
@@ -2058,7 +2000,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets y position (in pixel) of the center of the pie chart relative to
          * the plot area.
-         * 
+         *
          * @param centerY
          */
         public void setCenterY(Integer centerY) {
@@ -2074,7 +2016,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets color of border surrounding each slice.
-         * 
+         *
          * @param borderColor
          */
         public void setBorderColor(Paint borderColor) {
@@ -2090,7 +2032,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets width of border surrounding each slice.
-         * 
+         *
          * @param borderWidth
          */
         public void setBorderWidth(Double borderWidth) {
@@ -2107,7 +2049,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets the size of the inner diameter for the pie. Any value greater
          * than 0 renders a donut chart.
-         * 
+         *
          * @param innerSize
          */
         public void setInnerSize(Integer innerSize) {
@@ -2115,7 +2057,7 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * @return Returns size of diameter of the pie relative to the plot area. 
+         * @return Returns size of diameter of the pie relative to the plot area.
          */
         public Integer getSize() {
             return size;
@@ -2123,7 +2065,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets size of diameter of the pie relative to the plot area.
-         * 
+         *
          * @param size
          */
         public void setSize(Integer size) {
@@ -2132,7 +2074,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * @return Returns offset in pixel by which a slice should be moved out from the
-         * center.
+         *         center.
          */
         public Integer getSlicedOffset() {
             return slicedOffset;
@@ -2141,7 +2083,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets offset in pixel by which a slice should be moved out from the
          * center.
-         * 
+         *
          * @param slicedOffset
          */
         public void setSlicedOffset(Integer slicedOffset) {
@@ -2149,9 +2091,8 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * @exception UnsupportedOperationException
-         *                Pie chart does not support visible property so this
-         *                method throws an exception if invoked.
+         * @throws UnsupportedOperationException Pie chart does not support visible property so this
+         *                                       method throws an exception if invoked.
          */
         @Override
         public void setVisible(Boolean visible)
@@ -2171,7 +2112,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets an object of {@link PieDataLabel} which contains configuration
          * for formatting data labels.
-         * 
+         *
          * @param dataLabel
          */
         public void setDataLabel(PieDataLabel dataLabel) {
@@ -2179,7 +2120,7 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
+         *
          */
         public PieDataLabel getDataLabel() {
             return (PieDataLabel) super.getDataLabel();
@@ -2188,7 +2129,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets state which should be applied to a slice when a mouse is over
          * the slice
-         * 
+         *
          * @param state
          */
         public void setHoverState(NonLinearSeriesState state) {
@@ -2206,9 +2147,8 @@ public final class InvientChartsConfig implements Serializable {
 
     /**
      * This class contains configuration options for bar and column series.
-     * 
+     *
      * @author Invient
-     * 
      */
     public abstract static class BaseBarConfig extends SeriesConfig {
         private Paint borderColor;
@@ -2229,7 +2169,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets the color of the border surronding each column or bar.
-         * 
+         *
          * @param borderColor
          */
         public void setBorderColor(Paint borderColor) {
@@ -2245,7 +2185,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets corner radius of the border surronding each column or bar.
-         * 
+         *
          * @param borderRadius
          */
         public void setBorderRadius(Integer borderRadius) {
@@ -2261,7 +2201,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets width of the border surronding each column or bar.
-         * 
+         *
          * @param borderWidth
          */
         public void setBorderWidth(Integer borderWidth) {
@@ -2279,7 +2219,7 @@ public final class InvientChartsConfig implements Serializable {
          * If the argument is true then each point (bar or column in a series
          * will have a different color otherwise all points (bars/columns) of a
          * series will have same color.
-         * 
+         *
          * @param colorByPoint
          */
         public void setColorByPoint(Boolean colorByPoint) {
@@ -2287,7 +2227,6 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
          * @return
          */
         public Double getGroupPadding() {
@@ -2297,7 +2236,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets padding between each value groups, in x axis units. Defaults to
          * 0.2.
-         * 
+         *
          * @param groupPadding
          */
         public void setGroupPadding(Double groupPadding) {
@@ -2318,7 +2257,7 @@ public final class InvientChartsConfig implements Serializable {
          * column charts, minPointLength might not be respected for tightly
          * packed values. Defaults to 0. (For detail, refer to
          * http://www.highcharts.com/ref/#plotOptions-bar);
-         * 
+         *
          * @param minPointLength
          */
         public void setMinPointLength(Double minPointLength) {
@@ -2326,7 +2265,6 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
          * @return
          */
         public Double getPointPadding() {
@@ -2335,7 +2273,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets padding between each column or bar, in x axis units.
-         * 
+         *
          * @param pointPadding
          */
         public void setPointPadding(Double pointPadding) {
@@ -2351,7 +2289,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets width of each bar or column in pixel.
-         * 
+         *
          * @param pointWidth
          */
         public void setPointWidth(Integer pointWidth) {
@@ -2361,7 +2299,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets state which should be applied to a bar or column when a mouse is
          * over the bar or column
-         * 
+         *
          * @param state
          */
         public void setHoverState(NonLinearSeriesState state) {
@@ -2369,7 +2307,7 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
+         *
          */
         public NonLinearSeriesState getHoverState() {
             if (super.getHoverState() instanceof NonLinearSeriesState) {
@@ -2381,9 +2319,8 @@ public final class InvientChartsConfig implements Serializable {
 
     /**
      * This class contains configuration options for column series.
-     * 
+     *
      * @author Invient
-     * 
      */
     public static class ColumnConfig extends BaseBarConfig {
 
@@ -2391,9 +2328,8 @@ public final class InvientChartsConfig implements Serializable {
 
     /**
      * This class contains configuration options for bar series.
-     * 
+     *
      * @author Invient
-     * 
      */
     public static class BarConfig extends BaseBarConfig {
 
@@ -2401,15 +2337,14 @@ public final class InvientChartsConfig implements Serializable {
 
     /**
      * Defines ways in which series of a chart can be stacked.
-     * 
+     * <p/>
      * Stacking.Normal - represents that the values of each series are stacked.
-     * 
+     * <p/>
      * Stacking.Percent - represents that the the values of each series are
      * stacked based on percentage of sum of total value, where total value is
      * sum of values of all points on a particular tick of an axis.
-     * 
+     *
      * @author Invient
-     * 
      */
     public static enum Stacking {
         NORMAL("normal"), PERCENT("percent");
@@ -2427,9 +2362,8 @@ public final class InvientChartsConfig implements Serializable {
     /**
      * Defines configuration per point in a series. It is possible to assign
      * each point a different color and marker.
-     * 
+     *
      * @author Invient
-     * 
      */
     public static final class PointConfig implements Serializable {
         private Boolean sliced;
@@ -2439,7 +2373,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Creates an instance of this class with specified marker
-         * 
+         *
          * @param marker
          */
         public PointConfig(Marker marker) {
@@ -2448,7 +2382,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Creates an instance of this class with specified color
-         * 
+         *
          * @param color
          */
         public PointConfig(Paint color) {
@@ -2458,7 +2392,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Creates an instance of this class with specified argument. The sliced
          * attribute has meaning only for Pie chart/series.
-         * 
+         *
          * @param sliced
          */
         public PointConfig(Boolean sliced) {
@@ -2466,25 +2400,20 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
-         * @param sliced
-         *            - If true then the slice of a pie will be at an offset
-         *            from the center of the pie. Applicable only for Pie
-         *            chart/series.
-         * @param selected
-         *            - If true then the point, to which this object is
-         *            associated, will be shown as selected otherwise not.
-         * @param color
-         *            - Specifies individual color for a point, to which this
-         *            object is associated.
-         * @param marker
-         *            - Specifies marker for a point, to which this object is
-         *            associated.
+         * @param sliced   - If true then the slice of a pie will be at an offset
+         *                 from the center of the pie. Applicable only for Pie
+         *                 chart/series.
+         * @param selected - If true then the point, to which this object is
+         *                 associated, will be shown as selected otherwise not.
+         * @param color    - Specifies individual color for a point, to which this
+         *                 object is associated.
+         * @param marker   - Specifies marker for a point, to which this object is
+         *                 associated.
          * @see Marker
          * @see Color
          */
         public PointConfig(Boolean sliced, Boolean selected, Paint color,
-                Marker marker) {
+                           Marker marker) {
             super();
             this.sliced = sliced;
             this.selected = selected;
@@ -2562,13 +2491,12 @@ public final class InvientChartsConfig implements Serializable {
     /**
      * A chart has a title and a subtitle. This class defines attributes which
      * are common to both.
-     * 
+     * <p/>
      * The text of a title can be plain text or html text containing html
      * elements. It is also possible to apply css to the title. The css must be
      * valid css string e.g. { color: 'red' }
-     * 
+     *
      * @author Invient
-     * 
      * @see Title
      * @see SubTitle
      * @see HorzAlign
@@ -2592,7 +2520,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets horizontal alignment of the title. Defaults to HorzAlign.CENTER
-         * 
+         *
          * @param align
          */
         public void setAlign(HorzAlign align) {
@@ -2608,7 +2536,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets horizontal alignment of the title. Defaults to VertAlign.TOP
-         * 
+         *
          * @param vertAlign
          */
         public void setVertAlign(VertAlign vertAlign) {
@@ -2625,7 +2553,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * If the argument is true then the plot area will not move to make
          * space for the chart title. Defaults to false.
-         * 
+         *
          * @param floating
          */
         public void setFloating(Boolean floating) {
@@ -2642,7 +2570,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets text for the chart's title. The text can be plain or html
          * string.
-         * 
+         *
          * @param text
          */
         public void setText(String text) {
@@ -2659,7 +2587,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets x position (in pixel) of the title relative to the alignment
          * within Spacing.left and Spacing.right. Defaults to 0
-         * 
+         *
          * @param x
          */
         public void setX(Integer x) {
@@ -2676,7 +2604,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets y position (in pixel) of the title relative to the alignment
          * within Spacing.top and Spacing.bottom. Defaults to 0
-         * 
+         *
          * @param y
          */
         public void setY(Integer y) {
@@ -2693,7 +2621,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets css for the title. The css must be a valid css object. e.g. css
          * string "{ color:'red' }" is valid but "{ color: 'red'" is invalid.
-         * 
+         *
          * @param style
          */
         public void setStyle(String style) {
@@ -2703,9 +2631,8 @@ public final class InvientChartsConfig implements Serializable {
 
     /**
      * Defines attributes of chart title.
-     * 
+     *
      * @author Invient
-     * 
      */
     public static final class Title extends TitleBase {
         private Integer margin;
@@ -2721,7 +2648,7 @@ public final class InvientChartsConfig implements Serializable {
          * Sets margin (in pixel) between the chart title and subtitle, if any.
          * If chart subtitle doesn't exist then it indicates the margin between
          * subtitle and plotarea. Defaults to 15
-         * 
+         *
          * @param margin
          */
         public void setMargin(Integer margin) {
@@ -2731,9 +2658,8 @@ public final class InvientChartsConfig implements Serializable {
 
     /**
      * Defines attributes of chart subtitle.
-     * 
+     *
      * @author Invient
-     * 
      */
     public static final class SubTitle extends TitleBase {
 
@@ -2770,9 +2696,8 @@ public final class InvientChartsConfig implements Serializable {
      * point can be in hover and select state. In each state, a series and a
      * point can have different visual clues. This is achived by setting some
      * attributes of a seires and point.
-     * 
+     *
      * @author Invient
-     * 
      * @see SeriesState
      */
     public static interface State extends Serializable {
@@ -2783,9 +2708,8 @@ public final class InvientChartsConfig implements Serializable {
      * Defines a set of attributes which will be applied to a series upon hover.
      * The attributes linWidth is not applicable for Pie, Scatter, Bar and
      * Column series.
-     * 
+     *
      * @author Invient
-     * 
      */
     public static class SeriesState implements State {
         private Boolean enabled;
@@ -2800,9 +2724,9 @@ public final class InvientChartsConfig implements Serializable {
          * impact on visual rendering of the series when a series is hovered or
          * when a mouse is over the legend. Enabling this has a performance
          * penalty.
-         * 
+         * <p/>
          * Defaults to false.
-         * 
+         *
          * @param enabled
          */
         public void setEnabled(Boolean enabled) {
@@ -2818,7 +2742,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets width of a line in pixel. Defaults to 2.
-         * 
+         *
          * @param lineWidth
          */
         public void setLineWidth(Integer lineWidth) {
@@ -2829,9 +2753,8 @@ public final class InvientChartsConfig implements Serializable {
     /**
      * Defines a set of attributes which are meaningful for bar and colum
      * series.
-     * 
+     *
      * @author Invient
-     * 
      */
     public static class NonLinearSeriesState extends SeriesState {
         private Double brightness;
@@ -2846,9 +2769,9 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets intensity of brightness for a point. This applies only to bar
          * and column series/chart
-         * 
+         * <p/>
          * Defaults to 0.1
-         * 
+         *
          * @param brightness
          */
         public void setBrightness(Double brightness) {
@@ -2859,9 +2782,8 @@ public final class InvientChartsConfig implements Serializable {
     /**
      * Defines a collection of attributes which makes a marker. Markers are
      * generally used to annotate a graph points.
-     * 
+     *
      * @author Invient
-     * 
      */
     private static class MarkerAttribute implements Serializable {
         private Boolean enabled;
@@ -2924,14 +2846,12 @@ public final class InvientChartsConfig implements Serializable {
      * selected or hovered. By default, markers are enabled so when a mouse is
      * over a point marker gets applied. To turn off marker, set flag enabled to
      * false.
-     * 
+     * <p/>
      * A point marker is useful only if the marker is not an image.
-     * 
+     *
      * @author Invient
-     * 
      * @see ImageMarker
      * @see SymbolMarker
-     * 
      */
     public static final class MarkerState implements State {
         private MarkerAttribute markerAttribute = new MarkerAttribute();
@@ -2952,7 +2872,7 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
+         *
          */
         public Boolean getEnabled() {
             return markerAttribute.getEnabled();
@@ -2961,7 +2881,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * If enabled = false then the marker will not be applied to a point on
          * hover or select state. Defaults to true
-         * 
+         *
          * @param enabled
          */
         public void setEnabled(Boolean enabled) {
@@ -2978,7 +2898,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets fill color for the marker. When not specified it takes color of
          * a series or point.
-         * 
+         *
          * @param fillColor
          */
         public void setFillColor(Paint fillColor) {
@@ -2995,7 +2915,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets color of the point marker's outline. When not specified it takes
          * color of a series or point.
-         * 
+         *
          * @param lineColor
          */
         public void setLineColor(Paint lineColor) {
@@ -3011,7 +2931,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets width of the point marker's outline. Defaults to 0.
-         * 
+         *
          * @param lineWidth
          */
         public void setLineWidth(Integer lineWidth) {
@@ -3027,7 +2947,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets radius of the point marker. Defaults to 0.
-         * 
+         *
          * @param radius
          */
         public void setRadius(Integer radius) {
@@ -3048,7 +2968,7 @@ public final class InvientChartsConfig implements Serializable {
      * Defines a marker for a point. Markers are applied to a point of chart's
      * series. The marker can be applied at the time of drawing the chart or
      * when a point is selcted or hovered.
-     * 
+     * <p/>
      * There are two types of marker.
      * <ul>
      * <li>
@@ -3056,9 +2976,8 @@ public final class InvientChartsConfig implements Serializable {
      * <li>
      * {@link ImageMarker}</li>
      * </ul>
-     * 
+     *
      * @author Invient
-     * 
      * @see SymbolMarker
      * @see ImageMarker
      */
@@ -3070,9 +2989,8 @@ public final class InvientChartsConfig implements Serializable {
 
     /**
      * Defines attributes for a marker.
-     * 
+     *
      * @author Invient
-     * 
      * @see SymbolMarker
      * @see ImageMarker
      */
@@ -3131,27 +3049,24 @@ public final class InvientChartsConfig implements Serializable {
     /**
      * This marker can take url of an image which will be used as a marker for a
      * point or all points of a series.
-     * 
+     * <p/>
      * The url of an image must be with respect to root of the web application.
      * e.g. If an image named temperature.png is under directory
      * <app.root.war>/img/climate then the url must be
      * /img/climate/temperature.png
-     * 
+     *
      * @author Invient
-     * 
      */
     public static class ImageMarker extends AbstractMarker {
         private String imageURL;
 
         /**
          * Creates this marker with specified arguments.
-         * 
-         * @param imageURL
-         *            - URL of an image
-         * @param enabled
-         *            - If false then this marker will not be applied to a
-         *            point. What this means is that the data points of a line
-         *            chart will not stand out.
+         *
+         * @param imageURL - URL of an image
+         * @param enabled  - If false then this marker will not be applied to a
+         *                 point. What this means is that the data points of a line
+         *                 chart will not stand out.
          */
         public ImageMarker(String imageURL, boolean enabled) {
             super(enabled);
@@ -3160,9 +3075,8 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Creates this marker with specified arguments.
-         * 
-         * @param imageURL
-         *            - URL of an image
+         *
+         * @param imageURL - URL of an image
          */
         public ImageMarker(String imageURL) {
             super(true);
@@ -3193,9 +3107,8 @@ public final class InvientChartsConfig implements Serializable {
     /**
      * This marker has predefined shape which cannot be changed. However, marker
      * attributes can be set.
-     * 
+     *
      * @author Invient
-     * 
      */
     public static class SymbolMarker extends AbstractMarker {
         private Symbol symbol;
@@ -3211,11 +3124,10 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Creates this marker with specified arguments.
-         * 
-         * @param enabled
-         *            If false then this marker will not be applied to a point.
-         *            What this means is that the data points of a line chart
-         *            will not stand out.
+         *
+         * @param enabled If false then this marker will not be applied to a point.
+         *                What this means is that the data points of a line chart
+         *                will not stand out.
          */
         public SymbolMarker(boolean enabled) {
             super(enabled);
@@ -3223,9 +3135,8 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Creates this marker with specified arguments.
-         * 
-         * @param lineColor
-         *            - Color of the point marker's outline
+         *
+         * @param lineColor - Color of the point marker's outline
          */
         public SymbolMarker(Paint lineColor) {
             super(true);
@@ -3234,9 +3145,8 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Creates this marker with specified arguments.
-         * 
-         * @param radius
-         *            Radius of the point marker.
+         *
+         * @param radius Radius of the point marker.
          */
         public SymbolMarker(Integer radius) {
             super(true);
@@ -3245,10 +3155,9 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Creates this marker with specified arguments.
-         * 
-         * @param symbol
-         *            It must be one of the predefine symbol such as
-         *            Symbol.CIRCLE or Symbol.DIAMOND
+         *
+         * @param symbol It must be one of the predefine symbol such as
+         *               Symbol.CIRCLE or Symbol.DIAMOND
          */
         public SymbolMarker(Symbol symbol) {
             super(true);
@@ -3257,11 +3166,9 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Creates this marker with specified arguments.
-         * 
-         * @param lineColor
-         *            Color of the point marker's outline
-         * @param radius
-         *            Radius of the point marker.
+         *
+         * @param lineColor Color of the point marker's outline
+         * @param radius    Radius of the point marker.
          */
         public SymbolMarker(Paint lineColor, Integer radius) {
             super(true);
@@ -3271,14 +3178,11 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Creates this marker with specified arguments.
-         * 
-         * @param lineColor
-         *            - Color of the point marker's outline
-         * @param radius
-         *            Radius of the point marker.
-         * @param symbol
-         *            It must be one of the predefine symbol such as
-         *            Symbol.CIRCLE or Symbol.DIAMOND
+         *
+         * @param lineColor - Color of the point marker's outline
+         * @param radius    Radius of the point marker.
+         * @param symbol    It must be one of the predefine symbol such as
+         *                  Symbol.CIRCLE or Symbol.DIAMOND
          */
         public SymbolMarker(Paint lineColor, Integer radius, Symbol symbol) {
             super(true);
@@ -3288,7 +3192,7 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
+         *
          */
         @Override
         public Paint getLineColor() {
@@ -3297,7 +3201,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets color of the point marker's outline
-         * 
+         *
          * @param lineColor
          */
         @Override
@@ -3306,7 +3210,7 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
+         *
          */
         @Override
         public Paint getFillColor() {
@@ -3315,7 +3219,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets color of the point marker
-         * 
+         *
          * @param fillColor
          */
         @Override
@@ -3324,7 +3228,7 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
+         *
          */
         @Override
         public Integer getLineWidth() {
@@ -3333,7 +3237,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets width of the point marker outline
-         * 
+         *
          * @param lineWidth
          */
         @Override
@@ -3342,7 +3246,7 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
+         *
          */
         @Override
         public Integer getRadius() {
@@ -3351,7 +3255,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets radius of the point marker
-         * 
+         *
          * @param radius
          */
         @Override
@@ -3360,7 +3264,6 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
          * @return
          */
         public Symbol getSymbol() {
@@ -3370,7 +3273,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Sets symbol for the point marker. It must be one of the predefine
          * symbol such as Symbol.CIRCLE or Symbol.DIAMOND
-         * 
+         *
          * @param symbol
          */
         public void setSymbol(Symbol symbol) {
@@ -3378,7 +3281,6 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
          * @return
          */
         public MarkerState getHoverState() {
@@ -3387,7 +3289,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets marker to be applied to a point when it is hovered.
-         * 
+         *
          * @param hoverState
          */
         public void setHoverState(MarkerState hoverState) {
@@ -3403,7 +3305,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets marker to be applied to a point when it is selected.
-         * 
+         *
          * @param selectState
          */
         public void setSelectState(MarkerState selectState) {
@@ -3425,9 +3327,8 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Defines predefined marker shapes to be used along with
          * {@link SymbolMarker}
-         * 
+         *
          * @author Invient
-         * 
          * @see SymbolMarker
          */
         public static enum Symbol {
@@ -3449,12 +3350,10 @@ public final class InvientChartsConfig implements Serializable {
     /**
      * This class defines attributes common to X axis and Y axis. A chart can
      * have one or more axis of each type.
-     * 
+     *
      * @author chirag
-     * 
      * @see XAxis
      * @see YAxis
-     * 
      */
     public static abstract class AxisBase implements Axis {
         private String id;
@@ -3496,11 +3395,9 @@ public final class InvientChartsConfig implements Serializable {
          * Defines attributes of a minor tick. The minor ticks do not have a
          * label. By default, minor ticks are not shown. To display minor ticks,
          * set interval property.
-         * 
+         *
          * @author Invient
-         * 
          * @see Tick
-         * 
          */
         public static class MinorTick implements Serializable {
             private Paint color;
@@ -3525,7 +3422,7 @@ public final class InvientChartsConfig implements Serializable {
              * Sets interval for the minor tick. The interval must be specified
              * in the axis unit. e.g. If an axis has tick interval of 50 units
              * then setting minortick interval to 10 will show 5 minor ticks.
-             * 
+             *
              * @param interval
              */
             public void setInterval(Double interval) {
@@ -3538,7 +3435,7 @@ public final class InvientChartsConfig implements Serializable {
 
             /**
              * Sets length of the minorticks in pixel
-             * 
+             *
              * @param length
              */
             public void setLength(Integer length) {
@@ -3568,7 +3465,7 @@ public final class InvientChartsConfig implements Serializable {
 
             /**
              * Sets width of the minorticks in pixel
-             * 
+             *
              * @param width
              */
             public void setWidth(Integer width) {
@@ -3584,15 +3481,13 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
          * Defines attributes of a tick marks. The interval of the tick marks
          * must be specified in axis unit. For datetime axis, the interval must
          * be in millisecond.
-         * 
+         * <p/>
          * The default tick interval is 1.
-         * 
+         *
          * @author Invient
-         * 
          * @see MinorTick
          * @see TickmarkPlacement
          */
@@ -3609,7 +3504,7 @@ public final class InvientChartsConfig implements Serializable {
 
             /**
              * Sets placement of the tick marks.
-             * 
+             *
              * @param placement
              */
             public void setPlacement(TickmarkPlacement placement) {
@@ -3625,7 +3520,7 @@ public final class InvientChartsConfig implements Serializable {
 
             /**
              * Sets pixel interval of the tick marks
-             * 
+             *
              * @param pixelInterval
              */
             public void setPixelInterval(Integer pixelInterval) {
@@ -3645,7 +3540,7 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Defines attributes of minor grid lines of the chart. In order to show
          * minor grid lines, you must specify set MinorTick for the axis also.
-         * 
+         *
          * @author Invient
          * @see MinorTick
          * @see Grid
@@ -3661,7 +3556,7 @@ public final class InvientChartsConfig implements Serializable {
 
             /**
              * Sets color of the minor grid lines
-             * 
+             *
              * @param lineColor
              */
             public void setLineColor(Paint lineColor) {
@@ -3678,11 +3573,9 @@ public final class InvientChartsConfig implements Serializable {
             /**
              * Sets dash or dot style of the minor grid lines. Defaults to
              * DashStyle.SOLID
-             * 
+             *
              * @param lineDashStyle
-             * 
              * @see DashStyle
-             * 
              */
             public void setLineDashStyle(DashStyle lineDashStyle) {
                 this.lineDashStyle = lineDashStyle;
@@ -3697,7 +3590,7 @@ public final class InvientChartsConfig implements Serializable {
 
             /**
              * Sets width (in pixel) of the minor grid lines. Defaults to 1
-             * 
+             *
              * @param lineWidth
              */
             public void setLineWidth(Integer lineWidth) {
@@ -3715,9 +3608,8 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Defines attributes of grid lines of the chart. By default, the grid
          * lines are shown. To hide them set property lineWidth to 0.
-         * 
+         *
          * @author Invient
-         * 
          */
         public static final class Grid extends MinorGrid {
 
@@ -3743,7 +3635,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Removes a plotband with given id.
-         * 
+         *
          * @param id
          */
         public void removePlotBand(String id) {
@@ -3802,7 +3694,7 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         *  
+         *
          */
         public String getId() {
             return id;
@@ -3816,7 +3708,7 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
+         *
          */
         public Tick getTick() {
             return tick;
@@ -3830,7 +3722,7 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
+         *
          */
         public Integer getMaxZoom() {
             return maxZoom;
@@ -3848,7 +3740,7 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
+         *
          */
         public Boolean getReversed() {
             return reversed;
@@ -3863,7 +3755,7 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
+         *
          */
         public Boolean getOpposite() {
             return opposite;
@@ -3884,13 +3776,11 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets type of this axis. Used by subclasses
-         * 
+         *
          * @param type
-         * 
          * @see NumberXAxis
          * @see NumberYAxis
          * @see DateTimeAxis
-         * 
          */
         protected void setType(AxisType type) {
             this.type = type;
@@ -3902,7 +3792,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets title for the axis
-         * 
+         *
          * @see AxisTitle
          */
         public void setTitle(AxisTitle title) {
@@ -3910,7 +3800,6 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
          * @return
          */
         protected AxisDataLabel getLabel() {
@@ -3918,7 +3807,6 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
          * @param label
          */
         protected void setLabel(AxisDataLabel label) {
@@ -3926,7 +3814,7 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
+         *
          */
         public Paint getAlternateGridColor() {
             return alternateGridColor;
@@ -3940,7 +3828,7 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
+         *
          */
         public Boolean getEndOnTick() {
             return endOnTick;
@@ -3954,7 +3842,7 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
+         *
          */
         public Grid getGrid() {
             return grid;
@@ -3962,7 +3850,7 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Sets grid for this axis
-         * 
+         *
          * @see Grid
          */
         public void setGrid(Grid grid) {
@@ -3970,7 +3858,7 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
+         *
          */
         public Paint getLineColor() {
             return lineColor;
@@ -3984,7 +3872,7 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
+         *
          */
         public Integer getLineWidth() {
             return lineWidth;
@@ -3998,7 +3886,7 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
+         *
          */
         public Axis getLinkedTo() {
             return linkedTo;
@@ -4008,7 +3896,7 @@ public final class InvientChartsConfig implements Serializable {
          * Sets another axis which is linked with this axis. The following
          * description is copied from Highcharts API documentation
          * http://www.highcharts.com/ref/#xAxis.
-         * 
+         * <p/>
          * When an axis is linked to a master axis, it will take the same
          * extremes as the master, but as assigned by min or max or by
          * setExtremes. It can be used to show additional info, or to ease
@@ -4021,7 +3909,7 @@ public final class InvientChartsConfig implements Serializable {
         }
 
         /**
-         * 
+         *
          */
         public Double getMaxPadding() {
             return maxPadding;
@@ -4122,14 +4010,13 @@ public final class InvientChartsConfig implements Serializable {
         /**
          * Defines position of the tick marks with respect to the axis
          * categories. It is applicable only for categorized axes.
-         * 
+         * <p/>
          * TickmarkPlacement.ON - tick mark is placed in the center of the
          * category
-         * 
+         * <p/>
          * TickmarkPlacement.BETWEEN - tick mark is placed between categories
-         * 
+         *
          * @author Invient
-         * 
          */
         public static enum TickmarkPlacement {
             ON("on"), BETWEEN("between");
@@ -4146,9 +4033,8 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Defines position of the axis ticks with respect to the axis line
-         * 
+         *
          * @author Invient
-         * 
          */
         public static enum TickPosition {
             OUTSIDE("outside"), INSIDE("inside");
@@ -4165,15 +4051,14 @@ public final class InvientChartsConfig implements Serializable {
 
         /**
          * Defines axis types.
-         * 
+         * <p/>
          * AxisType.LINEAR -
-         * 
+         * <p/>
          * AxisType.DATETIME - For datetime axis, the values are given in date
          * except for {@link BaseLineConfig}.pointStart and {@link BaseLineConfig}.pointInterval
          * properties, which are specified in milliseconds.
-         * 
+         *
          * @author Invient
-         * 
          * @see NumberXAxis
          * @see NumberYAxis
          * @see DateTimeAxis
@@ -5362,44 +5247,44 @@ public final class InvientChartsConfig implements Serializable {
         private Boolean shared;
         private Integer snap; // NA for pie/bar/column
         private String style;
-		private Boolean useHTML;
-		private String headerFormat;
-		private String pointFormat;
-		private String footerFormat;
+        private Boolean useHTML;
+        private String headerFormat;
+        private String pointFormat;
+        private String footerFormat;
 
-		public String getHeaderFormat() {
-			return headerFormat;
-		}
+        public String getHeaderFormat() {
+            return headerFormat;
+        }
 
-		public void setHeaderFormat(String headerFormat) {
-			this.headerFormat = headerFormat;
-		}
+        public void setHeaderFormat(String headerFormat) {
+            this.headerFormat = headerFormat;
+        }
 
-		public String getPointFormat() {
-			return pointFormat;
-		}
+        public String getPointFormat() {
+            return pointFormat;
+        }
 
-		public void setPointFormat(String pointFormat) {
-			this.pointFormat = pointFormat;
-		}
+        public void setPointFormat(String pointFormat) {
+            this.pointFormat = pointFormat;
+        }
 
-		public String getFooterFormat() {
-			return footerFormat;
-		}
+        public String getFooterFormat() {
+            return footerFormat;
+        }
 
-		public void setFooterFormat(String footerFormat) {
-			this.footerFormat = footerFormat;
-		}
+        public void setFooterFormat(String footerFormat) {
+            this.footerFormat = footerFormat;
+        }
 
-		public Boolean getUseHTML() {
-			return useHTML;
-		}
+        public Boolean getUseHTML() {
+            return useHTML;
+        }
 
-		public void setUseHTML(Boolean useHTML) {
-			this.useHTML = useHTML;
-		}
+        public void setUseHTML(Boolean useHTML) {
+            this.useHTML = useHTML;
+        }
 
-		public Paint getBackgroundColor() {
+        public Paint getBackgroundColor() {
             return backgroundColor;
         }
 
@@ -5498,53 +5383,53 @@ public final class InvientChartsConfig implements Serializable {
                     + style + "]";
         }
 
-		public static class Crosshairs {
-			private Double width;
-			private Paint color;
-			private DashStyle dashStyle;
-			private Integer zIndex;
+        public static class Crosshairs {
+            private Double width;
+            private Paint color;
+            private DashStyle dashStyle;
+            private Integer zIndex;
 
-			public Double getWidth() {
-				return width;
-			}
+            public Double getWidth() {
+                return width;
+            }
 
-			public void setWidth(Double width) {
-				this.width = width;
-			}
+            public void setWidth(Double width) {
+                this.width = width;
+            }
 
-			public Paint getColor() {
-				return color;
-			}
+            public Paint getColor() {
+                return color;
+            }
 
-			public void setColor(Paint color) {
-				this.color = color;
-			}
+            public void setColor(Paint color) {
+                this.color = color;
+            }
 
-			public DashStyle getDashStyle() {
-				return dashStyle;
-			}
+            public DashStyle getDashStyle() {
+                return dashStyle;
+            }
 
-			public void setDashStyle(DashStyle dashStyle) {
-				this.dashStyle = dashStyle;
-			}
+            public void setDashStyle(DashStyle dashStyle) {
+                this.dashStyle = dashStyle;
+            }
 
-			public Integer getzIndex() {
-				return zIndex;
-			}
+            public Integer getzIndex() {
+                return zIndex;
+            }
 
-			public void setzIndex(Integer zIndex) {
-				this.zIndex = zIndex;
-			}
+            public void setzIndex(Integer zIndex) {
+                this.zIndex = zIndex;
+            }
 
-			@Override
-			public String toString() {
-				return "Crosshairs{" +
-						"width=" + width +
-						", color=" + color +
-						", dashStyle=" + dashStyle +
-						", zIndex=" + zIndex +
-						'}';
-			}
-		}
+            @Override
+            public String toString() {
+                return "Crosshairs{" +
+                        "width=" + width +
+                        ", color=" + color +
+                        ", dashStyle=" + dashStyle +
+                        ", zIndex=" + zIndex +
+                        '}';
+            }
+        }
     }
 }
