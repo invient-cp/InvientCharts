@@ -18,35 +18,32 @@ package com.invient.vaadin.charts;
 
 /**
  * The Color interface represents RBG and RBGA colors.
- * Do not confuse with {@link java.awt.Color} class. This is a simplified 
- * version of {@link java.awt.Color} for the purpose of InvientCharts 
- * 
+ * <p/>
+ * Do not confuse with {@link java.awt.Color} class. This is a simplified
+ * version of {@link java.awt.Color} for the purpose of InvientCharts.
+ *
  * @author Invient
  */
 @SuppressWarnings("serial")
 public interface Color extends Paint {
 
     /**
-     * Represents RBG color value.
-     * 
+     * Represents an RBG color value.
+     *
      * @author Invient
-     * 
      */
-	public class RGB implements Color {
+    public static class RGB implements Color {
         private int red;
         private int green;
         private int blue;
 
         /**
-         * Creates an RGB color with the specified red, green, and blue values.
+         * Creates an {@link RGB} instance with the specified red, green, and blue values.
          * The values must be in the range (0 - 255).
-         * 
-         * @param red
-         *            the red component in a color
-         * @param green
-         *            the green component in a color
-         * @param blue
-         *            the blue component in a color
+         *
+         * @param red   the red component in a color
+         * @param green the green component in a color
+         * @param blue  the blue component in a color
          */
         public RGB(int red, int green, int blue) {
             super();
@@ -76,41 +73,36 @@ public interface Color extends Paint {
         }
 
         /**
-         * 
-         * @return Returns the red component in the range (0-255).
+         * @return The red component in the range (0-255).
          */
         public final int getRed() {
             return red;
         }
 
         /**
-         * 
-         * @return Returns the green component in the range (0-255).
+         * @return The green component in the range (0-255).
          */
         public final int getGreen() {
             return green;
         }
 
         /**
-         * 
-         * @return Returns the blue component in the range (0-255).
+         * @return The blue component in the range (0-255).
          */
         public final int getBlue() {
             return blue;
         }
 
         /**
-         * @return Returns string representation of this RBG.
+         * @return The string representation of this RBG.
          */
         @Override
         public String getString() {
-            return new StringBuilder().append("rgb(").append(red).append(",")
-                    .append(green).append(",").append(blue).append(")")
-                    .toString();
+            return "rgb(" + red + "," + green + "," + blue + ")";
         }
 
         /**
-         * @return Returns string representation of this RBG.
+         * @return The string representation of this RBG.
          */
         @Override
         public String toString() {
@@ -122,26 +114,23 @@ public interface Color extends Paint {
 
     /**
      * Represents RGBA color value.
-     * @author Invient
      *
+     * @author Invient
      */
-    public class RGBA extends RGB {
+    public static class RGBA extends RGB {
+
         private float alpha = 1.0f;
 
         /**
-         * Creates an RGBA color with the specified red, green, blue and alpha
+         * Creates an {@link RGBA} instance with the specified red, green, blue and alpha
          * values. The red, green and blue values must be in the range (0 -
-         * 255). The alpha value must be in the range (0.0-1.0). The alpha value 
-         * deaults to 1.0
-         * 
-         * @param red
-         *            the red component in a color
-         * @param green
-         *            the green component in a color
-         * @param blue
-         *            the blue component in a color
-         * @param alpha
-         *            the alpha component in a color
+         * 255). The alpha value must be in the range (0.0-1.0). The alpha value
+         * defaults to 1.0.
+         *
+         * @param red   the red component in a color
+         * @param green the green component in a color
+         * @param blue  the blue component in a color
+         * @param alpha the alpha component in a color
          */
         public RGBA(int red, int green, int blue, float alpha) {
             super(red, green, blue);
@@ -156,26 +145,22 @@ public interface Color extends Paint {
         }
 
         /**
-         * 
-         * @return Returns the alpha component in the range (0.0-1.0).
+         * @return The alpha component in the range (0.0-1.0).
          */
         public final float getAlpha() {
             return alpha;
         }
 
         /**
-         * @return Returns string representation of this RGBA
+         * @return The string representation of this {@link RGBA}.
          */
         @Override
         public String getString() {
-            return new StringBuilder().append("rgba(").append(getRed())
-                    .append(",").append(getGreen()).append(",")
-                    .append(getBlue()).append(",").append(alpha).append(")")
-                    .toString();
+            return "rgba(" + getRed() + "," + getGreen() + "," + getBlue() + "," + alpha + ")";
         }
 
         /**
-         * @return Returns string representation of this RGBA
+         * @return The string representation of this {@link RGBA}.
          */
         @Override
         public String toString() {
