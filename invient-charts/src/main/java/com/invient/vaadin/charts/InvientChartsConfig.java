@@ -1713,6 +1713,7 @@ public final class InvientChartsConfig implements Serializable {
         private Marker marker;
         private DashStyle dashStyle;
         private Integer lineWidth;
+		private Integer turboThreshold;
 
         /**
          * @return
@@ -1818,7 +1819,15 @@ public final class InvientChartsConfig implements Serializable {
         public void setLineWidth(Integer lineWidth) {
             this.lineWidth = lineWidth;
         }
-    }
+
+		public Integer getTurboThreshold() {
+			return turboThreshold;
+		}
+
+		public void setTurboThreshold(Integer turboThreshold) {
+			this.turboThreshold = turboThreshold;
+		}
+	}
 
     public static enum DashStyle {
         SOLID("Solid"), SHORT_DASH("ShortDash"), SHORT_DOT("ShortDot"), SHORT_DASH_DOT(
@@ -5337,7 +5346,7 @@ public final class InvientChartsConfig implements Serializable {
         private Paint borderColor;
         private Integer borderRadius;
         private Integer borderWidth;
-        private Boolean crosshairs; // FIMXE
+        private Crosshairs crosshairs;
         private Boolean enabled;
         private String formatterJsFunc;
         private Boolean shadow;
@@ -5413,11 +5422,11 @@ public final class InvientChartsConfig implements Serializable {
             this.borderWidth = borderWidth;
         }
 
-        public Boolean getCrosshairs() {
+        public Crosshairs getCrosshairs() {
             return crosshairs;
         }
 
-        public void setCrosshairs(Boolean crosshairs) {
+        public void setCrosshairs(Crosshairs crosshairs) {
             this.crosshairs = crosshairs;
         }
 
@@ -5480,5 +5489,53 @@ public final class InvientChartsConfig implements Serializable {
                     + style + "]";
         }
 
+		public static class Crosshairs {
+			private Double width;
+			private Paint color;
+			private DashStyle dashStyle;
+			private Integer zIndex;
+
+			public Double getWidth() {
+				return width;
+			}
+
+			public void setWidth(Double width) {
+				this.width = width;
+			}
+
+			public Paint getColor() {
+				return color;
+			}
+
+			public void setColor(Paint color) {
+				this.color = color;
+			}
+
+			public DashStyle getDashStyle() {
+				return dashStyle;
+			}
+
+			public void setDashStyle(DashStyle dashStyle) {
+				this.dashStyle = dashStyle;
+			}
+
+			public Integer getzIndex() {
+				return zIndex;
+			}
+
+			public void setzIndex(Integer zIndex) {
+				this.zIndex = zIndex;
+			}
+
+			@Override
+			public String toString() {
+				return "Crosshairs{" +
+						"width=" + width +
+						", color=" + color +
+						", dashStyle=" + dashStyle +
+						", zIndex=" + zIndex +
+						'}';
+			}
+		}
     }
 }

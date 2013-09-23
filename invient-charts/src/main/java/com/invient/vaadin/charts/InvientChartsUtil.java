@@ -353,7 +353,9 @@ final class InvientChartsUtil {
             target.addAttribute("borderWidth", tooltipOptions.getBorderWidth());
         }
         if (tooltipOptions.getCrosshairs() != null) {
-            target.addAttribute("crosshairs", tooltipOptions.getCrosshairs());
+			target.startTag("crosshairs");
+			writeTooltipCrosshairsConfig(target, tooltipOptions.getCrosshairs());
+			target.endTag("crosshairs");
         }
         if (tooltipOptions.getEnabled() != null) {
             target.addAttribute("enabled", tooltipOptions.getEnabled());
@@ -389,6 +391,22 @@ final class InvientChartsUtil {
 
         target.endTag("tooltip");
     }
+
+	public static void writeTooltipCrosshairsConfig(PaintTarget target,
+		Tooltip.Crosshairs crosshairs) throws PaintException {
+		if(crosshairs.getWidth() != null) {
+			target.addAttribute("width", crosshairs.getWidth());
+		}
+		if(crosshairs.getColor() != null) {
+			target.addAttribute("color", crosshairs.getColor().getString());
+		}
+		if(crosshairs.getDashStyle() != null) {
+			target.addAttribute("dashStyle", crosshairs.getDashStyle().getName());
+		}
+		if(crosshairs.getzIndex() != null) {
+			target.addAttribute("zIndex", crosshairs.getzIndex());
+		}
+	}
 
     /**
      * Writes configuration attributes of the chart itself.
@@ -952,6 +970,10 @@ final class InvientChartsUtil {
             target.addAttribute("pointInterval",
                     baseLineOptions.getPointInterval());
         }
+		if (baseLineOptions.getTurboThreshold() != null) {
+			target.addAttribute("turboThreshold",
+					baseLineOptions.getTurboThreshold());
+		}
         if (baseLineOptions.getPointStart() != null) {
             target.addAttribute("pointStart", baseLineOptions.getPointStart());
         }

@@ -66,6 +66,7 @@ import com.invient.vaadin.charts.widgetset.client.ui.GwtInvientChartsConfig.GwtS
 import com.invient.vaadin.charts.widgetset.client.ui.GwtInvientChartsConfig.GwtTitleBaseOptions;
 import com.invient.vaadin.charts.widgetset.client.ui.GwtInvientChartsConfig.GwtTitleOptions;
 import com.invient.vaadin.charts.widgetset.client.ui.GwtInvientChartsConfig.GwtTooltipOptions;
+import com.invient.vaadin.charts.widgetset.client.ui.GwtInvientChartsConfig.GwtTooltipCrosshairs;
 import com.invient.vaadin.charts.widgetset.client.ui.GwtInvientChartsConfig.GwtXAxisOptions;
 import com.invient.vaadin.charts.widgetset.client.ui.GwtInvientChartsConfig.GwtXAxisOptions.GwtDateTimeLabelFormats;
 import com.invient.vaadin.charts.widgetset.client.ui.GwtInvientChartsConfig.GwtYAxisOptions;
@@ -414,7 +415,7 @@ public class VInvientCharts extends GwtInvientCharts implements Paintable /*
     }
 
     private enum ChartOptionsUIDLIndex {
-        TITLE, SUBTITLE, CREDIT, LEGEND, TOOLTIP, CHART_CONFIG, SERIES_OPTIONS, X_AXES, Y_AXES, LABEL;
+        TITLE, SUBTITLE, CREDIT, LEGEND, TOOLTIP, CHART_CONFIG, SERIES_OPTIONS, X_AXES, Y_AXES, LABEL, CROSSHAIRS;
     }
 
     private void updateAxesPlotBandsAndPlotLines(
@@ -1113,6 +1114,10 @@ public class VInvientCharts extends GwtInvientCharts implements Paintable /*
         VConsole.log("Tag name -> " + uidl.getTag());
         GwtTooltipOptions tooltipOptions = GwtTooltipOptions.create();
 
+		if(uidl.getChildByTagName("crosshairs") != null) {
+		tooltipOptions
+				.setCrosshairs(getTooltipCrosshairs(uidl.getChildByTagName("crosshairs")));
+		}
         if (uidl.hasAttribute("backgroundColor")) {
             tooltipOptions.setBackgroundColor(uidl
                     .getStringAttribute("backgroundColor"));
@@ -1127,10 +1132,6 @@ public class VInvientCharts extends GwtInvientCharts implements Paintable /*
         }
         if (uidl.hasAttribute("borderWidth")) {
             tooltipOptions.setBorderWidth(uidl.getIntAttribute("borderWidth"));
-        }
-        if (uidl.hasAttribute("crosshairs")) {
-            tooltipOptions
-                    .setCrosshairs(uidl.getBooleanAttribute("crosshairs"));
         }
         if (uidl.hasAttribute("enabled")) {
             tooltipOptions.setEnabled(uidl.getBooleanAttribute("enabled"));
@@ -1167,6 +1168,26 @@ public class VInvientCharts extends GwtInvientCharts implements Paintable /*
         VConsole.log("Exit [getTooltipOptions]");
         return tooltipOptions;
     }
+
+	private GwtTooltipCrosshairs getTooltipCrosshairs(UIDL uidl) {
+		VConsole.log("Enter [getTooltipCrosshairs]");
+		VConsole.log("Tag name -> " + uidl.getTag());
+		GwtTooltipCrosshairs crosshairs = GwtTooltipCrosshairs.create();
+		if (uidl.hasAttribute("width")) {
+			crosshairs.setWidth(uidl.getDoubleAttribute("width"));
+		}
+		if (uidl.hasAttribute("color")) {
+			crosshairs.setColor(uidl.getStringAttribute("color"));
+		}
+		if (uidl.hasAttribute("dashStyle")) {
+			crosshairs.setDashstyle(uidl.getStringAttribute("dashStyle"));
+		}
+		if (uidl.hasAttribute("zIndex")) {
+			crosshairs.setZIndex(uidl.getIntAttribute("zIndex"));
+		}
+		VConsole.log("Exit [getTooltipCrosshairs]");
+		return crosshairs;
+	}
 
     private GwtTitleOptions getTitleOptions(UIDL uidl) {
         VConsole.log("Enter [getTitleOptions]");
@@ -2150,6 +2171,10 @@ public class VInvientCharts extends GwtInvientCharts implements Paintable /*
             lineOptions.setPointInterval(lineUIDL
                     .getIntAttribute("pointInterval"));
         }
+		if (lineUIDL.hasAttribute("turboThreshold")) {
+			lineOptions.setTurboThreshold(lineUIDL
+					.getIntAttribute("turboThreshold"));
+		}
         if (lineUIDL.hasAttribute("stickyTracking")) {
             lineOptions.setStickyTracking(lineUIDL
                     .getBooleanAttribute("stickyTracking"));
